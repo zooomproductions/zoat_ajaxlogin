@@ -28,6 +28,10 @@ plugin.tx_ajaxlogin {
     			password = {$plugin.tx_ajaxlogin.settings.validation.User.password}
     		}
     	}
+    	notificationMail {
+    		from = {$plugin.tx_ajaxlogin.settings.notificationMail.from}
+    		strftimeFormat = {$plugin.tx_ajaxlogin.settings.notificationMail.strftimeFormat}
+    	}
     }
     persistence {
         storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}

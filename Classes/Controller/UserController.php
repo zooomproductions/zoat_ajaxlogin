@@ -136,8 +136,29 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		}
 		
 		if(!is_null($user)) {
-			$user->setForgotHash(md5($user->getUsername() . $user->getEmail() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
+			$user->setForgotHash(md5(t3lib_div::generateRandomBytes(64)));
+			$user->setForgotHashValid((time() + (3 * 3600)));
 			$this->view->assign('user', $user);
+			
+			//<f:uri.action action="editPassword" arguments="{email:user.email,forgotHash:user.forgotHash}" absolute="true" />
+			
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->uriFor('editPassword', array(
+				'email' => $user->getEmail(),
+				'forgotHash' => $user->getForgotHash()
+			));
+			
+			$subject = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_subject', 'ajaxlogin', array(
+				t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')
+			));
+			
+			$message = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_message', 'ajaxlogin', array(
+				$user->getName(),
+				$uri,
+				strftime($this->settings['notificationMail']['strftimeFormat'])
+			));
+			
+			Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);			
 		} else {
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
@@ -157,7 +178,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user = $this->userRepository->findCurrent();
 		}
 		
-		$this->view->assign('user', $user);
+		if(!is_null($user)) {
+			$this->view->assign('user', $user);
+		} else {
+			$this->response->setStatus(401);
+		}
 	}
 	
 	/**
@@ -177,10 +202,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		if(!empty($decrypted['n']) && strcmp($decrypted['n'], $decrypted['c']) == 0 && $passwordValidator->isValid($decrypted['n'])) {
 			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($decrypted['n']);
 			$user->setPassword($saltedPW);
+			$user->setForgotHash('');
+			$user->setForgotHashValid(0);
 			$this->forward('show');
 		} else {
 			$this->response->setStatus(409);
-			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
+			$message = Tx_Extbase_Utility_Localization::translate('password_invalid', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
 			$this->forward('editPassword');
 		}

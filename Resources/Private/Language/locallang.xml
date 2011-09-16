@@ -39,8 +39,19 @@
 			<label index="username_or_email">Username or e-mail address</label>
 			<label index="user_notfound">No user with this username or e-mail address (%s) was found</label>
 			
+			<label index="password_invalid">The given password is not valid</label>
+			
 			<label index="status_authenticated">My account</label>
 			<label index="status_unauthorized">Login</label>
+			
+			<label index="resetpassword_notification_subject">Reset your password for %s</label>
+			<label index="resetpassword_notification_message">Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below. 
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</label>
+			<label index="resetpassword_notification_sent">An email has been sent to the known email address belonging to your account with further instructions to change your password</label>
 		</languageKey>
 	</data>
 </T3locallang>

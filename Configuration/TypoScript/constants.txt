@@ -7,6 +7,10 @@ plugin.tx_ajaxlogin {
     			password = /^.{8,}$/
     		}
     	}
+    	notificationMail {
+    		from = T3O Website <john@doe.com>
+    		strftimeFormat = %c
+    	}
     }
     view {
          # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)

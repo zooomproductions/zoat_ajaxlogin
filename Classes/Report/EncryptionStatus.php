@@ -42,7 +42,7 @@ class Tx_Ajaxlogin_Report_EncryptionStatus implements tx_reports_StatusProvider 
 	public function getStatus() {
 		$reports  = array();
 		$severity = tx_reports_reports_status_Status::OK;
-		$value    = 'Using EXT:rsaauth to encrypt passwords send to the server.';
+		$value    = 'Using EXT:rsaauth to encrypt passwords sent to the server.';
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'] != 'rsa') {
 
