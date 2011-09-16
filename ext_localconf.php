@@ -24,4 +24,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 );
 
 $TYPO3_CONF_VARS['FE']['eID_include']['tx_ajaxlogin_utility'] = 'EXT:ajaxlogin/eid_utility.php';
+
+$TYPO3_CONF_VARS['FE']['addRootLineFields'] .= ',tx_ajaxlogin_sectionreload';
 ?>

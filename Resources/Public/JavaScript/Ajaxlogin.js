@@ -27,6 +27,7 @@
 					url: tx_ajaxlogin.api.User.logout,
 					cache: false,
 					success: function(a,b,c) {
+						Ajaxlogin.fn.doReloadOrRedirect();
 						Ajaxlogin.fn.showLoginForm(c);
 					}
 				});
@@ -74,6 +75,7 @@
 								Ajaxlogin.fn.showLoginForm(a);
 							},
 							success: function(a,b,c){
+								Ajaxlogin.fn.doReloadOrRedirect();
 								Ajaxlogin.fn.showUserInfo(c);
 							}
 						});
@@ -171,6 +173,11 @@
 					});
 				});
 				return val;
+			},
+			doReloadOrRedirect: function() {
+				if(tx_ajaxlogin.doReloadOnSuccess == 1) {
+					window.location.href = window.location.href;
+				}
 			}
 		}
 	};

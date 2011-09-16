@@ -137,7 +137,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		if(!is_null($user)) {
 			$user->setForgotHash(md5(t3lib_div::generateRandomBytes(64)));
-			$user->setForgotHashValid((time() + (3 * 3600)));
+			$user->setForgotHashValid((time() + (24 * 3600)));
 			$this->view->assign('user', $user);
 			
 			//<f:uri.action action="editPassword" arguments="{email:user.email,forgotHash:user.forgotHash}" absolute="true" />
