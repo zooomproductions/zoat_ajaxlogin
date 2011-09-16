@@ -1,0 +1,41 @@
+<f:layout name="Widget" />
+
+<f:section name="content">
+	<form id="{formToken}" action="" method="post">
+		
+		<div class="b-form-row">
+			<label for="user">
+				<f:translate key="user.username" />
+			</label>
+			
+			<div class="b-form-inputs">
+				<input type="text" id="user" name="user" value="" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="pass">
+				<f:translate key="user.password" />
+			</label>
+	
+			<div class="b-form-inputs">
+				<input type="password" id="pass" name="pass" value="" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<div class="login-action-links">
+				<a href="#" rel="tx_ajaxlogin[forgot_password]">
+					<f:translate key="forgot_password" />
+				</a> |
+				<a href="#" rel="tx_ajaxlogin[signup]">
+					<f:translate key="signup_user" />
+				</a>
+			</div>
+			<button type="submit" name="submit" value="{f:translate(key:'button_login')}" class="bu bu-mini">
+				<f:translate key="button_login" />
+			</button>	
+		</div>
+	
+	</form>
+</f:section>

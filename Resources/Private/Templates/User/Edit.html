@@ -1,0 +1,110 @@
+<f:layout name="Profile" />
+
+<f:section name="content">
+	<f:form action="update" objectName="user" object="{user}">		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-name">
+				<f:translate key="user.name" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-name" property="name" value="{user.name}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-email">
+				<f:translate key="user.email" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-email" property="email" value="{user.email}" />
+			</div>
+		</div>
+	
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-www">
+				<f:translate key="user.www" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-www" property="www" value="{user.www}" />
+			</div>
+		</div>
+	
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-title">
+				<f:translate key="user.title" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-title" property="title" value="{user.title}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-company">
+				<f:translate key="user.company" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-company" property="company" value="{user.company}" />
+			</div>
+		</div>
+	
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-address">
+				<f:translate key="user.address" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-address" property="address" value="{user.address}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-zip">
+				<f:translate key="user.zip" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-zip" property="zip" value="{user.zip}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-city">
+				<f:translate key="user.city" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-city" property="city" value="{user.city}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-country">
+				<f:translate key="user.country" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-country" property="country" value="{user.country}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-telephone">
+				<f:translate key="user.telephone" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-telephone" property="telephone" value="{user.telephone}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<label for="tx-ajaxlogin-user-fax">
+				<f:translate key="user.fax" />
+			</label>
+			<div class="b-form-inputs">
+				<f:form.textfield id="tx-ajaxlogin-user-fax" property="fax" value="{user.fax}" />
+			</div>
+		</div>
+		
+		<div class="b-form-row">
+			<button type="submit" value="{f:translate(key: 'update_user')}" class="bu bu-mini">
+				<f:translate key="update_user" />
+			</button>	
+		</div>
+	</f:form>
+</f:section>

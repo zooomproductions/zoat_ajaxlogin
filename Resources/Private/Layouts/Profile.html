@@ -1,0 +1,27 @@
+<div class="tx-ajaxlogin-profile">
+	<ul class="tx-ajaxlogin-profile-actionmenu">
+		<li>
+			<f:link.action action="show">
+				My account
+			</f:link.action>
+		</li>
+		<li>
+			<f:link.action action="edit">
+				Change my profile
+			</f:link.action>
+		</li>
+		<li>
+			<f:link.action action="editPassword">
+				Change my password
+			</f:link.action>
+		</li>
+	</ul>
+	
+	<f:flashMessages renderMode="div" />
+	<f:render partial="FormErrors" />
+	
+	<f:render section="content" />
+	
+	<hr />
+	<p class="tx-ajaxlogin-copyright">&copy; Arno Schoon</p>
+</div>

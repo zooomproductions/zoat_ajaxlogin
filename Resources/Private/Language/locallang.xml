@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Texts for plugin 'ajaxlogin'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="user.username">Username</label>
+			<label index="user.password">Password</label>
+			<label index="user.name">Name</label>
+			<label index="user.email">E-mail</label>
+			<label index="user.address">Address</label>
+			<label index="user.zip">Zipcode</label>
+			<label index="user.city">City</label>
+			<label index="user.country">Country</label>
+			<label index="user.title">Title</label>
+			<label index="user.company">Company</label>
+			<label index="user.telephone">Telephone</label>
+			<label index="user.fax">Fax</label>
+			<label index="user.www">Homepage</label>
+			
+			<label index="password.new">New password</label>
+			<label index="password.check">New password (check)</label>
+			
+			<label index="update_user">Update account</label>
+			<label index="signup_user">Sign up!</label>
+			<label index="login_user">Back to login form</label>
+			<label index="update_password">Update password</label>
+			<label index="forgot_password">Forgot password?</label>
+			<label index="recover_password">Reset password</label>
+			
+			<label index="button_login">Login</label>
+			<label index="button_signup">Sign up!</label>
+			
+			<label index="authentication_failed">Check your credentials and try again</label>
+			
+			<label index="duplicate_username">The selected username is already in use</label>
+			
+			<label index="username_or_email">Username or e-mail address</label>
+			<label index="user_notfound">No user with this username or e-mail address (%s) was found</label>
+			
+			<label index="status_authenticated">My account</label>
+			<label index="status_unauthorized">Login</label>
+		</languageKey>
+	</data>
+</T3locallang>

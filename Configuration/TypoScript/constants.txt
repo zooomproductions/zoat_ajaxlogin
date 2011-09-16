@@ -1,0 +1,23 @@
+plugin.tx_ajaxlogin {
+    settings {
+    	widgetTypeNum = 98987
+    	validation {
+    		User {
+    			username = /^[a-z0-9_-]{6,}$/i
+    			password = /^.{8,}$/
+    		}
+    	}
+    }
+    view {
+         # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:ajaxlogin/Resources/Private/Templates/
+         # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:ajaxlogin/Resources/Private/Partials/
+         # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:ajaxlogin/Resources/Private/Layouts/
+    }
+    persistence {
+         # cat=plugin.tx_ajaxlogin//a; type=int+; label=Default storage PID
+        storagePid = 11
+    }
+}
