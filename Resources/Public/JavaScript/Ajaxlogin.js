@@ -148,7 +148,7 @@
 					$.ajax({
 						url: v,
 						cache: true,
-						dataType: ' script',
+						dataType: 'script',
 						success: function() {
 							loaded++;
 							
@@ -199,4 +199,35 @@
 	};
 	
 	$(document).ready(Ajaxlogin.User.info);
+	
+	$(document).ready(function() {
+		$(tx_ajaxlogin.editPasswordForm).live('submit.tx_ajaxlogin', function(event) {
+			event.preventDefault();
+			var input = Ajaxlogin.fn.resolveFormData($(this));
+			
+			var pw = {
+				n: input['tx_ajaxlogin_widget[password][new]'],
+				c: input['tx_ajaxlogin_widget[password][check]']
+			};
+			
+			Ajaxlogin.fn.encryptString($.param(pw), function(res) {
+				input['tx_ajaxlogin_widget[password][encrypted]'] = res;
+				input['tx_ajaxlogin_widget[password][check]'] = '';
+				input['tx_ajaxlogin_widget[password][new]'] = '';
+				$.ajax({
+					url: tx_ajaxlogin.api.User.updatePassword,
+					cache: false,
+					type: 'POST',
+					data: input,
+					error: function(a,b,c) {
+						$(tx_ajaxlogin.profileSection).replaceWith(a.responseText);
+					},
+					success: function(a,b,c) {
+						$(tx_ajaxlogin.profileSection).replaceWith(c.responseText);
+						$(document).unbind('submit.tx_ajaxlogin');
+					}
+				});
+			});
+		});
+	});
 })(jQuery);

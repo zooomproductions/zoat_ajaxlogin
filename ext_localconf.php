@@ -5,10 +5,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Profile',
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword'
+		'User' => 'show,edit,update,editPassword'
 	),
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword'
+		'User' => 'show,edit,update,editPassword'
 	)
 );
 
@@ -16,10 +16,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Widget',
 	array(
-		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
+		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword,updatePassword'
 	),
 	array(
-		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
+		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword,updatePassword'
 	)
 );
 

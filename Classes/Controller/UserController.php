@@ -136,12 +136,53 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		}
 		
 		if(!is_null($user)) {
-			return var_export(md5($user->getUsername() . $user->getEmail() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), true);
+			$user->setForgotHash(md5($user->getUsername() . $user->getEmail() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
+			$this->view->assign('user', $user);
 		} else {
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
 			$this->forward('forgotPassword');
+		}
+	}
+	
+	/**
+	 * @param string $forgotHash
+	 * @param string $email
+	 */
+	public function editPasswordAction($forgotHash = '', $email = '') {
+		if(!empty($forgotHash) && !empty($email)) {
+			$user = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
+		} else {
+			$user = $this->userRepository->findCurrent();
+		}
+		
+		$this->view->assign('user', $user);
+	}
+	
+	/**
+	 * @param array $password
+	 * @param Tx_Ajaxlogin_Domain_Model_User $user
+	 */
+	public function updatePasswordAction($password, Tx_Ajaxlogin_Domain_Model_User $user) {
+		$decrypted = t3lib_div::explodeUrl2Array(Tx_Ajaxlogin_Utility_RSA::decrypt($password['encrypted']));
+		
+		$passwordValidator = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator');
+		
+		$passwordValidator->setOptions(array(
+			'object' => 'User',
+			'property' => 'password'
+		));
+		
+		if(!empty($decrypted['n']) && strcmp($decrypted['n'], $decrypted['c']) == 0 && $passwordValidator->isValid($decrypted['n'])) {
+			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($decrypted['n']);
+			$user->setPassword($saltedPW);
+			$this->forward('show');
+		} else {
+			$this->response->setStatus(409);
+			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
+			$this->forward('editPassword');
 		}
 	}
 }

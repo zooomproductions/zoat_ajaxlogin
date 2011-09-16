@@ -139,6 +139,12 @@ page.jsInline.98987{
 				wrap = ,resetPassword:'|'
 			}
 			
+			90 < .10
+			90 {
+				typolink.additionalParams.cObject.10.value = updatePassword
+				wrap = ,updatePassword:'|'
+			}
+			
 			wrap = User:{|}
 		}
 		
@@ -178,8 +184,16 @@ page.jsInline.98987{
 	40.value = #login-status
 	40.wrap = ,statusLabel:'|'
 	
-	50 = COA
-	50 {
+	50 = TEXT
+	50.value = #tx-ajaxlogin-editPassword
+	50.wrap = ,editPasswordForm:'|'
+	
+	51 = TEXT
+	51.value = .tx-ajaxlogin-profile
+	51.wrap = ,profileSection:'|'
+	
+	60 = COA
+	60 {
 		10 = TEXT
 		10.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_authenticated
 		10.wrap = status_authenticated:'|'
@@ -191,8 +205,8 @@ page.jsInline.98987{
 		wrap = ,ll:{|}
 	}
 	
-	60 = COA
-	60 {
+	70 = COA
+	70 {
 		10 = COA
 		10 {
 			10 = TEXT
@@ -218,8 +232,8 @@ page.jsInline.98987{
 		wrap = ,scripts:{|}
 	}
 	
-	70 = COA
-	70 {
+	80 = COA
+	80 {
 		10 = COA
 		10 {
 			10 = TEXT
