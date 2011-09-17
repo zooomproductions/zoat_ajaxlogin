@@ -1,0 +1,19 @@
+<f:layout name="Widget" />
+
+Display confirmation box to disable fe_user profile
+
+<f:section name="content">
+	<div style="border: 1px solid orange; background-color: yellow;">
+
+		<div id="tx_ajaxlogin_confirmation1" style="padding: 10px 30px;">
+			<p>All data will be lost.<br>
+			This is permanent.</p>
+
+			<p><a href="#" onclick="jQuery('#tx_ajaxlogin_confirmation1').css('display', 'none'); jQuery('#tx_ajaxlogin_confirmation2').css('display', 'block');">Close account</a></p>
+		</div>
+
+		<div id="tx_ajaxlogin_confirmation2" style="display: none;">
+			<f:link.action action="disable" additionalParams="{ confirm: 1 }">Yes, delete my account permanently.</f:link.action>
+		</div>
+	</div>
+</f:section>

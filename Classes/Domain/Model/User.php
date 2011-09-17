@@ -9,6 +9,11 @@ class Tx_Ajaxlogin_Domain_Model_User extends Tx_Extbase_Domain_Model_FrontendUse
 	protected $name;
 	
 	/**
+	 * @var boolean
+	 */
+	protected $disable;
+
+	/**
 	 * @var string
 	 * @validate EmailAddress
 	 */

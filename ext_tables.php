@@ -42,6 +42,12 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 );
 $extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));
 
+Tx_Extbase_Utility_Extension::registerPlugin(
+	$_EXTKEY,
+	'WidgetDisable',
+	'Ajaxlogin: Close user account'
+);
+
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$extensionName . '_profile'] = 'pages,recursive,layout,select_key';
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'AJAX login');

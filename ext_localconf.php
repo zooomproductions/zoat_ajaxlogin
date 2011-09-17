@@ -16,10 +16,21 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Widget',
 	array(
-		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
+		'User' => 'info,login,disable,authenticate,logout,new,create,forgotPassword,resetPassword'
 	),
 	array(
-		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
+		'User' => 'info,login,disable,authenticate,logout,new,create,forgotPassword,resetPassword'
+	)
+);
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'WidgetDisable',
+	array(
+		'User' => 'disable'
+	),
+	array(
+		'User' => 'disable'
 	)
 );
 

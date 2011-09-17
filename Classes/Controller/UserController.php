@@ -194,7 +194,30 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->response->setStatus(401);
 		}
 	}
-	
+
+	/**
+	 * Disable currently logged in user and logout afterwards
+	 * @return void
+	 * @param
+	 */
+	public function disableAction() {
+		$user = $this->userRepository->findCurrent();
+
+		if (!is_null($user)) {
+
+			// Button pressed, disable user and logout
+			if (request.getArgument('confirm') == '1') {
+				$user->setDisable(1);
+				$this->flashMessageContainer->add('Your account was successfully disabled.', '', t3lib_FlashMessage::NOTICE);
+				$this->logoutAction();
+			}
+
+		} else {
+			$this->response->setStatus(401);
+			$this->forward('login');
+		}
+	}
+
 	/**
 	 * @param array $password
 	 * @param Tx_Ajaxlogin_Domain_Model_User $user
