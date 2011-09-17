@@ -31,6 +31,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user = $this->userRepository->findCurrent();
 		
 		if(!is_null($user)) {
+			$referer = t3lib_div::_GP('referer');
+			$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer);
+			if(!empty($redirect_url)) {
+				$this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
+			}
 			$this->forward('info');
 		} else {
 			$this->response->setStatus(401);

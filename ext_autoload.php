@@ -10,9 +10,10 @@ return array(
 	'tx_ajaxlogin_domain_model_user' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Domain/Model/User.php'),
 	'tx_ajaxlogin_domain_repository_userrepository' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Domain/Repository/UserRepository.php'),
 	'tx_ajaxlogin_domain_validator_customregularexpressionvalidator' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Domain/Validator/CustomRegularExpressionValidator.php'),
-	'tx_ajaxlogin_domain_validator_uniqueusernamevalidator' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Domain/Validator/UniqueUsernameValidator.php'),
-	'tx_ajaxlogin_report_encryptionstatus' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Report/EncryptionStatus.php'),
+	'tx_ajaxlogin_utility_notifymail' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Utility/NotifyMail.php'),
 	'tx_ajaxlogin_utility_password' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Utility/Password.php'),
-	'tx_ajaxlogin_utility_typoscript' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Utility/TypoScript.php')
+	'tx_ajaxlogin_utility_redirecturl' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Utility/RedirectUrl.php'),
+	'tx_ajaxlogin_utility_typoscript' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/Utility/TypoScript.php'),
+	'tx_ajaxlogin_pagenotfoundhandler' => t3lib_extMgm::extPath('ajaxlogin', 'Classes/PageNotFoundHandler.php')
 );
 ?>

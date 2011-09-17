@@ -27,7 +27,7 @@
 					url: tx_ajaxlogin.api.User.logout,
 					cache: false,
 					success: function(a,b,c) {
-						Ajaxlogin.fn.doReloadOrRedirect();
+						//Ajaxlogin.fn.doReloadOrRedirect();
 						Ajaxlogin.fn.showLoginForm(c);
 					}
 				});
@@ -67,13 +67,14 @@
 						type: 'POST',
 						data: $.extend({
 							logintype: 'login',
-							pid: tx_ajaxlogin.storagePid
+							pid: tx_ajaxlogin.storagePid,
+							referer: window.location.href
 						}, input),
 						error: function(a,b,c) {
 							Ajaxlogin.fn.showLoginForm(a);
 						},
 						success: function(a,b,c){
-							Ajaxlogin.fn.doReloadOrRedirect();
+							Ajaxlogin.fn.doReloadOrRedirect(c);
 							Ajaxlogin.fn.showUserInfo(c);
 						}
 					});
@@ -138,9 +139,15 @@
 				});
 				return input;
 			},
-			doReloadOrRedirect: function() {
+			doReloadOrRedirect: function(response) {
+				var redirectUrl = response.getResponseHeader('X-Ajaxlogin-redirectUrl');
+				
 				if(tx_ajaxlogin.doReloadOnSuccess == 1) {
-					window.location.href = window.location.href;
+					//window.location.href = window.location.href;
+				}
+				
+				if(redirectUrl) {
+					window.location.href = redirectUrl;
 				}
 			}
 		}
