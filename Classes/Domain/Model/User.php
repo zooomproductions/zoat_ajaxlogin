@@ -74,6 +74,22 @@ class Tx_Ajaxlogin_Domain_Model_User extends Tx_Extbase_Domain_Model_FrontendUse
 	public function setForgotHashValid($forgotHashValid) {
 		$this->forgotHashValid = $forgotHashValid;
 	}
+
+	/**
+	 * @param boolean $disable
+	 */
+	public function setDisable($disable) {
+		$this->disable = $disable;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getDisable() {
+		return $this->disable;
+	}
+
+
 }
 
 ?>

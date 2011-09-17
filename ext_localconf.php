@@ -28,9 +28,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	'WidgetDisable',
 	array(
 		'User' => 'disable'
-	),
-	array(
-		'User' => 'disable'
 	)
 );
 
