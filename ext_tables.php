@@ -3,10 +3,6 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['ajaxlogin'] = array(
-	'Tx_Ajaxlogin_Report_EncryptionStatus'
-);
-
 $tempColumns = array (
 	'tx_ajaxlogin_forgotHash' => array (
 		'config' => array (

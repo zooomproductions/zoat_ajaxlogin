@@ -10,9 +10,8 @@ class Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator extends Tx_
 		$property = trim($this->options['property']);
 		
 		$pattern = trim($setup['settings']['validation'][$object][$property]);
-		$subject = Tx_Ajaxlogin_Utility_RSA::decrypt($value);
 		
-		if(!preg_match($pattern, $subject)) {
+		if(!preg_match($pattern, $value)) {
 			$this->addError('The given subject did not match the pattern "' . $pattern . '"', 1307626687);
 			return false;
 		}

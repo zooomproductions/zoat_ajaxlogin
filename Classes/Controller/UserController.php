@@ -76,7 +76,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		$password = $user->getPassword();
 		
-		$password = Tx_Ajaxlogin_Utility_RSA::decrypt($password);		
 		$password = Tx_Ajaxlogin_Utility_Password::salt($password);
 
 		$user->setPassword($password);
@@ -190,8 +189,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 */
 	public function updatePasswordAction($password, Tx_Ajaxlogin_Domain_Model_User $user) {
-		$decrypted = t3lib_div::explodeUrl2Array(Tx_Ajaxlogin_Utility_RSA::decrypt($password['encrypted']));
-		
 		$passwordValidator = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator');
 		
 		$passwordValidator->setOptions(array(
@@ -199,12 +196,14 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			'property' => 'password'
 		));
 		
-		if(!empty($decrypted['n']) && strcmp($decrypted['n'], $decrypted['c']) == 0 && $passwordValidator->isValid($decrypted['n'])) {
-			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($decrypted['n']);
+		if(!empty($password['new']) && strcmp($password['new'], $password['check']) == 0 && $passwordValidator->isValid($password['new'])) {
+			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
 			$user->setPassword($saltedPW);
 			$user->setForgotHash('');
 			$user->setForgotHashValid(0);
-			$this->forward('show');
+			$message = Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
+			$this->redirect('show');
 		} else {
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('password_invalid', 'ajaxlogin');
