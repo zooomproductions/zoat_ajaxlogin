@@ -68,7 +68,8 @@
 						data: $.extend({
 							logintype: 'login',
 							pid: tx_ajaxlogin.storagePid,
-							referer: window.location.href
+							referer: window.location.href,
+							redirectUrl: tx_ajaxlogin.redirect_url
 						}, input),
 						error: function(a,b,c) {
 							Ajaxlogin.fn.showLoginForm(a);
@@ -94,12 +95,16 @@
 						url: tx_ajaxlogin.api.User.create,
 						cache: false,
 						type: 'POST',
-						data: input,
+						data: $.extend({
+							referer: window.location.href,
+							redirectUrl: tx_ajaxlogin.redirect_url
+						}, input),
 						error: function(a,b,c) {
 							Ajaxlogin.fn.showSignupForm(a);
 						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showSignupForm(c);
+							Ajaxlogin.fn.doReloadOrRedirect(c);
+							Ajaxlogin.fn.showUserInfo(c);
 						}
 					});
 				});
@@ -142,12 +147,10 @@
 			doReloadOrRedirect: function(response) {
 				var redirectUrl = response.getResponseHeader('X-Ajaxlogin-redirectUrl');
 				
-				if(tx_ajaxlogin.doReloadOnSuccess == 1) {
-					//window.location.href = window.location.href;
-				}
-				
 				if(redirectUrl) {
 					window.location.href = redirectUrl;
+				} else if(tx_ajaxlogin.doReloadOnSuccess == 1) {
+					window.location.href = window.location.href;
 				}
 			}
 		}

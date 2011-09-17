@@ -11,6 +11,7 @@ plugin.tx_ajaxlogin {
     		from = T3O Website <john@doe.com>
     		strftimeFormat = %c
     	}
+    	defaultUserGroups = 1
     }
     view {
          # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)

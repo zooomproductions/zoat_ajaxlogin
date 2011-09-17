@@ -6,6 +6,11 @@ config.tx_extbase {
                     Tx_Ajaxlogin_Domain_Model_User = Tx_Ajaxlogin_Domain_Model_User
                 }
             }
+            Tx_Extbase_Domain_Model_FrontendUserGroup {
+                subclasses {
+                    Tx_Ajaxlogin_Domain_Model_UserGroup = Tx_Ajaxlogin_Domain_Model_UserGroup
+                }
+            }
             Tx_Ajaxlogin_Domain_Model_User {
                 mapping {
                     tableName = fe_users
@@ -13,6 +18,11 @@ config.tx_extbase {
                     	tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
                     	tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
                     }
+                }
+            }
+            Tx_Ajaxlogin_Domain_Model_UserGroup {
+                mapping {
+                    tableName = fe_groups
                 }
             }
         }
@@ -32,6 +42,7 @@ plugin.tx_ajaxlogin {
     		from = {$plugin.tx_ajaxlogin.settings.notificationMail.from}
     		strftimeFormat = {$plugin.tx_ajaxlogin.settings.notificationMail.strftimeFormat}
     	}
+    	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
     }
     persistence {
         storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}

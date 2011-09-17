@@ -6,8 +6,14 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 */
 	protected $userRepository;	
 	
+	/**
+	 * @var Tx_Ajaxlogin_Domain_Repository_UserGroupRepository
+	 */
+	protected $userGroupRepository;	
+	
 	public function initializeAction() {
 		$this->userRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserRepository');
+		$this->userGroupRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserGroupRepository');
 	}
 	
 	public function infoAction() {		
@@ -32,7 +38,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		if(!is_null($user)) {
 			$referer = t3lib_div::_GP('referer');
-			$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer);
+			$redirectUrl = t3lib_div::_GP('redirectUrl');
+			$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
 			if(!empty($redirect_url)) {
 				$this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
 			}
@@ -79,9 +86,15 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->forward('new', null, null, $this->request->getArguments());
 		}
 		
+		$userGroups = $this->userGroupRepository->findByUidArray(t3lib_div::intExplode(',', $this->settings['defaultUserGroups']));
+		
 		$password = $user->getPassword();
 		
 		$password = Tx_Ajaxlogin_Utility_Password::salt($password);
+		
+		foreach($userGroups as $userGroup) {
+			$user->getUsergroup()->attach($userGroup);
+		}
 
 		$user->setPassword($password);
 		
@@ -90,6 +103,13 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->userRepository->_persistAll();
 		
 		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
+		
+		$referer = t3lib_div::_GP('referer');
+		$redirectUrl = t3lib_div::_GP('redirectUrl');
+		$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
+		if(!empty($redirect_url)) {
+			$this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
+		}
 		
 		$this->forward('info');
 	}
