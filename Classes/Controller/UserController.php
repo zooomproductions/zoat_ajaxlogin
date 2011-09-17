@@ -86,6 +86,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user->setPassword($password);
 		
 		$this->userRepository->add($user);
+		
+		$this->userRepository->_persistAll();
+		
+		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
+		
+		$this->forward('info');
 	}
 	
 	public function logoutAction() {

@@ -36,6 +36,10 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 			
 		return $query->execute()->getFirst();
 	}
+	
+	public function _persistAll() {
+		$this->persistenceManager->persistAll();
+	}
 }
 
 ?>
