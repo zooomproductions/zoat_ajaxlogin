@@ -224,12 +224,10 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user = $this->userRepository->findCurrent();
 
 		if (!is_null($user)) {
-
-			// Button pressed, disable user and logout
-			if (request.getArgument('confirm') == '1') {
+			if ($this->request->hasArgument('confirm') && $this->request->getArgument('confirm') == '1') {
 				$user->setDisable(1);
-				$this->flashMessageContainer->add('Your account was successfully disabled.', '', t3lib_FlashMessage::NOTICE);
-				$this->logoutAction();
+				$GLOBALS['TSFE']->fe_user->logoff();
+				header("Location: /");
 			}
 
 		} else {
