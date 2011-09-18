@@ -4,12 +4,12 @@ plugin.tx_ajaxlogin {
     	defaultUserGroups = 1
     	validation {
     		User {
-    			username = /^[a-z0-9_-]{6,}$/i
+    			username = /^.{1,}$/
     			password = /^.{8,}$/
     		}
     	}
     	notificationMail {
-    		from = T3O Website <john@doe.com>
+    		from = TYPO3.org <info@typo3.org>
     		strftimeFormat = %c
     	}
     	ajaxPid = 0
