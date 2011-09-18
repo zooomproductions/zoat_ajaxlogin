@@ -1,5 +1,6 @@
 (function($) {
 	var Ajaxlogin = {
+		_eventListeners: {},
 		User: {
 			info: function() {
 				if ( tx_ajaxlogin.api.User.info ) {
@@ -87,8 +88,9 @@
 							Ajaxlogin.fn.showLoginForm(a);
 						},
 						success: function(a,b,c){
-							Ajaxlogin.fn.doReloadOrRedirect(c);
+							//Ajaxlogin.fn.doReloadOrRedirect(c);
 							Ajaxlogin.fn.showUserInfo(c);
+							Ajaxlogin.event.fire('login', [c]);
 						}
 					});
 				});
@@ -164,6 +166,45 @@
 				} else if(tx_ajaxlogin.doReloadOnSuccess == 1) {
 					window.location.href = window.location.href;
 				}
+			}
+		},
+		event: {
+			addListener: function(type, listener) {
+				if (typeof Ajaxlogin._eventListeners[type] == "undefined"){
+					Ajaxlogin._eventListeners[type] = [];
+		        }
+
+				Ajaxlogin._eventListeners[type].push(listener);
+			},
+			fire: function(event, arguments) {
+				if (typeof event == "string"){
+		            event = { type: event };
+		        }
+		        if (!event.target){
+		            event.target = this;
+		        }
+
+		        if (!event.type){  //falsy
+		            throw new Error("Event object missing 'type' property.");
+		        }
+
+		        if (Ajaxlogin._eventListeners[event.type] instanceof Array){
+		            var listeners = Ajaxlogin._eventListeners[event.type];
+		            for (var i=0, len=listeners.length; i < len; i++){
+		                listeners[i].call(this, event, arguments);
+		            }
+		        }
+			},
+			removeListener: function(type, listener) {
+				if (Ajaxlogin._eventListeners[type] instanceof Array){
+		            var listeners = Ajaxlogin._eventListeners[type];
+		            for (var i=0, len=listeners.length; i < len; i++){
+		                if (listeners[i] === listener){
+		                    listeners.splice(i, 1);
+		                    break;
+		                }
+		            }
+		        }
 			}
 		}
 	};
