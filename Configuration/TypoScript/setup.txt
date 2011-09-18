@@ -79,7 +79,7 @@ page.jsInline.98987{
 		10 {
 			10 = TEXT
 			10 {
-				typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.login}
+				typolink.parameter = {$plugin.tx_ajaxlogin.settings.ajaxPid}
 				typolink.forceAbsoluteUrl = 1
 				typolink.additionalParams.cObject = COA
 				typolink.additionalParams.cObject {
@@ -199,6 +199,12 @@ page.jsInline.98987{
 	90 = TEXT
 	90.value = 0
 	90.wrap = ,doReloadOnSuccess:|
+	
+	100 = TEXT
+	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.login}
+	100.typolink.forceAbsoluteUrl = 1
+	100.typolink.returnLast = url
+	100.wrap = ,loginPage:'|'
 	
 	100 = TEXT
 	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}

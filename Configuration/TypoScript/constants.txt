@@ -12,6 +12,7 @@ plugin.tx_ajaxlogin {
     		from = T3O Website <john@doe.com>
     		strftimeFormat = %c
     	}
+    	ajaxPid = 0
     	actionPid {
     		login = 0
     		show = 0
