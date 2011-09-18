@@ -170,8 +170,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user->setForgotHashValid((time() + (24 * 3600)));
 			$this->view->assign('user', $user);
 			
-			//<f:uri.action action="editPassword" arguments="{email:user.email,forgotHash:user.forgotHash}" absolute="true" />
-			
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->uriFor('editPassword', array(
 				'email' => $user->getEmail(),
@@ -187,6 +185,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 				$uri,
 				strftime($this->settings['notificationMail']['strftimeFormat'])
 			));
+			
+			$this->view->assign('uri', $uri);
 			
 			Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);			
 		} else {
