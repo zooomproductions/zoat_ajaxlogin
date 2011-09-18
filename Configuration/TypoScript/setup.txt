@@ -200,7 +200,7 @@ page.jsInline.98987{
 	90.wrap = ,doReloadOnSuccess:|
 	
 	100 = TEXT
-	100.typolink.parameter = {$plugin.tx_ajaxlogin.view.defaultPid}
+	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}
 	100.typolink.forceAbsoluteUrl = 1
 	100.typolink.returnLast = url
 	100.wrap = ,accountPage:'|'
