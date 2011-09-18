@@ -1,5 +1,7 @@
+var Ajaxlogin = Ajaxlogin || {};
+
 (function($) {
-	var Ajaxlogin = {
+	Ajaxlogin = {
 		_eventListeners: {},
 		User: {
 			info: function() {
@@ -9,9 +11,11 @@
 						cache: false,
 						error: function(a,b,c) {
 							Ajaxlogin.fn.showLoginForm(a);
+							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showUserInfo(c);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				} else {
@@ -25,6 +29,7 @@
 						cache: false,
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showLoginForm(c);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				}
@@ -37,6 +42,7 @@
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showLoginForm(c);
 							Ajaxlogin.event.fire('logout_success', [c]);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				}
@@ -48,6 +54,7 @@
 						cache: false,
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showSignupForm(c);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				}
@@ -59,6 +66,7 @@
 						cache: false,
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showForgotPasswordForm(c);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				}
@@ -177,6 +185,25 @@
 
 				Ajaxlogin._eventListeners[type].push(listener);
 			},
+			addListenerOnce: function(type, listener) {
+				var add = true;
+				
+				if (typeof Ajaxlogin._eventListeners[type] == "undefined"){
+					Ajaxlogin._eventListeners[type] = [];
+		        }
+				
+				var listeners = Ajaxlogin._eventListeners[type];
+				for (var i=0, len=listeners.length; i < len; i++){
+					if (listeners[i] === listener){
+	                    add = false;
+	                    break;
+	                }
+	            }
+				
+				if(add) {
+					Ajaxlogin._eventListeners[type].push(listener);
+				}
+			},
 			fire: function(event, args) {
 				if (typeof event == "string"){
 		            event = { type: event };
@@ -192,7 +219,9 @@
 		        if (Ajaxlogin._eventListeners[event.type] instanceof Array){
 		            var listeners = Ajaxlogin._eventListeners[event.type];
 		            for (var i=0, len=listeners.length; i < len; i++){
-		                listeners[i].apply(event, args);
+		                if(listeners[i]) {
+		                	listeners[i].apply(event, args);
+		                }
 		            }
 		        }
 			},
