@@ -1,0 +1,12 @@
+<f:layout name="Profile" />
+
+<f:section name="content">
+	<f:form action="disable" objectName="user" object="{user}">
+		<div class="b-form-row">
+			<f:form.hidden property="disable" value="1" />
+			<button type="submit" value="{f:translate(key: 'update_user')}" class="bu bu-mini">
+				Delete
+			</button>
+		</div>
+	</f:form>
+</f:section>
