@@ -224,7 +224,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user = $this->userRepository->findCurrent();
 
 		if (!is_null($user)) {
-			if ($this->request->hasArgument('confirm') && $this->request->getArgument('confirm') == '1') {
+			if ($this->request->hasArgument('confirmed') && $this->request->getArgument('confirmed') == '1') {
 				$user->setDisable(1);
 				$GLOBALS['TSFE']->fe_user->logoff();
 				header("Location: /");
