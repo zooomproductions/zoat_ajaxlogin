@@ -36,11 +36,14 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	public function authenticateAction() {
 		$user = $this->userRepository->findCurrent();
 		
-		if(!is_null($user)) {
+		if (!is_null($user)) {
+			$message = Tx_Extbase_Utility_Localization::translate('login_successful', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, t3lib_FlashMessage::OK);
+
 			$referer = t3lib_div::_GP('referer');
 			$redirectUrl = t3lib_div::_GP('redirectUrl');
 			$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
-			if(!empty($redirect_url)) {
+			if (!empty($redirect_url)) {
 				$this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
 			}
 			$this->forward('info');
@@ -60,7 +63,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
      * @dontvalidate $user
 	 */
 	public function newAction(Tx_Ajaxlogin_Domain_Model_User $user = null) {		
-		if(!is_null($user)) {
+		if (!is_null($user)) {
 			$this->response->setStatus(409);
 		}
 		
@@ -80,7 +83,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user) {
 		$check = $this->userRepository->findOneByUsername($user->getUsername());
 		
-		if(!is_null($check)) {
+		if (!is_null($check)) {
 			$message = Tx_Extbase_Utility_Localization::translate('duplicate_username', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('new', null, null, $this->request->getArguments());
@@ -92,22 +95,23 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		$password = Tx_Ajaxlogin_Utility_Password::salt($password);
 		
-		foreach($userGroups as $userGroup) {
+		foreach ($userGroups as $userGroup) {
 			$user->getUsergroup()->attach($userGroup);
 		}
 
 		$user->setPassword($password);
-		
 		$this->userRepository->add($user);
-		
 		$this->userRepository->_persistAll();
 		
 		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
-		
+
+		$message = Tx_Extbase_Utility_Localization::translate('signup_successful', 'ajaxlogin');
+		$this->flashMessageContainer->add($message, t3lib_FlashMessage::OK);
+
 		$referer = t3lib_div::_GP('referer');
 		$redirectUrl = t3lib_div::_GP('redirectUrl');
 		$redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
-		if(!empty($redirect_url)) {
+		if (!empty($redirect_url)) {
 			$this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
 		}
 		
@@ -115,6 +119,9 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 	
 	public function logoutAction() {
+		$message = Tx_Extbase_Utility_Localization::translate('logout_successful', 'ajaxlogin');
+		$this->flashMessageContainer->add($message, t3lib_FlashMessage::NOTICE);
+
 		$GLOBALS['TSFE']->fe_user->logoff();
 		$this->forward('login');
 	}
