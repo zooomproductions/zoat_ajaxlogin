@@ -32,6 +32,7 @@ config.tx_extbase {
 plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
+    	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
     	validation {
     		User {
     			username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
@@ -42,7 +43,12 @@ plugin.tx_ajaxlogin {
     		from = {$plugin.tx_ajaxlogin.settings.notificationMail.from}
     		strftimeFormat = {$plugin.tx_ajaxlogin.settings.notificationMail.strftimeFormat}
     	}
-    	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
+    	actionPid {
+    		show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
+    		edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
+    		editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
+    		closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
+    	}
     }
     persistence {
         storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}

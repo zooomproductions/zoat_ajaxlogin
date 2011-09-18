@@ -1,6 +1,7 @@
 plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = 98987
+    	defaultUserGroups = 1
     	validation {
     		User {
     			username = /^[a-z0-9_-]{6,}$/i
@@ -11,7 +12,12 @@ plugin.tx_ajaxlogin {
     		from = T3O Website <john@doe.com>
     		strftimeFormat = %c
     	}
-    	defaultUserGroups = 1
+    	actionPid {
+    		show = 0
+    		edit = 0
+    		editPassword = 0
+    		closeAccount = 0
+    	}
     }
     view {
          # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)
