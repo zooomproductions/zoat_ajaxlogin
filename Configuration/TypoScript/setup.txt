@@ -44,6 +44,7 @@ plugin.tx_ajaxlogin {
     		strftimeFormat = {$plugin.tx_ajaxlogin.settings.notificationMail.strftimeFormat}
     	}
     	actionPid {
+    		login = {$plugin.tx_ajaxlogin.settings.actionPid.login}
     		show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
     		edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
     		editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
@@ -78,7 +79,7 @@ page.jsInline.98987{
 		10 {
 			10 = TEXT
 			10 {
-				typolink.parameter = {$plugin.tx_ajaxlogin.view.defaultPid}
+				typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.login}
 				typolink.forceAbsoluteUrl = 1
 				typolink.additionalParams.cObject = COA
 				typolink.additionalParams.cObject {

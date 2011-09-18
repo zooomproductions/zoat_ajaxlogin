@@ -13,6 +13,7 @@ plugin.tx_ajaxlogin {
     		strftimeFormat = %c
     	}
     	actionPid {
+    		login = 0
     		show = 0
     		edit = 0
     		editPassword = 0
