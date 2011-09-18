@@ -5,10 +5,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Profile',
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable'
 	),
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable'
 	)
 );
 
@@ -16,18 +16,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Widget',
 	array(
-		'User' => 'info,login,disable,authenticate,logout,new,create,forgotPassword,resetPassword'
+		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
 	),
 	array(
-		'User' => 'info,login,disable,authenticate,logout,new,create,forgotPassword,resetPassword'
-	)
-);
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
-	'WidgetDisable',
-	array(
-		'User' => 'disable'
+		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
 	)
 );
 

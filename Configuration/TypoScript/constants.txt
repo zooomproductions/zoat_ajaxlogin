@@ -20,8 +20,6 @@ plugin.tx_ajaxlogin {
         partialRootPath = EXT:ajaxlogin/Resources/Private/Partials/
          # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template layouts (FE)
         layoutRootPath = EXT:ajaxlogin/Resources/Private/Layouts/
-         # cat=plugin.tx_ajaxlogin//a; type=int+; label=Default PID
-        defaultPid = auto
     }
     persistence {
          # cat=plugin.tx_ajaxlogin//a; type=int+; label=Default storage PID

@@ -51,7 +51,6 @@ plugin.tx_ajaxlogin {
         templateRootPath = {$plugin.tx_ajaxlogin.view.templateRootPath}
         partialRootPath = {$plugin.tx_ajaxlogin.view.partialRootPath}
         layoutRootPath = {$plugin.tx_ajaxlogin.view.layoutRootPath}
-        defaultPid = {$plugin.tx_ajaxlogin.view.defaultPid}
     }
 }
 

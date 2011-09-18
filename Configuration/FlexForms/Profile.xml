@@ -1,0 +1,38 @@
+<T3DataStructure>
+	<ROOT>
+		<TCEforms>
+			<sheetTitle>Listoptions</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>			
+			<switchableControllerActions>
+			   <TCEforms>
+			      <label>Which action should be triggerd</label>
+			      <config>
+			         <type>select</type>
+			         <items type="array">
+			            <numIndex index="0" type="array">
+			               <numIndex index="0">Show your profile</numIndex>
+			               <numIndex index="1">User->show;</numIndex>
+			            </numIndex>
+			            <numIndex index="1" type="array">
+			               <numIndex index="0">Edit your profile</numIndex>
+			               <numIndex index="1">User->edit;User->update;</numIndex>
+			            </numIndex>
+			            <numIndex index="2" type="array">
+			               <numIndex index="0">Edit/reset your password</numIndex>
+			               <numIndex index="1">User->editPassword;User->updatePassword;</numIndex>
+			            </numIndex>
+			            <numIndex index="3" type="array">
+			               <numIndex index="0">Close your account</numIndex>
+			               <numIndex index="1">User->closeAccount;User->disable;</numIndex>
+			            </numIndex>
+			         </items>
+			         <maxitems>1</maxitems>
+			         <size>1</size>
+			      </config>
+			   </TCEforms>
+			</switchableControllerActions>
+		</el>
+	</ROOT>
+</T3DataStructure>

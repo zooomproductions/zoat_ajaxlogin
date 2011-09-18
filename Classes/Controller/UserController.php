@@ -214,26 +214,20 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->response->setStatus(401);
 		}
 	}
+	
+	public function closeAccountAction() {
+		$this->view->assign('user', $this->userRepository->findCurrent());
+	}
 
 	/**
 	 * Disable currently logged in user and logout afterwards
+	 * @param Tx_Ajaxlogin_Domain_Model_User
 	 * @return void
-	 * @param
 	 */
-	public function disableAction() {
-		$user = $this->userRepository->findCurrent();
-
-		if (!is_null($user)) {
-			if ($this->request->hasArgument('confirmed') && $this->request->getArgument('confirmed') == '1') {
-				$user->setDisable(1);
-				$GLOBALS['TSFE']->fe_user->logoff();
-				header("Location: /");
-			}
-
-		} else {
-			$this->response->setStatus(401);
-			$this->forward('login');
-		}
+	public function disableAction(Tx_Ajaxlogin_Domain_Model_User $user) {
+		$this->userRepository->update($user);
+		$GLOBALS['TSFE']->fe_user->logoff();
+		$this->redirectToURI('/');
 	}
 
 	/**

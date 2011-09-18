@@ -49,6 +49,8 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 );
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$extensionName . '_profile'] = 'pages,recursive,layout,select_key';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$extensionName . '_profile'] = 'pi_flexform';
+t3lib_extMgm::addPiFlexFormValue($extensionName . '_profile', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Profile.xml');
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'AJAX login');
 ?>
