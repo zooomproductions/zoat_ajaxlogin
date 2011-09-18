@@ -122,11 +122,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	public function showAction() {
 		$user = $this->userRepository->findCurrent();
 		
-		if(!is_null($user)) {
-			$this->view->assign('user', $user);
-		} else {
-			$this->response->setStatus(401);
-		}
+		$this->view->assign('user', $user);
 	}
 	
 	public function editAction() {
