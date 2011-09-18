@@ -35,8 +35,8 @@
 						url: tx_ajaxlogin.api.User.logout,
 						cache: false,
 						success: function(a,b,c) {
-							//Ajaxlogin.fn.doReloadOrRedirect();
 							Ajaxlogin.fn.showLoginForm(c);
+							Ajaxlogin.event.fire('logout_success', [c]);
 						}
 					});
 				}
@@ -85,12 +85,12 @@
 							redirectUrl: tx_ajaxlogin.redirect_url
 						}, input),
 						error: function(a,b,c) {
+							Ajaxlogin.event.fire('login_error', [a]);
 							Ajaxlogin.fn.showLoginForm(a);
 						},
 						success: function(a,b,c){
-							//Ajaxlogin.fn.doReloadOrRedirect(c);
+							Ajaxlogin.event.fire('login_success', [c]);
 							Ajaxlogin.fn.showUserInfo(c);
-							Ajaxlogin.event.fire('login', [c]);
 						}
 					});
 				});
@@ -114,10 +114,11 @@
 							redirectUrl: tx_ajaxlogin.redirect_url
 						}, input),
 						error: function(a,b,c) {
+							Ajaxlogin.event.fire('signup_error', [a]);
 							Ajaxlogin.fn.showSignupForm(a);
 						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.doReloadOrRedirect(c);
+							Ajaxlogin.event.fire('signup_success', [c]);
 							Ajaxlogin.fn.showUserInfo(c);
 						}
 					});
@@ -176,7 +177,7 @@
 
 				Ajaxlogin._eventListeners[type].push(listener);
 			},
-			fire: function(event, arguments) {
+			fire: function(event, args) {
 				if (typeof event == "string"){
 		            event = { type: event };
 		        }
@@ -191,7 +192,7 @@
 		        if (Ajaxlogin._eventListeners[event.type] instanceof Array){
 		            var listeners = Ajaxlogin._eventListeners[event.type];
 		            for (var i=0, len=listeners.length; i < len; i++){
-		                listeners[i].call(this, event, arguments);
+		                listeners[i].apply(event, args);
 		            }
 		        }
 			},
@@ -208,6 +209,10 @@
 			}
 		}
 	};
+
+	Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
+	Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
+	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
 	
 	$.fn.Ajaxlogin = function() {
 		this.click(function(event) {
