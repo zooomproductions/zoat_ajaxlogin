@@ -47,7 +47,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		} else {
 			$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('authentication_failed', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('login');
 		}
 	}
@@ -244,12 +244,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user->setForgotHash('');
 			$user->setForgotHashValid(0);
 			$message = Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
 			$this->redirect('show');
 		} else {
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('password_invalid', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('editPassword');
 		}
 	}
