@@ -2,53 +2,65 @@
 	var Ajaxlogin = {
 		User: {
 			info: function() {
-				$.ajax({
-					url: tx_ajaxlogin.api.User.info,
-					cache: false,
-					error: function(a,b,c) {
-						Ajaxlogin.fn.showLoginForm(a);
-					},
-					success: function(a,b,c) {
-						Ajaxlogin.fn.showUserInfo(c);
-					}
-				});
+				if ( tx_ajaxlogin.api.User.info ) {
+					$.ajax({
+						url: tx_ajaxlogin.api.User.info,
+						cache: false,
+						error: function(a,b,c) {
+							Ajaxlogin.fn.showLoginForm(a);
+						},
+						success: function(a,b,c) {
+							Ajaxlogin.fn.showUserInfo(c);
+						}
+					});
+				} else {
+					// check the plugin.tx_ajaxlogin.view.ajaxPid property
+				}
 			},
 			login: function() {
-				$.ajax({
-					url: tx_ajaxlogin.api.User.login,
-					cache: false,
-					success: function(a,b,c) {
-						Ajaxlogin.fn.showLoginForm(c);
-					}
-				});
+				if ( tx_ajaxlogin.api.User.login ) {
+					$.ajax({
+						url: tx_ajaxlogin.api.User.login,
+						cache: false,
+						success: function(a,b,c) {
+							Ajaxlogin.fn.showLoginForm(c);
+						}
+					});
+				}
 			},
 			logout: function() {
-				$.ajax({
-					url: tx_ajaxlogin.api.User.logout,
-					cache: false,
-					success: function(a,b,c) {
-						//Ajaxlogin.fn.doReloadOrRedirect();
-						Ajaxlogin.fn.showLoginForm(c);
-					}
-				});
+				if ( tx_ajaxlogin.api.User.logout ) {
+					$.ajax({
+						url: tx_ajaxlogin.api.User.logout,
+						cache: false,
+						success: function(a,b,c) {
+							//Ajaxlogin.fn.doReloadOrRedirect();
+							Ajaxlogin.fn.showLoginForm(c);
+						}
+					});
+				}
 			},
 			'new': function() {
-				$.ajax({
-					url: tx_ajaxlogin.api.User['new'],
-					cache: false,
-					success: function(a,b,c) {
-						Ajaxlogin.fn.showSignupForm(c);
-					}
-				});
+				if ( tx_ajaxlogin.api.User['new'] ) {
+					$.ajax({
+						url: tx_ajaxlogin.api.User['new'],
+						cache: false,
+						success: function(a,b,c) {
+							Ajaxlogin.fn.showSignupForm(c);
+						}
+					});
+				}
 			},
 			forgotPassword: function() {
-				$.ajax({
-					url: tx_ajaxlogin.api.User.forgotPassword,
-					cache: false,
-					success: function(a,b,c) {
-						Ajaxlogin.fn.showForgotPasswordForm(c);
-					}
-				});
+				if ( tx_ajaxlogin.api.User.forgotPassword ) {
+					$.ajax({
+						url: tx_ajaxlogin.api.User.forgotPassword,
+						cache: false,
+						success: function(a,b,c) {
+							Ajaxlogin.fn.showForgotPasswordForm(c);
+						}
+					});
+				}
 			}
 		},
 		fn: {
