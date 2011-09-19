@@ -19,9 +19,11 @@
 			<label index="user.fax">Fax</label>
 			<label index="user.www">Homepage</label>
 			
+			<label index="password">Password</label>
 			<label index="password.new">New password</label>
 			<label index="password.check">New password (check)</label>
-			
+			<label index="password.repeat">Repeat</label>
+
 			<label index="update_user">Update account</label>
 			<label index="signup_user">Sign up!</label>
 			<label index="login_user">To login form</label>
