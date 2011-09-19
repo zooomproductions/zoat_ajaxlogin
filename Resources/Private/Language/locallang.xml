@@ -24,7 +24,7 @@
 			
 			<label index="update_user">Update account</label>
 			<label index="signup_user">Sign up!</label>
-			<label index="login_user">Back to login form</label>
+			<label index="login_user">To login form</label>
 			<label index="update_password">Update password</label>
 			<label index="forgot_password">Forgot password?</label>
 			<label index="recover_password">Reset password</label>
