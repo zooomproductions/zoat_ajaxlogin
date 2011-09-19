@@ -152,9 +152,11 @@ var Ajaxlogin = Ajaxlogin || {};
 						data: input,
 						error: function(a,b,c) {
 							Ajaxlogin.fn.showForgotPasswordForm(a);
+							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function(a,b,c) {
 							Ajaxlogin.fn.showForgotPasswordForm(c);
+							Ajaxlogin.event.fire('widget_load');
 						}
 					});
 				});
