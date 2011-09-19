@@ -174,7 +174,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->view->assign('user', $user);
 			
 			$uriBuilder = $this->controllerContext->getUriBuilder();
-			$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->uriFor('editPassword', array(
+			$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['show'])->uriFor('editPassword', array(
 				'email' => $user->getEmail(),
 				'forgotHash' => $user->getForgotHash()
 			));
