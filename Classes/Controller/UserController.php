@@ -38,7 +38,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		if (!is_null($user)) {
 			$message = Tx_Extbase_Utility_Localization::translate('login_successful', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, t3lib_FlashMessage::OK);
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
 
 			$referer = t3lib_div::_GP('referer');
 			$redirectUrl = t3lib_div::_GP('redirectUrl');
@@ -113,7 +113,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
 
 		$message = Tx_Extbase_Utility_Localization::translate('signup_successful', 'ajaxlogin');
-		$this->flashMessageContainer->add($message, t3lib_FlashMessage::OK);
+		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
 
 		$referer = t3lib_div::_GP('referer');
 		$redirectUrl = t3lib_div::_GP('redirectUrl');
@@ -127,7 +127,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	
 	public function logoutAction() {
 		$message = Tx_Extbase_Utility_Localization::translate('logout_successful', 'ajaxlogin');
-		$this->flashMessageContainer->add($message, t3lib_FlashMessage::NOTICE);
+		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
 
 		$GLOBALS['TSFE']->fe_user->logoff();
 		$this->forward('login');
