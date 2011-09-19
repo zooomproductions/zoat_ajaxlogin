@@ -192,6 +192,45 @@ page.jsInline.98987{
 			
 			wrap = User:{|}
 		}
+		
+		20 = COA
+		20 {
+			10 = COA
+			10 {
+				10 = TEXT
+				10 {
+					value = #tx-ajaxlogin-user-password
+					wrap = '|'
+				}
+				
+				20 = TEXT
+				20 {
+					value = #tx-ajaxlogin-password-check
+					wrap = ,'|'
+				}
+			
+				wrap = [|]
+			}
+			
+			20 = COA
+			20 {
+				10 = TEXT
+				10 {
+					value = #tx-ajaxlogin-user-email
+					wrap = '|'
+				}
+				
+				20 = TEXT
+				20 {
+					value = #tx-ajaxlogin-email-check
+					wrap = ,'|'
+				}
+			
+				wrap = ,[|]
+			}
+		
+			wrap = ,confirmationFieldsets:[|]
+		}
 	
 		wrap = ,validation:{|}
 	}

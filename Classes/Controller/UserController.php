@@ -78,13 +78,20 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * Creates a new user
      *
      * @param Tx_Ajaxlogin_Domain_Model_User $user A fresh User object which has not yet been added to the repository
+     * @param string $password_check
      * @return void
 	 */
-	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user) {
+	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user, $password_check) {		
 		$check = $this->userRepository->findOneByUsername($user->getUsername());
 		
 		if (!is_null($check)) {
 			$message = Tx_Extbase_Utility_Localization::translate('duplicate_username', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
+			$this->forward('new', null, null, $this->request->getArguments());
+		}
+		
+		if(strcmp($user->getPassword(), $password_check) != 0) {
+			$message = Tx_Extbase_Utility_Localization::translate('password_nomatch', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('new', null, null, $this->request->getArguments());
 		}

@@ -111,25 +111,28 @@ var Ajaxlogin = Ajaxlogin || {};
 				
 				formEl.submit(function(event) {
 					event.preventDefault();
-					var input = Ajaxlogin.fn.resolveFormData($(this));
 					
-					$.ajax({
-						url: tx_ajaxlogin.api.User.create,
-						cache: false,
-						type: 'POST',
-						data: $.extend({
-							referer: window.location.href,
-							redirectUrl: tx_ajaxlogin.redirect_url
-						}, input),
-						error: function(a,b,c) {
-							Ajaxlogin.event.fire('signup_error', [a]);
-							Ajaxlogin.fn.showSignupForm(a);
-						},
-						success: function(a,b,c) {
-							Ajaxlogin.event.fire('signup_success', [c]);
-							Ajaxlogin.fn.showUserInfo(c);
-						}
-					});
+					if(Ajaxlogin.validate.signup($(this))) {
+						var input = Ajaxlogin.fn.resolveFormData($(this));
+						
+						$.ajax({
+							url: tx_ajaxlogin.api.User.create,
+							cache: false,
+							type: 'POST',
+							data: $.extend({
+								referer: window.location.href,
+								redirectUrl: tx_ajaxlogin.redirect_url
+							}, input),
+							error: function(a,b,c) {
+								Ajaxlogin.event.fire('signup_error', [a]);
+								Ajaxlogin.fn.showSignupForm(a);
+							},
+							success: function(a,b,c) {
+								Ajaxlogin.event.fire('signup_success', [c]);
+								Ajaxlogin.fn.showUserInfo(c);
+							}
+						});
+					}
 				});
 			},
 			showUserInfo: function(response) {
@@ -177,6 +180,37 @@ var Ajaxlogin = Ajaxlogin || {};
 				} else if(tx_ajaxlogin.doReloadOnSuccess == 1) {
 					window.location.href = window.location.href;
 				}
+			}
+		},
+		validate: {
+			signup: function(form) {
+				return true;
+				
+				var result = true;
+				
+				$.each(tx_ajaxlogin.validation.confirmationFieldsets, function() {
+					var field = true;					
+					var value = form.find(this[0]).val();
+					var check = form.find(this[1]).val();
+					
+					if(!value){
+						result = false;
+						field = false;
+					} else if(value != check) {
+						result = false;
+						field = false;
+					}
+					
+					if(field === false) {
+						form.find(this[0]).addClass('tx-ajaxlogin-form-error');
+						form.find(this[1]).addClass('tx-ajaxlogin-form-error');
+					} else {
+						form.find(this[0]).removeClass('tx-ajaxlogin-form-error');
+						form.find(this[1]).removeClass('tx-ajaxlogin-form-error');
+					}
+				});
+				
+				return result;
 			}
 		},
 		event: {
