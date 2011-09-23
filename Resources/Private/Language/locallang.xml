@@ -34,7 +34,7 @@
 			<label index="button_login">Login</label>
 			<label index="button_signup">Sign up!</label>
 			
-			<label index="authentication_failed">Check your credentials and try again</label>
+			<label index="authentication_failed">Login or password incorrect.</label>
 			<label index="duplicate_username">The selected username is already in use</label>
 			<label index="signup_successful">Sign-up successful! You were logged in.</label>
 			<label index="login_successful">Welcome back! You are now logged in.</label>
