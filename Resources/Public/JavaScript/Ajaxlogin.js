@@ -175,10 +175,10 @@ var Ajaxlogin = Ajaxlogin || {};
 			doReloadOrRedirect: function(response) {
 				var redirectUrl = response.getResponseHeader('X-Ajaxlogin-redirectUrl');
 				
-				if(redirectUrl) {
+				if (redirectUrl) {
 					window.location.href = redirectUrl;
-				} else if(tx_ajaxlogin.doReloadOnSuccess == 1) {
-					window.location.href = window.location.href;
+				} else if (tx_ajaxlogin.doReloadOnSuccess == 1) {
+					top.location.reload();
 				}
 			}
 		},
