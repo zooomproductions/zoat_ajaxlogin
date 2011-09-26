@@ -272,12 +272,43 @@ var Ajaxlogin = Ajaxlogin || {};
 		            }
 		        }
 			}
+		},
+		Cookie: {
+			create: function(name, value, days){
+				if (days) {
+					var date = new Date();
+					date.setTime(date.getTime()+(days*24*60*60*1000));
+					var expires = "; expires="+date.toGMTString();
+				}
+				else var expires = "";
+				document.cookie = name+"="+value+expires+"; path=/";
+			},
+			read: function(name){
+				var nameEQ = name + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			},
+			erase: function(name){
+				this.create(name,"",-1);
+			}
 		}
 	};
 
 	Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
 	Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
 	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
+
+	Ajaxlogin.event.addListener('login_success', function() {
+		Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
+	});
+	Ajaxlogin.event.addListener('logout_success', function() {
+		Ajaxlogin.Cookie.erase('ajaxlogin_status');
+	});
 	
 	$.fn.Ajaxlogin = function() {
 		this.click(function(event) {
@@ -303,4 +334,10 @@ var Ajaxlogin = Ajaxlogin || {};
 	};
 	
 	$(document).ready(Ajaxlogin.User.info);
+	
+	$(document).ready(function() {
+		if(Ajaxlogin.Cookie.read('ajaxlogin_status') == '1') {
+			$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.accountPage+'">' + tx_ajaxlogin.ll.status_authenticated+'</a>');
+		}
+	});
 })(jQuery);
