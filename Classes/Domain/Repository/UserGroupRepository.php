@@ -9,7 +9,7 @@ class Tx_Ajaxlogin_Domain_Repository_UserGroupRepository extends Tx_Extbase_Doma
 	public function findByUidArray(array $uidArray) {
 		$query = $this->createQuery();
 		
-		$query->in('uid', $uidArray);
+		$query->matching($query->in('uid', $uidArray));
 		
 		return $query->execute();
 	}
