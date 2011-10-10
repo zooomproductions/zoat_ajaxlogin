@@ -36,7 +36,25 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 			
 		return $query->execute()->getFirst();
 	}
+
 	
+	/**
+	 * Find an Object using the UID of the current fe_user
+	 * @return Tx_Ajaxlogin_Domain_Model_User
+	 */
+	public function findOneByEnableHash($enableHash) {
+		$query = $this->createQuery();
+
+		$constraints = array(
+			$query->equals('enableHash', $enableHash),
+			$query->equals('disable', 0)
+		);
+
+		$query->matching($query->logicalAnd($constraints));
+
+		return $query->execute()->getFirst();
+	}
+
 	public function _persistAll() {
 		$this->persistenceManager->persistAll();
 	}

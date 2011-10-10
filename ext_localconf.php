@@ -1,14 +1,15 @@
 <?php
-if (!defined ('TYPO3_MODE'))     die ('Access denied.');
+if (!defined ('TYPO3_MODE'))
+	die ('Access denied.');
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Profile',
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,enableAccount,enable'
 	),
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,enableAccount,enable'
 	)
 );
 

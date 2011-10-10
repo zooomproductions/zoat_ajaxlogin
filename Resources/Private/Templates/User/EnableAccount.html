@@ -1,0 +1,17 @@
+<f:layout name="Profile" />
+
+<f:section name="content">
+
+	ENABLE ACCOUNT
+	
+	<f:form action="enable" objectName="user" object="{user}">
+		<div class="b-form-row">
+			<f:form.hidden property="disable" value="0" />
+			<f:form.input property="enableHash" />
+
+			<button type="submit" value="{f:translate(key: 'enable_user')}" class="bu bu-mini">
+				Delete
+			</button>
+		</div>
+	</f:form>
+</f:section>

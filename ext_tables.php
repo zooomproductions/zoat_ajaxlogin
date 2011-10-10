@@ -1,7 +1,6 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
+if (!defined ('TYPO3_MODE'))
 	die ('Access denied.');
-}
 
 $tempColumns = array (
 	'tx_ajaxlogin_forgotHash' => array (
@@ -10,6 +9,11 @@ $tempColumns = array (
 		)
 	),
 	'tx_ajaxlogin_forgotHashValid' => array (
+		'config' => array (
+			'type' => 'passthrough',
+		)
+	),
+	'tx_ajaxlogin_enableHash' => array (
 		'config' => array (
 			'type' => 'passthrough',
 		)
@@ -36,17 +40,12 @@ t3lib_extMgm::addTCAcolumns("pages", $pagesTempColumns, 1);
 t3lib_extMgm::addFieldsToPalette('pages', 'miscellaneous', 'tx_ajaxlogin_sectionreload');
 
 Tx_Extbase_Utility_Extension::registerPlugin(
-    $_EXTKEY,// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-    'Profile',                // A unique name of the plugin in UpperCamelCase
-    'Ajaxlogin: Userprofile'    // A title shown in the backend dropdown field
+    $_EXTKEY,
+    'Profile',
+    'Ajaxlogin'
 );
-$extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));
 
-Tx_Extbase_Utility_Extension::registerPlugin(
-	$_EXTKEY,
-	'WidgetDisable',
-	'Ajaxlogin: Close user account'
-);
+$extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$extensionName . '_profile'] = 'pages,recursive,layout,select_key';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$extensionName . '_profile'] = 'pi_flexform';

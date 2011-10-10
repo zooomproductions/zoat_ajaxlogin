@@ -4,7 +4,7 @@ plugin.tx_ajaxlogin {
     	defaultUserGroups = 1
     	validation {
     		User {
-    			username = /^.{1,}$/
+    			username = /^.{1,}$/, unique
     			password = /^.{8,}$/
     		}
     	}
@@ -16,9 +16,11 @@ plugin.tx_ajaxlogin {
     	actionPid {
     		login = 0
     		show = 0
+    		signUp = 0
     		edit = 0
     		editPassword = 0
     		closeAccount = 0
+    		enableAccount = 0
     	}
     }
     view {

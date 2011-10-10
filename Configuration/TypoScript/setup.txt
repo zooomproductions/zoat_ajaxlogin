@@ -17,6 +17,7 @@ config.tx_extbase {
                     columns {
                     	tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
                     	tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
+                    	tx_ajaxlogin_enableHash.mapOnProperty = enableHash
                     }
                 }
             }
@@ -46,9 +47,11 @@ plugin.tx_ajaxlogin {
     	actionPid {
     		login = {$plugin.tx_ajaxlogin.settings.actionPid.login}
     		show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
+    		signUp = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
     		edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
     		editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
     		closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
+    		enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
     	}
     }
     persistence {
@@ -65,10 +68,10 @@ tx_ajaxlogin_widget = PAGE
 tx_ajaxlogin_widget {
 	typeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
 	config.disableAllHeaderCode = 1
-	config.no_cache = 1
 	config.stat = 0
-	
+
 	10 < tt_content.list.20.ajaxlogin_widget
+	10 = USER_INT
 }
 
 page.jsInline.98987 = COA
@@ -245,12 +248,18 @@ page.jsInline.98987{
 	100.typolink.returnLast = url
 	100.wrap = ,loginPage:'|'
 	
-	100 = TEXT
-	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}
-	100.typolink.forceAbsoluteUrl = 1
-	100.typolink.returnLast = url
-	100.wrap = ,accountPage:'|'
+	110 = TEXT
+	110.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}
+	110.typolink.forceAbsoluteUrl = 1
+	110.typolink.returnLast = url
+	110.wrap = ,accountPage:'|'
 	
+	120 = TEXT
+	120.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
+	120.typolink.forceAbsoluteUrl = 1
+	120.typolink.returnLast = url
+	120.wrap = ,signUpPage:'|'
+
 	wrap = var tx_ajaxlogin = {|};
 }
 
