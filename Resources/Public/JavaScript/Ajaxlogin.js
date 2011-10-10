@@ -74,7 +74,7 @@ var Ajaxlogin = Ajaxlogin || {};
 		},
 		fn: {
 			showLoginForm: function(response) {
-				$(tx_ajaxlogin.statusLabel).html(tx_ajaxlogin.ll.status_unauthorized);
+				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
 				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 				
 				var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
@@ -104,7 +104,7 @@ var Ajaxlogin = Ajaxlogin || {};
 				});
 			},
 			showSignupForm: function(response) {
-				$(tx_ajaxlogin.statusLabel).html(tx_ajaxlogin.ll.status_unauthorized);
+				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
 				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 				
 				var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
@@ -140,6 +140,7 @@ var Ajaxlogin = Ajaxlogin || {};
 				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 			},
 			showForgotPasswordForm: function(response) {
+				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
 				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 				
 				var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
