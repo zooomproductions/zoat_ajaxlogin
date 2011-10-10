@@ -58,6 +58,17 @@ This email was sent in response to your request to reset your password. Please c
 
 For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</label>
 			<label index="resetpassword_notification_sent">An email has been sent to the known email address belonging to your account with further instructions to change your password</label>
+
+			<label index="signup_notification_subject">Registration at TYPO3.org</label>
+			<label index="signup_notification_message">Dear %s,
+
+This email was sent in response to your registration at TYPO3.org.
+To activate your account click the link below:
+
+%s</label>
+			<label index="signup_notification_sent">An email has been sent to your email address with instructions to activate your account.</label>
+			<label index="enable_user">Enable account</label>
+
 		</languageKey>
 	</data>
 </T3locallang>
