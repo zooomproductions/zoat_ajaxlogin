@@ -2,9 +2,10 @@ plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = 98987
     	defaultUserGroups = 1
+    	defaultUserGroupsAfterVerification = 1
     	validation {
     		User {
-    			username = /^.{1,}$/, unique
+    			username = /^.{1,}$/
     			password = /^.{8,}$/
     		}
     	}
@@ -21,6 +22,7 @@ plugin.tx_ajaxlogin {
     		editPassword = 0
     		closeAccount = 0
     		enableAccount = 0
+    		verify = 0
     	}
     }
     view {

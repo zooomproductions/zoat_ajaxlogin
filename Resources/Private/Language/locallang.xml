@@ -66,8 +66,7 @@ This email was sent in response to your registration at TYPO3.org.
 To activate your account click the link below:
 
 %s</label>
-			<label index="signup_notification_sent">An email has been sent to your email address with instructions to activate your account.</label>
-			<label index="enable_user">Enable account</label>
+			<label index="signup_notification_sent">Your account is not verified yet. Please check the e-mail we sent you for instructions.</label>
 
 		</languageKey>
 	</data>

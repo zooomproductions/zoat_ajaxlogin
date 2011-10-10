@@ -21,6 +21,21 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
+			
+			$verificationHash = $user->getVerificationHash();
+			
+			if(!empty($verificationHash)) {
+				// for testing purposes: display the link to the verification page
+				$uriBuilder = $this->controllerContext->getUriBuilder();
+				$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['verify'])->uriFor('verify', array(
+					'email' => $user->getEmail(),
+					'verificationHash' => $user->getVerificationHash()
+				));
+				
+				$message = Tx_Extbase_Utility_Localization::translate('signup_notification_sent', 'ajaxlogin');
+				$this->flashMessageContainer->add($message, $uri, t3lib_FlashMessage::NOTICE);
+			}
+			
 		} else {
 			$this->response->setStatus(401);
 			$this->forward('login');
@@ -107,6 +122,27 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		}
 
 		$user->setPassword($password);
+		
+		// add a hash to verify the account by sending an e-mail
+		$user->setVerificationHash(md5(t3lib_div::generateRandomBytes(64)));
+			
+		$uriBuilder = $this->controllerContext->getUriBuilder();
+		$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['verify'])->uriFor('verify', array(
+			'email' => $user->getEmail(),
+			'verificationHash' => $user->getVerificationHash()
+		));
+		
+		$subject = Tx_Extbase_Utility_Localization::translate('signup_notification_subject', 'ajaxlogin', array(
+			t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')
+		));
+		
+		$message = Tx_Extbase_Utility_Localization::translate('signup_notification_message', 'ajaxlogin', array(
+			$user->getName(),
+			$uri
+		));
+		
+		Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);
+		
 		$this->userRepository->add($user);
 		$this->userRepository->_persistAll();
 		
@@ -155,6 +191,34 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->redirect('show');
 	}
 	
+	/**
+	 * @param string $verificationHash
+	 * @param string $email
+	 */
+	public function verifyAction($verificationHash = '', $email = '') {
+		if(!empty($verificationHash) && !empty($email)) {
+			$user = $this->userRepository->findOneByVerificationHashAndEmail($verificationHash, $email);
+		}
+		
+		if(!is_null($user)) {
+			$userGroups = $this->userGroupRepository->findByUidArray(t3lib_div::intExplode(',', $this->settings['defaultUserGroupsAfterVerification']));
+		
+			foreach ($userGroups as $userGroup) {
+				$user->getUsergroup()->attach($userGroup);
+			}
+			
+			$user->setVerificationHash(null);
+	
+			$this->userRepository->update($user);
+			$this->userRepository->_persistAll();
+			
+			Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
+			$this->redirectToURI('/');
+		} else {
+			$this->response->setStatus(409);
+		}
+	}
+	
 	public function forgotPasswordAction() {
 		$token = 'tx-ajaxlogin-form' . time();
 		$this->view->assign('formToken', $token);
@@ -195,8 +259,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 				$uri,
 				strftime($this->settings['notificationMail']['strftimeFormat'])
 			));
-			
-			$this->view->assign('uri', $uri);
 			
 			Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);			
 		} else {

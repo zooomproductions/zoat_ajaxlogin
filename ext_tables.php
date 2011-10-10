@@ -8,12 +8,12 @@ $tempColumns = array (
 			'type' => 'passthrough',
 		)
 	),
-	'tx_ajaxlogin_forgotHashValid' => array (
+	'tx_ajaxlogin_verificationHash' => array (
 		'config' => array (
 			'type' => 'passthrough',
 		)
 	),
-	'tx_ajaxlogin_enableHash' => array (
+	'tx_ajaxlogin_forgotHashValid' => array (
 		'config' => array (
 			'type' => 'passthrough',
 		)

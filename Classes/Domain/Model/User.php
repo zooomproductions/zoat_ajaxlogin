@@ -37,6 +37,11 @@ class Tx_Ajaxlogin_Domain_Model_User extends Tx_Extbase_Domain_Model_FrontendUse
 	protected $forgotHash;
 	
 	/**
+	 * @var string
+	 */
+	protected $verificationHash;
+	
+	/**
 	 * @var DateTime
 	 */
 	protected $forgotHashValid;
@@ -57,8 +62,22 @@ class Tx_Ajaxlogin_Domain_Model_User extends Tx_Extbase_Domain_Model_FrontendUse
 	/**
 	 * @return string
 	 */
+	public function getVerificationHash() {
+		return $this->verificationHash;
+	}
+	
+	/**
+	 * @return string
+	 */
 	public function getForgotHashValid() {
 		return $this->forgotHashValid;
+	}
+	
+	/**
+	 * @param string
+	 */
+	public function setVerificationHash($verificationHash) {
+		$this->verificationHash = $verificationHash;
 	}
 	
 	/**

@@ -7,7 +7,7 @@
 		<el>			
 			<switchableControllerActions>
 			   <TCEforms>
-			      <label>Which action should be triggerd</label>
+			      <label>Which action should be triggered</label>
 			      <config>
 			         <type>select</type>
 			         <items type="array">
@@ -28,8 +28,8 @@
 			               <numIndex index="1">User->closeAccount;User->disable;</numIndex>
 			            </numIndex>
 						<numIndex index="4" type="array">
-							<numIndex index="0">Enable account</numIndex>
-							<numIndex index="1">User->enableAccount;User->enable;</numIndex>
+							<numIndex index="0">Verify account</numIndex>
+							<numIndex index="1">User->verify;</numIndex>
 						</numIndex>
 			         </items>
 			         <maxitems>1</maxitems>

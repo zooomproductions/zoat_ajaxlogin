@@ -16,8 +16,8 @@ config.tx_extbase {
                     tableName = fe_users
                     columns {
                     	tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
+                    	tx_ajaxlogin_verificationHash.mapOnProperty = verificationHash
                     	tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
-                    	tx_ajaxlogin_enableHash.mapOnProperty = enableHash
                     }
                 }
             }
@@ -34,6 +34,7 @@ plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
     	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
+    	defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsVerification}
     	validation {
     		User {
     			username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
@@ -52,6 +53,7 @@ plugin.tx_ajaxlogin {
     		editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
     		closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
     		enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
+    		verify = {$plugin.tx_ajaxlogin.settings.actionPid.verify}
     	}
     }
     persistence {

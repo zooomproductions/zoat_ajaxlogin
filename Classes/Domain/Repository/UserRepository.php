@@ -36,6 +36,23 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 			
 		return $query->execute()->getFirst();
 	}
+	
+	/**
+	 * Find an Object using the UID of the current fe_user
+	 * @return Tx_Ajaxlogin_Domain_Model_User
+	 */
+	public function findOneByVerificationHashAndEmail($verificationHash, $email) {
+		$query = $this->createQuery();
+		
+		$constraints = array(
+			$query->equals('verificationHash', $verificationHash),
+			$query->equals('email', $email)
+		);
+		
+		$query->matching($query->logicalAnd($constraints));
+			
+		return $query->execute()->getFirst();
+	}
 
 	
 	/**

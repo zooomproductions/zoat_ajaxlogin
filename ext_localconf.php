@@ -6,10 +6,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Profile',
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,enableAccount,enable'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,verify'
 	),
 	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,enableAccount,enable'
+		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,verify'
 	)
 );
 
