@@ -34,7 +34,7 @@ plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
     	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
-    	defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsVerification}
+    	defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsAfterVerification}
     	validation {
     		User {
     			username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
