@@ -257,7 +257,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$message = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_message', 'ajaxlogin', array(
 				$user->getName(),
 				$uri,
-				strftime($this->settings['notificationMail']['strftimeFormat'])
+				strftime($this->settings['notificationMail']['strftimeFormat'], (time() + (24 * 3600)))
 			));
 			
 			Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);			
