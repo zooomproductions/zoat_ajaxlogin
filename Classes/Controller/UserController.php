@@ -15,6 +15,18 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->userRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserRepository');
 		$this->userGroupRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserGroupRepository');
 	}
+
+	/**
+	 * A template method for displaying custom error flash messages, or to
+	 * display no flash message at all on errors. Override this to customize
+	 * the flash message in your action controller.
+	 *
+	 * @return string|boolean The flash message or FALSE if no flash message should be set
+	 * @api
+	 */
+	protected function getErrorFlashMessage() {
+		return false;
+	}
 	
 	public function infoAction() {		
 		$user = $this->userRepository->findCurrent();
@@ -96,18 +108,43 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
      * @param string $password_check
      * @return void
 	 */
-	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user, $password_check) {		
+	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user, $password_check) {
+		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');			
+		$usernameError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'username');			
+		$passwordError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'password');
+			
 		$check = $this->userRepository->findOneByUsername($user->getUsername());
 		
 		if (!is_null($check)) {
-			$message = Tx_Extbase_Utility_Localization::translate('duplicate_username', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
-			$this->forward('new', null, null, $this->request->getArguments());
+			$usernameError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Duplicate username', 1320703758)
+			));
 		}
 		
-		if(strcmp($user->getPassword(), $password_check) != 0) {
-			$message = Tx_Extbase_Utility_Localization::translate('password_nomatch', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
+		if(strcmp($user->getPassword(), $password_check) != 0) {			
+			$passwordError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Password does not match', 1320703779)
+			));
+		}
+		
+		if(count($usernameError->getErrors())) {
+			$objectError->addErrors(array(
+				$usernameError
+			));
+		}
+		
+		if(count($passwordError->getErrors())) {
+			$objectError->addErrors(array(
+				$passwordError
+			));
+		}
+		
+		if(count($objectError->getErrors())) {
+			$requestErrors = $this->request->getErrors();
+			
+			$requestErrors[] = $objectError;
+			
+			$this->request->setErrors($requestErrors);
 			$this->forward('new', null, null, $this->request->getArguments());
 		}
 		

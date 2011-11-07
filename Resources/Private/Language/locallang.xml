@@ -35,7 +35,6 @@
 			<label index="button_signup">Sign up!</label>
 			
 			<label index="authentication_failed">Login or password incorrect.</label>
-			<label index="duplicate_username">The selected username is already in use</label>
 			<label index="signup_successful">Sign-up successful! You were logged in.</label>
 			<label index="login_successful">Welcome back! You are now logged in.</label>
 			<label index="logout_successful">You are now logged out.</label>
@@ -45,7 +44,6 @@
 			
 			<label index="password_invalid">The given password is not valid</label>
 			<label index="password_updated">Your password has been updated, the next time you sign in use your new password</label>
-			<label index="password_nomatch">The passwords do not match</label>
 			
 			<label index="status_authenticated">My account</label>
 			<label index="status_unauthorized">Login</label>
@@ -67,6 +65,13 @@ To activate your account click the link below:
 
 %s</label>
 			<label index="signup_notification_sent">Your account is not verified yet. Please check the e-mail we sent you for instructions.</label>
+			
+			<label index="error_user.name_1221560718">Please fill in your name</label>
+			<label index="error_user.email_1221559976">The email address you've entered is not valid</label>
+			<label index="error_user.username_1307626687">Username can't be empty</label>
+			<label index="error_user.username_1320703758">The selected username is already in use</label>
+			<label index="error_user.password_1307626687">Your password is too short, it should contain a minimum of 8 characters</label>
+			<label index="error_user.password_1320703779">The passwords do not match</label>
 
 		</languageKey>
 	</data>

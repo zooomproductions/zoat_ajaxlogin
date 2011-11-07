@@ -2,6 +2,7 @@
 
 <f:form.errors for="{_for}">
 	<div class="error">
-		{error.message}
+		<!-- {error.message} -->
+		<f:translate key="error_{_for}_{error.code}" default="{error.message}" />
 	</div>
 </f:form.errors>
