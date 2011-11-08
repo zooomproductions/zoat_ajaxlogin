@@ -237,6 +237,32 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @return void
 	 */
 	public function updateAction(Tx_Ajaxlogin_Domain_Model_User $user) {
+		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
+		$emailError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'email');
+			
+		$checkEmail = $this->userRepository->findOneByEmail($user->getEmail());
+		
+		if (!is_null($checkEmail) && $checkEmail->getUid() != $user->getUid()) {
+			$emailError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Duplicate email address', 1320783534)
+			));
+		}
+		
+		if(count($emailError->getErrors())) {
+			$objectError->addErrors(array(
+				$emailError
+			));
+		}
+		
+		if(count($objectError->getErrors())) {
+			$requestErrors = $this->request->getErrors();
+			
+			$requestErrors[] = $objectError;
+			
+			$this->request->setErrors($requestErrors);
+			$this->forward('edit', null, null, $this->request->getArguments());
+		}
+		
 		$this->userRepository->update($user);
 		$this->flashMessageContainer->add('User updated');
 		$this->redirect('show');
