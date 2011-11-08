@@ -110,12 +110,20 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 */
 	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user, $password_check) {
 		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');			
+		$emailError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'email');			
 		$usernameError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'username');			
 		$passwordError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'password');
 			
-		$check = $this->userRepository->findOneByUsername($user->getUsername());
+		$checkEmail = $this->userRepository->findOneByEmail($user->getEmail());
+		$checkUsername = $this->userRepository->findOneByUsername($user->getUsername());
 		
-		if (!is_null($check)) {
+		if (!is_null($checkEmail)) {
+			$emailError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Duplicate email address', 1320783534)
+			));
+		}
+		
+		if (!is_null($checkUsername)) {
 			$usernameError->addErrors(array(
 				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Duplicate username', 1320703758)
 			));
@@ -124,6 +132,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		if(strcmp($user->getPassword(), $password_check) != 0) {			
 			$passwordError->addErrors(array(
 				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Password does not match', 1320703779)
+			));
+		}
+		
+		if(count($emailError->getErrors())) {
+			$objectError->addErrors(array(
+				$emailError
 			));
 		}
 		
