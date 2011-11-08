@@ -71,6 +71,7 @@ To activate your account click the link below:
 			<label index="error_user.email_1320783534">This email address already exists</label>
 			<label index="error_user.username_1307626687">Username can't be empty</label>
 			<label index="error_user.username_1320703758">The selected username is already in use</label>
+			<label index="error_user.password_1320792347">Please fill in any password</label>
 			<label index="error_user.password_1307626687">Your password is too short, it should contain a minimum of 8 characters</label>
 			<label index="error_user.password_1320703779">The passwords do not match</label>
 

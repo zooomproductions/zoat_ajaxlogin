@@ -384,6 +384,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 */
 	public function updatePasswordAction($password, Tx_Ajaxlogin_Domain_Model_User $user) {
+		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
+		$passwordError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'password');
 		$passwordValidator = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator');
 		
 		$passwordValidator->setOptions(array(
@@ -391,20 +393,44 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			'property' => 'password'
 		));
 		
-		if(!empty($password['new']) && strcmp($password['new'], $password['check']) == 0 && $passwordValidator->isValid($password['new'])) {
-			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
-			$user->setPassword($saltedPW);
-			$user->setForgotHash('');
-			$user->setForgotHashValid(0);
-			$message = Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
-			$this->redirect('show');
-		} else {
-			$this->response->setStatus(409);
-			$message = Tx_Extbase_Utility_Localization::translate('password_invalid', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
-			$this->forward('editPassword');
+		if (empty($password['new'])) {
+			$passwordError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Password can not be blank', 1320792347)
+			));
 		}
+		
+		if (strcmp($password['new'], $password['check']) != 0) {
+			$passwordError->addErrors(array(
+				t3lib_div::makeInstance('Tx_Extbase_Error_Error', 'Password does not match', 1320703779)
+			));
+		}
+		
+		if (!$passwordValidator->isValid($password['new'])) {
+			$passwordError->addErrors($passwordValidator->getErrors());
+		}
+		
+		if(count($passwordError->getErrors())) {
+			$objectError->addErrors(array(
+				$passwordError
+			));
+		}
+		
+		if(count($objectError->getErrors())) {
+			$requestErrors = $this->request->getErrors();
+			
+			$requestErrors[] = $objectError;
+			
+			$this->request->setErrors($requestErrors);
+			$this->forward('editPassword', null, null, $this->request->getArguments());
+		}
+		
+		$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
+		$user->setPassword($saltedPW);
+		$user->setForgotHash('');
+		$user->setForgotHashValid(0);
+		$message = Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
+		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
+		$this->redirect('show');
 	}
 }
 
