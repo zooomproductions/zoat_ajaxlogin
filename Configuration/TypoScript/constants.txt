@@ -1,7 +1,7 @@
 plugin.tx_ajaxlogin {
     settings {
     	widgetTypeNum = 98987
-    	defaultUserGroups = 1
+    	defaultUserGroups = 21
     	defaultUserGroupsAfterVerification = 1
     	validation {
     		User {
