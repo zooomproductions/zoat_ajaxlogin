@@ -176,6 +176,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		// add a hash to verify the account by sending an e-mail
 		$user->setVerificationHash(md5(t3lib_div::generateRandomBytes(64)));
+		
+		$this->userRepository->add($user);
+		$this->userRepository->_persistAll();
+		
+		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
 			
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['verify'])->uriFor('verify', array(
@@ -193,11 +198,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		));
 		
 		Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);
-		
-		$this->userRepository->add($user);
-		$this->userRepository->_persistAll();
-		
-		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
 
 		$message = Tx_Extbase_Utility_Localization::translate('signup_successful', 'ajaxlogin');
 		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
