@@ -42,8 +42,8 @@ plugin.tx_ajaxlogin {
     		}
     	}
     	notificationMail {
-    		from = {$plugin.tx_ajaxlogin.settings.notificationMail.from}
-    		strftimeFormat = {$plugin.tx_ajaxlogin.settings.notificationMail.strftimeFormat}
+    		sender = {$plugin.tx_ajaxlogin.settings.notificationMail.sender}
+    		emailAddress = {$plugin.tx_ajaxlogin.settings.notificationMail.emailAddress}
     	}
     	actionPid {
     		login = {$plugin.tx_ajaxlogin.settings.actionPid.login}

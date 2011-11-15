@@ -10,8 +10,8 @@ plugin.tx_ajaxlogin {
     		}
     	}
     	notificationMail {
-    		from = TYPO3.org <info@typo3.org>
-    		strftimeFormat = %c
+    		sender = TYPO3.org
+    		emailAddress = info@typo3.org
     	}
     	ajaxPid = 0
     	actionPid {

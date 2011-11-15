@@ -32,22 +32,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user = $this->userRepository->findCurrent();
 		
 		if(!is_null($user)) {
-			$this->view->assign('user', $user);
-			
-			$verificationHash = $user->getVerificationHash();
-			
-			if(!empty($verificationHash)) {
-				// for testing purposes: display the link to the verification page
-				$uriBuilder = $this->controllerContext->getUriBuilder();
-				$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['verify'])->uriFor('verify', array(
-					'email' => $user->getEmail(),
-					'verificationHash' => $user->getVerificationHash()
-				));
-				
-				$message = Tx_Extbase_Utility_Localization::translate('signup_notification_sent', 'ajaxlogin');
-				$this->flashMessageContainer->add($message, $uri, t3lib_FlashMessage::NOTICE);
-			}
-			
+			$this->view->assign('user', $user);			
 		} else {
 			$this->response->setStatus(401);
 			$this->forward('login');
@@ -181,26 +166,21 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->userRepository->_persistAll();
 		
 		Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
-			
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['verify'])->uriFor('verify', array(
-			'email' => $user->getEmail(),
-			'verificationHash' => $user->getVerificationHash()
-		));
-		
-		$subject = Tx_Extbase_Utility_Localization::translate('signup_notification_subject', 'ajaxlogin', array(
-			t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')
-		));
-		
-		$message = Tx_Extbase_Utility_Localization::translate('signup_notification_message', 'ajaxlogin', array(
-			$user->getName(),
-			$uri
-		));
-		
-		Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);
 
 		$message = Tx_Extbase_Utility_Localization::translate('signup_successful', 'ajaxlogin');
 		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
+		
+		$this->view->assign('user', $user);
+		
+		$emailSubject = Tx_Extbase_Utility_Localization::translate('signup_notification_subject', 'ajaxlogin');
+		$emailBodyContent = $this->view->render();
+		
+		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail->setFrom(array($this->settings['notificationMail']['emailAddress'] => $this->settings['notificationMail']['sender']));
+		$mail->setTo(array($user->getEmail() => $user->getName()));
+		$mail->setSubject($emailSubject);
+		$mail->setBody($emailBodyContent);
+		$mail->send();
 
 		$referer = t3lib_div::_GP('referer');
 		$redirectUrl = t3lib_div::_GP('redirectUrl');
