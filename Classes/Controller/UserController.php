@@ -172,7 +172,10 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		$this->view->assign('user', $user);
 		
-		$emailSubject = Tx_Extbase_Utility_Localization::translate('signup_notification_subject', 'ajaxlogin');
+		$emailSubject = Tx_Extbase_Utility_Localization::translate('signup_notification_subject', 'ajaxlogin', array(
+				t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')
+		));
+		
 		$emailBodyContent = $this->view->render();
 		
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
@@ -301,23 +304,23 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user->setForgotHashValid((time() + (24 * 3600)));
 			$this->view->assign('user', $user);
 			
-			$uriBuilder = $this->controllerContext->getUriBuilder();
-			$uri = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->settings['actionPid']['editPassword'])->uriFor('editPassword', array(
-				'email' => $user->getEmail(),
-				'forgotHash' => $user->getForgotHash()
-			));
-			
-			$subject = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_subject', 'ajaxlogin', array(
+			$emailSubject = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_subject', 'ajaxlogin', array(
 				t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')
 			));
+		
+			$emailBodyContent = $this->view->render();
+		
+			$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+			$mail->setFrom(array($this->settings['notificationMail']['emailAddress'] => $this->settings['notificationMail']['sender']));
+			$mail->setTo(array($user->getEmail() => $user->getName()));
+			$mail->setSubject($emailSubject);
+			$mail->setBody($emailBodyContent);
+			$mail->send();
 			
-			$message = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_message', 'ajaxlogin', array(
-				$user->getName(),
-				$uri,
-				strftime($this->settings['notificationMail']['strftimeFormat'], (time() + (24 * 3600)))
-			));
-			
-			Tx_Ajaxlogin_Utility_NotifyMail::send($user->getEmail(), $subject, $message);			
+			$message = Tx_Extbase_Utility_Localization::translate('resetpassword_notification_sent', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
+
+			$this->forward('info');
 		} else {
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
