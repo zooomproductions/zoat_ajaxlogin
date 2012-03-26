@@ -14,8 +14,8 @@ class Tx_Ajaxlogin_Utility_RedirectUrl {
 		$serverName = preg_replace('/.*(\.[\w\-_]+\.[\w]+)$/', '$1', t3lib_div::getIndpEnv('HTTP_HOST'));
 		$parts = parse_url($url);
 
-		if (!preg_match('/' .$serverName. '$/', $parts['host'])) {
-			throw new InvalidArgumentException('Url is supposed to belong to ' . $serverName);
+		if ($parts['host'] && !preg_match('/' . $serverName . '$/', $parts['host'])) {
+			throw new InvalidArgumentException('Url is supposed to belong to ' . $serverName . ' but was: ' . $parts['host']);
 		}
 		return $url;
 	}
