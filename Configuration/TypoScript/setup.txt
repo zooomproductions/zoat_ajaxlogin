@@ -77,7 +77,7 @@ tx_ajaxlogin_widget {
 }
 
 page.jsInline.98987 = COA
-page.jsInline.98987{
+page.jsInline.98987 {
 	10 = COA
 	10 {
 		10 = COA
@@ -264,6 +264,14 @@ page.jsInline.98987{
 
 	wrap = var tx_ajaxlogin = {|};
 }
+
+page.jsInline.98988 = TEXT
+page.jsInline.98988.value (
+	if ("https:" == document.location.protocol) {
+		jQuery.each(tx_ajaxlogin.api.User , function(index,item) { tx_ajaxlogin.api.User[index] = item.replace(/http:/, 'https:'); });
+		jQuery.each(tx_ajaxlogin , function(index,item) { if (typeof tx_ajaxlogin[index] != 'string') return; tx_ajaxlogin[index] = item.replace(/http:/, 'https:'); });
+	}
+)
 
 page.includeJSFooter.tx-ajaxlogin = EXT:ajaxlogin/Resources/Public/JavaScript/Ajaxlogin.js
 
