@@ -15,6 +15,21 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->userRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserRepository');
 		$this->userGroupRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserGroupRepository');
 	}
+	
+	/**
+	 * Initializes the view before invoking an action method.
+	 *
+	 * Override this method to solve assign variables common for all actions
+	 * or prepare the view in another way before the action is called.
+	 *
+	 * @param Tx_Extbase_View_ViewInterface $view The view to be initialized
+	 * @return void
+	 * @api
+	 */
+	protected function initializeView(Tx_Extbase_MVC_View_ViewInterface $view) {
+		parent::initializeView($view);
+		$view->assign('layout', ($GLOBALS['TSFE']->type>0)?'Widget':'Profile');
+	}	
 
 	/**
 	 * A template method for displaying custom error flash messages, or to
@@ -348,6 +363,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('link_outdated', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::WARNING);
+			$this->forward('forgotPassword');
 		}
 	}
 

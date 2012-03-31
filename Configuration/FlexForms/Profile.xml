@@ -21,7 +21,7 @@
 			            </numIndex>
 			            <numIndex index="2" type="array">
 			               <numIndex index="0">Edit/reset your password</numIndex>
-			               <numIndex index="1">User->editPassword;User->updatePassword;</numIndex>
+			               <numIndex index="1">User->editPassword;User->updatePassword;User->forgotPassword;User->resetPassword</numIndex>
 			            </numIndex>
 			            <numIndex index="3" type="array">
 			               <numIndex index="0">Close your account</numIndex>

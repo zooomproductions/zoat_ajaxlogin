@@ -1,0 +1,20 @@
+{namespace ajaxlogin=Tx_Ajaxlogin_ViewHelpers}
+
+<f:if condition="{-> ajaxlogin:pageType()} > 0">
+	<f:then>
+		<div class="tx-ajaxlogin-widget">
+			<div class="close"><a href="" class="ajaxlogin-close">X</a></div>
+		
+			<ajaxlogin:flashMessages renderMode="div" class="tx-extbase-flash-message" />
+			
+			<f:render section="content" />
+		</div>
+	</f:then>
+	<f:else>
+		<div class="tx-ajaxlogin-profile">	
+			<ajaxlogin:flashMessages renderMode="div" class="tx-extbase-flash-message" />
+			
+			<f:render section="content" />
+		</div>
+	</f:else>
+</f:if>
