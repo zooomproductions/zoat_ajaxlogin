@@ -1,69 +1,73 @@
 config.tx_extbase {
-    persistence {
-        classes {
-            Tx_Extbase_Domain_Model_FrontendUser {
-                subclasses {
-                    Tx_Ajaxlogin_Domain_Model_User = Tx_Ajaxlogin_Domain_Model_User
-                }
-            }
-            Tx_Extbase_Domain_Model_FrontendUserGroup {
-                subclasses {
-                    Tx_Ajaxlogin_Domain_Model_UserGroup = Tx_Ajaxlogin_Domain_Model_UserGroup
-                }
-            }
-            Tx_Ajaxlogin_Domain_Model_User {
-                mapping {
-                    tableName = fe_users
-                    columns {
-                    	tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
-                    	tx_ajaxlogin_verificationHash.mapOnProperty = verificationHash
-                    	tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
-                    }
-                }
-            }
-            Tx_Ajaxlogin_Domain_Model_UserGroup {
-                mapping {
-                    tableName = fe_groups
-                }
-            }
-        }
-    }
+		persistence {
+				classes {
+						Tx_Extbase_Domain_Model_FrontendUser {
+								subclasses {
+										Tx_Ajaxlogin_Domain_Model_User = Tx_Ajaxlogin_Domain_Model_User
+								}
+						}
+						Tx_Extbase_Domain_Model_FrontendUserGroup {
+								subclasses {
+										Tx_Ajaxlogin_Domain_Model_UserGroup = Tx_Ajaxlogin_Domain_Model_UserGroup
+								}
+						}
+						Tx_Ajaxlogin_Domain_Model_User {
+								mapping {
+										tableName = fe_users
+										columns {
+											tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
+											tx_ajaxlogin_verificationHash.mapOnProperty = verificationHash
+											tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
+										}
+								}
+						}
+						Tx_Ajaxlogin_Domain_Model_UserGroup {
+								mapping {
+										tableName = fe_groups
+								}
+						}
+				}
+		}
 }
 
 plugin.tx_ajaxlogin {
-    settings {
-    	widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
-    	defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
-    	defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsAfterVerification}
-    	validation {
-    		User {
-    			username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
-    			password = {$plugin.tx_ajaxlogin.settings.validation.User.password}
-    		}
-    	}
-    	notificationMail {
-    		sender = {$plugin.tx_ajaxlogin.settings.notificationMail.sender}
-    		emailAddress = {$plugin.tx_ajaxlogin.settings.notificationMail.emailAddress}
-    	}
-    	actionPid {
-    		login = {$plugin.tx_ajaxlogin.settings.actionPid.login}
-    		show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
-    		signUp = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
-    		edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
-    		editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
-    		closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
-    		enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
-    		verify = {$plugin.tx_ajaxlogin.settings.actionPid.verify}
-    	}
-    }
-    persistence {
-        storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}
-    }
-    view {
-        templateRootPath = {$plugin.tx_ajaxlogin.view.templateRootPath}
-        partialRootPath = {$plugin.tx_ajaxlogin.view.partialRootPath}
-        layoutRootPath = {$plugin.tx_ajaxlogin.view.layoutRootPath}
-    }
+		settings {
+			widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
+			defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
+			defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsAfterVerification}
+			validation {
+				User {
+					username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
+					password = {$plugin.tx_ajaxlogin.settings.validation.User.password}
+				}
+				passwordMinLength = 8
+			}
+			notificationMail {
+				sender = {$plugin.tx_ajaxlogin.settings.notificationMail.sender}
+				emailAddress = {$plugin.tx_ajaxlogin.settings.notificationMail.emailAddress}
+			}
+			actionPid {
+				login = {$plugin.tx_ajaxlogin.settings.actionPid.login}
+				show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
+				signUp = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
+				edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
+				editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
+				closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
+				enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
+				verify = {$plugin.tx_ajaxlogin.settings.actionPid.verify}
+			}
+		}
+		persistence {
+				storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}
+		}
+		features {
+			rewrittenPropertyMapper = 1
+		}		
+		view {
+				templateRootPath = {$plugin.tx_ajaxlogin.view.templateRootPath}
+				partialRootPath = {$plugin.tx_ajaxlogin.view.partialRootPath}
+				layoutRootPath = {$plugin.tx_ajaxlogin.view.layoutRootPath}
+		}
 }
 
 tx_ajaxlogin_widget = PAGE
@@ -281,7 +285,7 @@ page.footerData.98987 {
 	10.value = var tx_ajaxlogin = tx_ajaxlogin || {};
 
 	20 = TEXT
-	20.data =  levelfield : -1, tx_ajaxlogin_sectionreload, slide
+	20.data =	levelfield : -1, tx_ajaxlogin_sectionreload, slide
 	20.stdWrap.prioriCalc = intval
 	20.wrap = tx_ajaxlogin.doReloadOnSuccess=|;
 

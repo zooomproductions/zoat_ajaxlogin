@@ -63,6 +63,9 @@
 			<label index="error_user.password_1320792347">Please fill in any password</label>
 			<label index="error_user.password_1307626687">Your password is too short, it should contain a minimum of 8 characters</label>
 			<label index="error_user.password_1320703779">The passwords do not match</label>
+			<label index="error_password_1320792347">Please fill in any password</label>
+			<label index="error_password_1307626687">Your password is too short, it should contain a minimum of 8 characters</label>
+			<label index="error_password_1320703779">The passwords do not match</label>
 
 		</languageKey>
 	</data>
