@@ -54,6 +54,7 @@
 			<label index="signup_notification_subject">Registration at %s</label>
 			<label index="signup_notification_sent">Your account is not verified yet. Please check the e-mail we sent you for instructions.</label>
 			
+			<label index="link_outdated">This link is expired, please reset you password again</label>
 			<label index="error_user.name_1221560718">Please fill in your name</label>
 			<label index="error_user.email_1221559976">The email address you've entered is not valid</label>
 			<label index="error_user.email_1320783534">This email address already exists</label>

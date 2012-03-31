@@ -326,25 +326,27 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
-			$this->forward('forgotPassword');
+			$this->redirect('forgotPassword');
 		}
 	}
 
 	/**
 	 * @param string $forgotHash
 	 * @param string $email
+	 * @param obj $user
 	 */
-	public function editPasswordAction($forgotHash = '', $email = '') {
+	public function editPasswordAction($forgotHash = '', $email = '', $user=NULL) {		
 		if(!empty($forgotHash) && !empty($email)) {
 			$user = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
-		} else {
+		} elseif (!$user || get_class($user) !== 'Tx_Ajaxlogin_Domain_Model_User') {
 			$user = $this->userRepository->findCurrent();
 		}
-
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
 		} else {
 			$this->response->setStatus(401);
+			$message = Tx_Extbase_Utility_Localization::translate('link_outdated', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::WARNING);
 		}
 	}
 
@@ -364,10 +366,13 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 
 	/**
+	 * @param array $user
 	 * @param array $password
-	 * @param Tx_Ajaxlogin_Domain_Model_User $user
+	 * @return void
 	 */
-	public function updatePasswordAction($password, Tx_Ajaxlogin_Domain_Model_User $user) {
+	public function updatePasswordAction($user, $password) {
+		$user = $this->userRepository->findByUid($user['__identity']);
+			
 		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
 		$passwordError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'password');
 		$passwordValidator = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator');
@@ -405,7 +410,9 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$requestErrors[] = $objectError;
 
 			$this->request->setErrors($requestErrors);
-			$this->forward('editPassword', null, null, $this->request->getArguments());
+			$arguments = $this->request->getArguments();
+			$arguments['user'] = $user;
+			$this->forward('editPassword', null, null, $arguments);
 		}
 
 		$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
@@ -414,7 +421,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$user->setForgotHashValid(0);
 		$message = Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
 		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
-		$this->redirect('show');
+		
 	}
 }
 
