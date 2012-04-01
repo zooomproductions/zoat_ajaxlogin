@@ -76,6 +76,19 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	public function loginAction() {
 		$token = $this->getFormToken();
 		$this->view->assign('formToken', $token);
+		
+		/* pass hidden field from e.g. rsaauth to the view */
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
+			$_params = array();
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) { list($onSub, $hid) = t3lib_div::callUserFunction($funcRef, $_params, $this);
+				$onSubmitAr[] = $onSub;
+				$extraHiddenAr[] = $hid;
+			}
+		}
+		$this->view->assign('additionalHiddenFields', implode("\n", $extraHiddenAr));
+		$this->view->assign('onSubmitCode', implode(' ', $onSubmitAr));
+
+		
 		$this->response->setHeader('X-Ajaxlogin-formToken', $token);
 	}
 	
