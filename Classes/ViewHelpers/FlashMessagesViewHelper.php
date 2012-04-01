@@ -71,7 +71,7 @@ class Tx_Ajaxlogin_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_ViewHelp
 	 * @return string
 	 */
 	protected function renderDiv(array $flashMessages) {
-		if (!$GLOBALS['TSFE']->id) {
+		if (!$GLOBALS['TSFE']->type) {
 			$this->tag->setTagName('div');
 			if ($this->arguments->hasArgument('class')) {
 				$this->tag->addAttribute('class', $this->arguments['class']);
