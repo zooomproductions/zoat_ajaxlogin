@@ -54,7 +54,7 @@ plugin.tx_ajaxlogin {
 				editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
 				closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
 				enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
-				verify = {$plugin.tx_ajaxlogin.settings.actionPid.verify}
+				activateAccount = {$plugin.tx_ajaxlogin.settings.actionPid.activateAccount}
 			}
 		}
 		persistence {

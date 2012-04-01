@@ -62,7 +62,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
 		} else {
-			$this->response->setStatus(401);
+			//$this->response->setStatus(401);
 			$this->forward('login');
 		}
 	}
@@ -100,7 +100,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			}
 			$this->forward('info');
 		} else {
-			$this->response->setStatus(401);
+			//$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('authentication_failed', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('login');
@@ -116,6 +116,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @return void
 	 */
 	public function newAction(Tx_Ajaxlogin_Domain_Model_User $user = null) {
+		if ($user && $user->getUid()) {
+				// somehow the cHash got hacked
+			$user = null;
+		}
+		
 		$token = $this->getFormToken();
 		$this->view->assign('formToken', $token);
 		$this->response->setHeader('X-Ajaxlogin-formToken', $token);
@@ -132,9 +137,13 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @return void
 	 */
 	public function createAction(Tx_Ajaxlogin_Domain_Model_User $user, $password_check) {
+		if ($user && $user->getUid()) {
+			// somehow the cHash got hacked
+			$this->forward('new');
+		}
 			// TODO: clean this up and move it to the proper validators!!!
 			// this much of validation shouldn't have found its way into the controller
-		
+			
 		// START of MOVE TO VALIDATOR task 
 		$objectError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
 		$emailError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', 'email');
@@ -331,10 +340,14 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 
 	/**
+	 * Activates an account based on the link in the activation mail
+	 * 
 	 * @param string $verificationHash
 	 * @param string $email
+	 * 
+	 * @return void
 	 */
-	public function verifyAction($verificationHash = '', $email = '') {
+	public function activateAccountAction($verificationHash = '', $email = '') {
 		if(!empty($verificationHash) && !empty($email)) {
 			$user = $this->userRepository->findOneByVerificationHashAndEmail($verificationHash, $email);
 		}
@@ -351,10 +364,16 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->userRepository->update($user);
 			$this->userRepository->_persistAll();
 
+				// automatically sign in the user
 			Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
-			$this->redirectToURI('/');
+	
+			$message = Tx_Extbase_Utility_Localization::translate('account_activated', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
+			//$this->redirectToURI('/');
 		} else {
-			$this->response->setStatus(409);
+			$message = Tx_Extbase_Utility_Localization::translate('invalid_activation_link', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
+			//$this->response->setStatus(409);
 		}
 	}
 
@@ -375,6 +394,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * 2. If not found, displays the error message and forwards to the forgot password form again
 	 * 
 	 * @param string $usernameOrEmail
+	 * 
+	 * @return void
 	 */
 	public function resetPasswordAction($usernameOrEmail = '') {
 		$user = null;
@@ -408,7 +429,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 
 			$this->forward('info');
 		} else {
-			$this->response->setStatus(409);
+			//$this->response->setStatus(409);
 			$message = Tx_Extbase_Utility_Localization::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('forgotPassword');
@@ -420,17 +441,27 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @param string $email
 	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 * @dontvalidate $user
+	 * 
+	 * @return void
 	 */
 	public function editPasswordAction($forgotHash = '', $email = '', Tx_Ajaxlogin_Domain_Model_User $user = NULL) {		
+		$currentUser = $this->userRepository->findCurrent();
+		
+		if ($user && $user->getUid() != $currentUser->getUid()) {
+				// no way...
+			$user = $currentUser;
+		}		
+		
 		if(!empty($forgotHash) && !empty($email)) {
 			$user = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
 		} elseif (!$user || get_class($user) !== 'Tx_Ajaxlogin_Domain_Model_User') {
 			$user = $this->userRepository->findCurrent();
 		}
+		
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
 		} else {
-			$this->response->setStatus(401);
+			//$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('link_outdated', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::WARNING);
 			$this->forward('forgotPassword');
@@ -438,35 +469,59 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 	
 	/**
+	 * @param Tx_Ajaxlogin_Domain_Model_User $user
+	 * @param array $password
+	 * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
+	 *
+	 * @return void
+	 */
+	public function updatePasswordAction(Tx_Ajaxlogin_Domain_Model_User $user, $password) {
+		// double check if the passed user is indeed currently logged in user
+		$currentUser = $this->userRepository->findCurrent();
+		
+		if ($user->getUid() != $currentUser->getUid()) {
+			// no way...
+			$this->forward('editPassword');
+		} else {		
+			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
+			$user->setPassword($saltedPW);
+			$user->setForgotHash('');
+			$user->setForgotHashValid(0);
+		}
+	}	
+	
+	/**
+	 * Shows the close account confirmation page
 	 * 
+	 * @return void
 	 */
 	public function closeAccountAction() {
-		$this->view->assign('user', $this->userRepository->findCurrent());
+		$user = $this->userRepository->findCurrent();
+
+		$this->view->assign('user', $user);
 	}
 
 	/**
 	 * Disable currently logged in user and logout afterwards
 	 * @param Tx_Ajaxlogin_Domain_Model_User
-	 * @return void
-	 */
-	public function disableAction(Tx_Ajaxlogin_Domain_Model_User $user) {
-		$this->userRepository->update($user);
-		$GLOBALS['TSFE']->fe_user->logoff();
-		$this->redirectToURI('/');
-	}
-
-	/**
-	 * @param Tx_Ajaxlogin_Domain_Model_User $user
-	 * @param array $password
-	 * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
 	 * 
 	 * @return void
 	 */
-	public function updatePasswordAction(Tx_Ajaxlogin_Domain_Model_User $user, $password) {
-		$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
-		$user->setPassword($saltedPW);
-		$user->setForgotHash('');
-		$user->setForgotHashValid(0);
+	public function disableAction(Tx_Ajaxlogin_Domain_Model_User $user) {
+		// double check if the passed user is indeed currently logged in user
+		$currentUser = $this->userRepository->findCurrent();
+		
+		if ($user->getUid() != $currentUser->getUid()) {
+			// no way...
+			$this->forward('close');
+		} else {
+			$this->userRepository->update($user);
+			$GLOBALS['TSFE']->fe_user->logoff();
+			
+			$message = Tx_Extbase_Utility_Localization::translate('account_disabled', 'ajaxlogin');
+			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::OK);
+			//$this->redirectToURI('/');
+		}
 	}
 	
 	/**

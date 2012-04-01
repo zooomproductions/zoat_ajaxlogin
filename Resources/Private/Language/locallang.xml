@@ -35,7 +35,7 @@
 			<label index="button_signup">Sign up!</label>
 			
 			<label index="authentication_failed">Login or password incorrect.</label>
-			<label index="signup_successful">Sign-up successful! You were logged in.</label>
+			<label index="signup_successful">Sign-up successful! Please check your inbox for the activation link.</label>
 			<label index="login_successful">Welcome back! You are now logged in.</label>
 			<label index="logout_successful">You are now logged out.</label>
 
@@ -55,6 +55,10 @@
 			<label index="signup_notification_sent">Your account is not verified yet. Please check the e-mail we sent you for instructions.</label>
 			
 			<label index="link_outdated">This link is expired, please reset you password again</label>
+			<label index="invalid_activation_link">The activation link you have clicked on is no longer valid.</label>
+			<label index="account_activated">Your account has been successfully activated.</label>
+			<label index="account_disabled">Your account has been successfully disabled.</label>
+
 			<label index="error_user.name_1221560718">Please fill in your name</label>
 			<label index="error_user.email_1221559976">The email address you've entered is not valid</label>
 			<label index="error_user.email_1320783534">This email address already exists</label>

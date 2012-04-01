@@ -22,7 +22,7 @@ plugin.tx_ajaxlogin {
 				editPassword = 0
 				closeAccount = 0
 				enableAccount = 0
-				verify = 0
+				activateAccount = 0
 			}
 		}
 		view {
