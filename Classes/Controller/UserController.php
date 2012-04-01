@@ -118,11 +118,15 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @return void
 	 */
 	public function newAction(Tx_Ajaxlogin_Domain_Model_User $user = null) {
+		if ($user) {
+				// needed in order to trigger the JS AJAX error callback
+			$this->response->setStatus(409);
+		}
 		if ($user && $user->getUid()) {
-				// somehow the cHash got hacked
+				// somehow the cHash got hacked, user should not have an uid
 			$user = null;
 		}
-		
+				
 		$token = $this->getFormToken();
 		$this->view->assign('formToken', $token);
 		$this->response->setHeader('X-Ajaxlogin-formToken', $token);
@@ -197,6 +201,9 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$requestErrors[] = $objectError;
 
 			$this->request->setErrors($requestErrors);
+
+				// needed in order to trigger the JS AJAX error callback
+			$this->response->setStatus(409);
 			$this->forward('new');
 		}
 		// END of MOVE TO VALIDATOR task 

@@ -338,7 +338,9 @@ var Ajaxlogin = Ajaxlogin || {};
 	
 	$(document).ready(function() {
 		if(Ajaxlogin.Cookie.read('ajaxlogin_status') == '1') {
-			$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.accountPage+'">' + tx_ajaxlogin.ll.status_authenticated+'</a>');
+			// TODO: add removal of the ajaxlogin_status cookie on logout action on server and ONLY THEN uncomment this
+			// NOTE: not the most important feature, as it's kinda buggy, disabling it atm
+			//$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.accountPage+'">' + tx_ajaxlogin.ll.status_authenticated+'</a>');
 		}
 	});
 })(jQuery);
