@@ -55,7 +55,41 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 			
 		return $query->execute()->getFirst();
 	}
-
+	
+	/**
+	 * @return Tx_Ajaxlogin_Domain_Model_User
+	 */
+	public function findOneByEmail($email) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+	
+		$constraints = array(
+				$query->equals('deleted', 0),
+				$query->equals('email', $email)
+		);
+	
+		$query->matching($query->logicalAnd($constraints));
+			
+		return $query->execute()->getFirst();
+	}
+	
+	/**
+	 * @return Tx_Ajaxlogin_Domain_Model_User
+	 */
+	public function findOneByUsername($username) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+	
+		$constraints = array(
+				$query->equals('deleted', 0),
+				$query->equals('username', $username)
+		);
+	
+		$query->matching($query->logicalAnd($constraints));
+			
+		return $query->execute()->getFirst();
+	}	
+	
 	
 	/**
 	 * Find an Object using the UID of the current fe_user
