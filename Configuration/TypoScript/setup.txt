@@ -86,10 +86,16 @@ page.jsInline.98987 {
 	10 {
 		10 = COA
 		10 {
+			5.stdWrap.preCObject = TEXT
+			5.stdWrap.preCObject {
+				value < config.absRefPrefix
+				override < config.baseURL
+			}		
+		
 			10 = TEXT
 			10 {
 				typolink.parameter = {$plugin.tx_ajaxlogin.settings.ajaxPid}
-				typolink.forceAbsoluteUrl = 1
+				#typolink.forceAbsoluteUrl = 1
 				typolink.additionalParams.cObject = COA
 				typolink.additionalParams.cObject {
 					10 = TEXT

@@ -469,13 +469,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @return void
 	 */
 	public function editPasswordAction($forgotHash = '', $email = '', Tx_Ajaxlogin_Domain_Model_User $user = NULL) {		
-		$currentUser = $this->userRepository->findCurrent();
-		
-		if ($user && $user->getUid() != $currentUser->getUid()) {
-				// no way...
-			$user = $currentUser;
-		}		
-		
 		if(!empty($forgotHash) && !empty($email)) {
 			$user = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
 		} elseif (!$user || get_class($user) !== 'Tx_Ajaxlogin_Domain_Model_User') {
@@ -484,11 +477,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
+			$this->view->assign('forgotHash', $forgotHash);
+			$this->view->assign('notExpired', true);
 		} else {
 			//$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('link_outdated', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::WARNING);
-			$this->forward('forgotPassword');
 		}
 	}
 	
@@ -496,14 +490,18 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 * @param array $password
 	 * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
+	 * @param string $forgotHash
+	 * @param string $email
 	 *
 	 * @return void
 	 */
-	public function updatePasswordAction(Tx_Ajaxlogin_Domain_Model_User $user, $password) {
+	public function updatePasswordAction(Tx_Ajaxlogin_Domain_Model_User $user, $password, $forgotHash = '', $email = '') {
 		// double check if the passed user is indeed currently logged in user
-		$currentUser = $this->userRepository->findCurrent();
+		if(!empty($forgotHash) && !empty($email)) {
+			$currentUser = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
+		}
 		
-		if ($user->getUid() != $currentUser->getUid()) {
+		if ($user && $user->getUid() != $currentUser->getUid()) {
 			// no way...
 			$this->forward('editPassword');
 		} else {		
