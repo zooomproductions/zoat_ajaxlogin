@@ -21,15 +21,15 @@
 			            </numIndex>
 			            <numIndex index="2" type="array">
 			               <numIndex index="0">Edit/reset your password</numIndex>
-			               <numIndex index="1">User->editPassword;User->updatePassword;User->forgotPassword;User->resetPassword</numIndex>
+			               <numIndex index="1">User->editPassword;User->forgotPassword;User->updatePassword;User->resetPassword</numIndex>
 			            </numIndex>
 			            <numIndex index="3" type="array">
 			               <numIndex index="0">Close your account</numIndex>
 			               <numIndex index="1">User->closeAccount;User->disable;</numIndex>
 			            </numIndex>
 						<numIndex index="4" type="array">
-							<numIndex index="0">Verify account</numIndex>
-							<numIndex index="1">User->verify;</numIndex>
+							<numIndex index="0">Activate account</numIndex>
+							<numIndex index="1">User->activateAccount;</numIndex>
 						</numIndex>
 			         </items>
 			         <maxitems>1</maxitems>
