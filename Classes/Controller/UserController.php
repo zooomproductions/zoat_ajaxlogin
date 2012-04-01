@@ -282,12 +282,12 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	/**
 	 * Shows the user edit details form
 	 *
-	 * @param Tx_Ajaxlogin_Domain_Model_User
+	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 * @dontvalidate $user
 	 * 
 	 * @return void
 	 */
-	public function editAction(Tx_Ajaxlogin_Domain_Model_User $user) {
+	public function editAction(Tx_Ajaxlogin_Domain_Model_User $user = null) {
 			// double check if the passed user is indeed currently logged in user
 		$currentUser = $this->userRepository->findCurrent();
 		
