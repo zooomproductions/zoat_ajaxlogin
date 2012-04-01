@@ -45,7 +45,7 @@ class Tx_Ajaxlogin_Utility_RedirectUrl {
 			}
 		}
 	
-		if(!empty($res) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ajaxlogin']['redirectUrl_postProcess'])) {
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ajaxlogin']['redirectUrl_postProcess'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ajaxlogin']['redirectUrl_postProcess'] as $_funcRef) {
 				$_params = array(
 					'urlParts' => $parts,
