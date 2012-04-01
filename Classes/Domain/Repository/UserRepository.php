@@ -43,8 +43,10 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 	 */
 	public function findOneByVerificationHashAndEmail($verificationHash, $email) {
 		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
 		
 		$constraints = array(
+			$query->equals('deleted', 0),
 			$query->equals('verificationHash', $verificationHash),
 			$query->equals('email', $email)
 		);
