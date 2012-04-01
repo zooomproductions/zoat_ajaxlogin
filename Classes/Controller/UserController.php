@@ -62,7 +62,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		if(!is_null($user)) {
 			$this->view->assign('user', $user);
 		} else {
-			//$this->response->setStatus(401);
+				// needed in order to trigger the JS AJAX error callback
+			$this->response->setStatus(401);
 			$this->forward('login');
 		}
 	}
@@ -100,7 +101,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			}
 			$this->forward('info');
 		} else {
-			//$this->response->setStatus(401);
+				// needed in order to trigger the JS AJAX error callback
+			$this->response->setStatus(401);
 			$message = Tx_Extbase_Utility_Localization::translate('authentication_failed', 'ajaxlogin');
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			$this->forward('login');

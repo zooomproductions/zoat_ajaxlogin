@@ -184,6 +184,10 @@ page.jsInline.98987 {
 		20.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_unauthorized
 		20.wrap = ,status_unauthorized:'|'
 	
+		30 = TEXT
+		30.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_loading
+		30.wrap = ,status_loading:'|'
+	
 		wrap = ,ll:{|}
 	}
 	

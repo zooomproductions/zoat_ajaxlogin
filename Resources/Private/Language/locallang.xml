@@ -45,6 +45,7 @@
 			<label index="password_invalid">The given password is not valid</label>
 			<label index="password_updated">Your password has been updated, the next time you sign in use your new password</label>
 			
+			<label index="status_loading">Loading</label>
 			<label index="status_authenticated">My account</label>
 			<label index="status_unauthorized">Login</label>
 			
