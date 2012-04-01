@@ -71,31 +71,35 @@ class Tx_Ajaxlogin_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_ViewHelp
 	 * @return string
 	 */
 	protected function renderDiv(array $flashMessages) {
-		$this->tag->setTagName('div');
-		if ($this->arguments->hasArgument('class')) {
-			$this->tag->addAttribute('class', $this->arguments['class']);
-		} else {
-			$this->tag->addAttribute('class', 'typo3-messages');
-		}
-		$tagContent = '';
-		$severity = Array(
-				t3lib_message_AbstractMessage::NOTICE	=> Array('class'=>'','title'=>''),
-				t3lib_message_AbstractMessage::INFO 	=> Array('class'=>'','title'=>''),
-				t3lib_message_AbstractMessage::OK 		=> Array('class'=>'congratulations','title'=>'Congratulations!'),
-				t3lib_message_AbstractMessage::WARNING 	=> Array('class'=>'warning','title'=>'Warning!'),
-				t3lib_message_AbstractMessage::ERROR	=> Array('class'=>'error','title'=>'Error notification'),
-			);
-		foreach ($flashMessages as $singleFlashMessage) {
-			$s = $singleFlashMessage->getSeverity();
-			$tagContent .= '<div class="b-message '.strtolower($severity[$s]['class']).'">';
-			
-			if($s == t3lib_message_AbstractMessage::OK || $s == t3lib_message_AbstractMessage::WARNING || $s == t3lib_message_AbstractMessage::ERROR){
-				$tagContent .= '<p class="severity">'.$severity[$s]['title'].'</p>';
+		if (!$GLOBALS['TSFE']->id) {
+			$this->tag->setTagName('div');
+			if ($this->arguments->hasArgument('class')) {
+				$this->tag->addAttribute('class', $this->arguments['class']);
+			} else {
+				$this->tag->addAttribute('class', 'typo3-messages');
 			}
-			$tagContent .= '<p>'.$singleFlashMessage->getMessage().'</p></div>';
+			$tagContent = '';
+			$severity = Array(
+					t3lib_message_AbstractMessage::NOTICE	=> Array('class'=>'','title'=>''),
+					t3lib_message_AbstractMessage::INFO 	=> Array('class'=>'','title'=>''),
+					t3lib_message_AbstractMessage::OK 		=> Array('class'=>'congratulations','title'=>'Congratulations!'),
+					t3lib_message_AbstractMessage::WARNING 	=> Array('class'=>'warning','title'=>'Warning!'),
+					t3lib_message_AbstractMessage::ERROR	=> Array('class'=>'error','title'=>'Error notification'),
+				);
+			foreach ($flashMessages as $singleFlashMessage) {
+				$s = $singleFlashMessage->getSeverity();
+				$tagContent .= '<div class="b-message '.strtolower($severity[$s]['class']).'">';
+				
+				if($s == t3lib_message_AbstractMessage::OK || $s == t3lib_message_AbstractMessage::WARNING || $s == t3lib_message_AbstractMessage::ERROR){
+					$tagContent .= '<p class="severity">'.$severity[$s]['title'].'</p>';
+				}
+				$tagContent .= '<p>'.$singleFlashMessage->getMessage().'</p></div>';
+			}
+			$this->tag->setContent($tagContent);
+			return $this->tag->render();
+		} else {
+			return parent::renderDiv($flashMessages);
 		}
-		$this->tag->setContent($tagContent);
-		return $this->tag->render();
 	}
 }
 
