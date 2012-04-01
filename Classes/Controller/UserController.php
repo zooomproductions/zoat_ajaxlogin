@@ -22,6 +22,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	public function initializeAction() {
 		$this->userRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserRepository');
 		$this->userGroupRepository = t3lib_div::makeInstance('Tx_Ajaxlogin_Domain_Repository_UserGroupRepository');
+		$this->response->setHeader('X-Ajaxlogin-view', substr($this->actionMethodName, 0, -6));
 	}
 	
 	/**

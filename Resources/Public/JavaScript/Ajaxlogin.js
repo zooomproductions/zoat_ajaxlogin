@@ -10,12 +10,13 @@ var Ajaxlogin = Ajaxlogin || {};
 						url: tx_ajaxlogin.api.User.info,
 						cache: false,
 						error: function(a,b,c) {
-							Ajaxlogin.fn.showLoginForm(a);
+							Ajaxlogin.fn.showView(a);
 							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showUserInfo(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
+
 						}
 					});
 				} else {
@@ -27,8 +28,12 @@ var Ajaxlogin = Ajaxlogin || {};
 					$.ajax({
 						url: tx_ajaxlogin.api.User.login,
 						cache: false,
+						error: function(a,b,c) {
+							Ajaxlogin.fn.showView(a);
+							Ajaxlogin.event.fire('widget_load');
+						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showLoginForm(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
 						}
 					});
@@ -39,8 +44,12 @@ var Ajaxlogin = Ajaxlogin || {};
 					$.ajax({
 						url: tx_ajaxlogin.api.User.logout,
 						cache: false,
+						error: function(a,b,c) {
+							Ajaxlogin.fn.showView(a);
+							Ajaxlogin.event.fire('widget_load');
+						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showLoginForm(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('logout_success', [c]);
 							Ajaxlogin.event.fire('widget_load');
 						}
@@ -52,8 +61,12 @@ var Ajaxlogin = Ajaxlogin || {};
 					$.ajax({
 						url: tx_ajaxlogin.api.User['new'],
 						cache: false,
+						error: function(a,b,c) {
+							Ajaxlogin.fn.showView(a);
+							Ajaxlogin.event.fire('widget_load');
+						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showSignupForm(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
 						}
 					});
@@ -64,8 +77,12 @@ var Ajaxlogin = Ajaxlogin || {};
 					$.ajax({
 						url: tx_ajaxlogin.api.User.forgotPassword,
 						cache: false,
+						error: function(a,b,c) {
+							Ajaxlogin.fn.showView(a);
+							Ajaxlogin.event.fire('widget_load');
+						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showForgotPasswordForm(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
 						}
 					});
@@ -73,6 +90,25 @@ var Ajaxlogin = Ajaxlogin || {};
 			}
 		},
 		fn: {
+			showView: function(c) {
+				view = c.getResponseHeader('X-Ajaxlogin-view');
+				switch (view) {
+					case 'login':
+						Ajaxlogin.fn.showLoginForm(c);
+						break;
+					case 'info':
+						Ajaxlogin.fn.showUserInfo(c);
+						break;
+					case 'new':
+						Ajaxlogin.fn.showSignupForm(c);
+						break;
+					case 'forgotPassword':
+						Ajaxlogin.fn.showForgotPasswordForm(c);
+						break;
+					default:
+						break;
+				}
+			},
 			showLoginForm: function(response) {
 				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
 				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
@@ -94,11 +130,11 @@ var Ajaxlogin = Ajaxlogin || {};
 						}, input),
 						error: function(a,b,c) {
 							Ajaxlogin.event.fire('login_error', [a]);
-							Ajaxlogin.fn.showLoginForm(a);
+							Ajaxlogin.fn.showView(a);
 						},
 						success: function(a,b,c){
 							Ajaxlogin.event.fire('login_success', [c]);
-							Ajaxlogin.fn.showUserInfo(c);
+							Ajaxlogin.fn.showView(c);
 						}
 					});
 				});
@@ -125,11 +161,11 @@ var Ajaxlogin = Ajaxlogin || {};
 							}, input),
 							error: function(a,b,c) {
 								Ajaxlogin.event.fire('signup_error', [a]);
-								Ajaxlogin.fn.showSignupForm(a);
+								Ajaxlogin.fn.showView(a);
 							},
 							success: function(a,b,c) {
 								Ajaxlogin.event.fire('signup_success', [c]);
-								Ajaxlogin.fn.showUserInfo(c);
+								Ajaxlogin.fn.showView(c);
 							}
 						});
 					}
@@ -155,11 +191,11 @@ var Ajaxlogin = Ajaxlogin || {};
 						type: 'POST',
 						data: input,
 						error: function(a,b,c) {
-							Ajaxlogin.fn.showForgotPasswordForm(a);
+							Ajaxlogin.fn.showView(a);
 							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function(a,b,c) {
-							Ajaxlogin.fn.showForgotPasswordForm(c);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
 						}
 					});
