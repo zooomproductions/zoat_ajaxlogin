@@ -79,6 +79,7 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 	public function findOneByUsername($username) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 	
 		$constraints = array(
 				$query->equals('deleted', 0),
