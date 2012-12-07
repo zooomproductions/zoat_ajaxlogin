@@ -203,8 +203,12 @@ var Ajaxlogin = Ajaxlogin || {};
 			},
 			resolveFormData: function(formEl) {
 				var input = {};
-				formEl.find('input').each(function() {
+				formEl.find('input[type!="checkbox"]').each(function() {
 					var key = $(this).attr('name');					
+					input[key] = $.trim( $(this).val() );
+				});
+				formEl.find('input[type="checkbox"]:checked').each(function() {
+					var key = $(this).attr('name');
 					input[key] = $.trim( $(this).val() );
 				});
 				return input;

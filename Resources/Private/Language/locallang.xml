@@ -30,6 +30,7 @@
 			<label index="update_password">Update password</label>
 			<label index="forgot_password">Forgot password?</label>
 			<label index="recover_password">Reset password</label>
+			<label index="permalogin">Stay logged in</label>
 			
 			<label index="button_login">Login</label>
 			<label index="button_signup">Sign up!</label>
