@@ -161,6 +161,10 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			// somehow the cHash got hacked
 			$this->forward('new');
 		}
+		if (t3lib_div::_GP('additionalInfo')) {
+			// honeypot field was filled
+			$this->forward('new');
+		}
 			// TODO: clean this up and move it to the proper validators!!!
 			// this much of validation shouldn't have found its way into the controller
 			
