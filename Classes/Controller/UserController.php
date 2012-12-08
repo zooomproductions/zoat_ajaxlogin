@@ -71,12 +71,13 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 
 	/**
 	 * Displays the login form
-	 * 
+	 * @param string $redirectedFrom
 	 * @return void
 	 */
-	public function loginAction() {
+	public function loginAction($redirectedFrom='') {
 		$token = $this->getFormToken();
 		$this->view->assign('formToken', $token);
+		$this->view->assign('redirectedFrom', $redirectedFrom);
 		
 		/* pass hidden field from e.g. rsaauth to the view */
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
@@ -283,7 +284,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::NOTICE);
 
 		$GLOBALS['TSFE']->fe_user->logoff();
-		$this->forward('login');
+
+		$this->forward('login', NULL, NULL, array('redirectedFrom' => 'logout'));
 	}
 	
 	/**
