@@ -215,11 +215,13 @@ var Ajaxlogin = Ajaxlogin || {};
 			},
 			doReloadOrRedirect: function(response) {
 				var redirectUrl = response.getResponseHeader('X-Ajaxlogin-redirectUrl');
-				
+					// Remove logintype form redirect url @see #35589
+				var logoutRegexp = /[&]{0,1}logintype=logout/;
 				if (redirectUrl) {
 					window.location.href = redirectUrl;
 				} else if (tx_ajaxlogin.doReloadOnSuccess == 1) {
-					top.location.reload();
+					var url = window.location.href.replace(logoutRegexp, '');
+					window.location.href = url;
 				}
 			}
 		},
