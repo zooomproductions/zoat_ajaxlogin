@@ -5,8 +5,23 @@ plugin.tx_ajaxlogin {
 			defaultUserGroupsAfterVerification = 1
 			validation {
 				User {
-					username = /^.{1,}$/
-					password = /^.{8,}$/
+					name {
+						pattern = /^.{1,}$/
+						message = Your name must not be empty.
+					}
+					# Currently not used (but extbase default email-address validator)
+					email {
+						pattern = /^.{1,}$/
+						message = The given email-address was not valid.
+					}
+					username {
+						pattern = /^[0-9a-z\-_]{3,20}$/
+						message = Your username must be at least 3 characters long. Allowed characters are: 0-9 a-z - _
+					}
+					password {
+						pattern = /^.{8,}$/
+						message = Your password was too short. It must be at least 8 characters long.
+					}
 				}
 			}
 			notificationMail {

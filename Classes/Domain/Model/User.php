@@ -4,7 +4,7 @@ class Tx_Ajaxlogin_Domain_Model_User extends Tx_Extbase_Domain_Model_FrontendUse
 	
 	/**
 	 * @var string
-	 * @validate NotEmpty
+	 * @validate Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator(object = User, property = name)
 	 */
 	protected $name;
 	

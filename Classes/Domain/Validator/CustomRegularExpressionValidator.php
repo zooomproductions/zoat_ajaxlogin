@@ -8,11 +8,12 @@ class Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator extends Tx_
 		
 		$object = trim($this->options['object']);
 		$property = trim($this->options['property']);
-		
-		$pattern = trim($setup['settings']['validation'][$object][$property]);
-		
+
+		$pattern = trim($setup['settings']['validation'][$object][$property]['pattern']);
+		$message = trim($setup['settings']['validation'][$object][$property]['message']);
+
 		if(!preg_match($pattern, $value)) {
-			$this->addError('The given subject did not match the pattern "' . $pattern . '"', 1307626687);
+			$this->addError($message, 1307626687);
 			return false;
 		}
 		

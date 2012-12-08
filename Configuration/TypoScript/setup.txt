@@ -37,8 +37,23 @@ plugin.tx_ajaxlogin {
 			defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsAfterVerification}
 			validation {
 				User {
-					username = {$plugin.tx_ajaxlogin.settings.validation.User.username}
-					password = {$plugin.tx_ajaxlogin.settings.validation.User.password}
+					name {
+						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.name.pattern}
+						message  = {$plugin.tx_ajaxlogin.settings.validation.User.name.message}
+					}
+					# Currently not used (but extbase default email-address validator)
+					email {
+						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.email.pattern}
+						message  = {$plugin.tx_ajaxlogin.settings.validation.User.email.message}
+					}
+					username {
+						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.username.pattern}
+						message  = {$plugin.tx_ajaxlogin.settings.validation.User.username.message}
+					}
+					password {
+						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.password.pattern}
+						message = {$plugin.tx_ajaxlogin.settings.validation.User.password.message}
+					}
 				}
 				passwordMinLength = 8
 			}
@@ -202,11 +217,11 @@ page.jsInline.98987 {
 		10 = COA
 		10 {
 			10 = TEXT
-			10.value = {$plugin.tx_ajaxlogin.settings.validation.User.username}
+			10.value = {$plugin.tx_ajaxlogin.settings.validation.User.username.pattern}
 			10.wrap = username:|
 			
 			20 = TEXT
-			20.value = {$plugin.tx_ajaxlogin.settings.validation.User.password}
+			20.value = {$plugin.tx_ajaxlogin.settings.validation.User.password.pattern}
 			20.wrap = ,password:|
 			
 			wrap = User:{|}
