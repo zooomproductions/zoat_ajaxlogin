@@ -92,6 +92,10 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 
 		
 		$this->response->setHeader('X-Ajaxlogin-formToken', $token);
+
+			// Implement #43791 - Preserve username in login form on login failure
+		$username = trim(t3lib_div::removeXSS(t3lib_div::_GP('user')));
+		$this->view->assign('username', $username);
 	}
 	
 	/**
