@@ -4,24 +4,40 @@ if (!defined ('TYPO3_MODE'))
 
 $tempColumns = array (
 	'tx_ajaxlogin_forgotHash' => array (
+        'label' => 'tx_ajaxlogin_forgotHash',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
 		'config' => array (
-			'type' => 'passthrough',
+			'type' => 'input',
+            'size' => 32,
+            'max' => 32,
+            'eval' => 'md5'
 		)
 	),
 	'tx_ajaxlogin_verificationHash' => array (
+        'label' => 'tx_ajaxlogin_verificationHash',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
 		'config' => array (
-			'type' => 'passthrough',
+			'type' => 'input',
+            'size' => 32,
+            'readOnly' => true,
 		)
 	),
 	'tx_ajaxlogin_forgotHashValid' => array (
+        'label' => 'tx_ajaxlogin_forgotHashValid',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
 		'config' => array (
-			'type' => 'passthrough',
+			'type' => 'input',
+            'eval' => 'datetime'
 		)
 	)
 );
 
 t3lib_div::loadTCA("fe_users");
 t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
+t3lib_extMgm::addToAllTCAtypes('fe_users', '--div--;Ajaxlogin,tx_ajaxlogin_verificationHash;tx_ajaxlogin_verificationHash,tx_ajaxlogin_forgotHash,tx_ajaxlogin_forgotHashValid');
 
 $pagesTempColumns = array (
 	'tx_ajaxlogin_sectionreload' => array (
