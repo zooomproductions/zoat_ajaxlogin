@@ -4,18 +4,18 @@ if (!defined ('TYPO3_MODE'))
 
 $tempColumns = array (
 	'tx_ajaxlogin_forgotHash' => array (
-        'label' => 'tx_ajaxlogin_forgotHash',
+        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHash',
         'displayCond' => 'HIDE_FOR_NON_ADMINS',
         'exclude' => true,
 		'config' => array (
 			'type' => 'input',
-            'size' => 32,
+            'size' => 20,
             'max' => 32,
             'eval' => 'md5'
 		)
 	),
 	'tx_ajaxlogin_verificationHash' => array (
-        'label' => 'tx_ajaxlogin_verificationHash',
+        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_verificationHash',
         'displayCond' => 'HIDE_FOR_NON_ADMINS',
         'exclude' => true,
 		'config' => array (
@@ -25,11 +25,12 @@ $tempColumns = array (
 		)
 	),
 	'tx_ajaxlogin_forgotHashValid' => array (
-        'label' => 'tx_ajaxlogin_forgotHashValid',
+        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHashValid',
         'displayCond' => 'HIDE_FOR_NON_ADMINS',
         'exclude' => true,
 		'config' => array (
 			'type' => 'input',
+			'size' => '8',
             'eval' => 'datetime'
 		)
 	)
@@ -37,7 +38,7 @@ $tempColumns = array (
 
 t3lib_div::loadTCA("fe_users");
 t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_users', '--div--;Ajaxlogin,tx_ajaxlogin_verificationHash;tx_ajaxlogin_verificationHash,tx_ajaxlogin_forgotHash,tx_ajaxlogin_forgotHashValid');
+t3lib_extMgm::addToAllTCAtypes('fe_users', '--div--;Ajaxlogin,tx_ajaxlogin_verificationHash,tx_ajaxlogin_forgotHash,tx_ajaxlogin_forgotHashValid');
 
 $pagesTempColumns = array (
 	'tx_ajaxlogin_sectionreload' => array (
