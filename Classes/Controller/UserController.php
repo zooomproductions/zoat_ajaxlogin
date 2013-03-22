@@ -474,31 +474,20 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	/**
 	 * @param string $forgotHash
 	 * @param string $email
-	 * @param Tx_Ajaxlogin_Domain_Model_User $user
-	 * @dontvalidate $user
 	 * 
 	 * @return void
 	 */
-	public function editPasswordAction($forgotHash = '', $email = '', Tx_Ajaxlogin_Domain_Model_User $user = NULL) {		
-		if(!empty($forgotHash) && !empty($email)) {
-			$user = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
-		} elseif (!$user || get_class($user) !== 'Tx_Ajaxlogin_Domain_Model_User') {
-			$user = $this->userRepository->findCurrent();
-		}
-		
-		if(!is_null($user)) {
+	public function editPasswordAction($forgotHash = '', $email = '') {
+		$user = $this->getUserByForgotHashAndEmail($forgotHash, $email);
+
+		if($user) {
 			$this->view->assign('user', $user);
 			$this->view->assign('forgotHash', $forgotHash);
 			$this->view->assign('notExpired', true);
-		} else {
-			//$this->response->setStatus(401);
-			$message = Tx_Extbase_Utility_Localization::translate('link_outdated', 'ajaxlogin');
-			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::WARNING);
 		}
 	}
 	
 	/**
-	 * @param Tx_Ajaxlogin_Domain_Model_User $user
 	 * @param array $password
 	 * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
 	 * @param string $forgotHash
@@ -506,14 +495,10 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	 *
 	 * @return void
 	 */
-	public function updatePasswordAction(Tx_Ajaxlogin_Domain_Model_User $user, $password, $forgotHash = '', $email = '') {
-		// double check if the passed user is indeed currently logged in user
-		if(!empty($forgotHash) && !empty($email)) {
-			$currentUser = $this->userRepository->findOneByForgotHashAndEmail($forgotHash, $email);
-		}
-		
-		if ($user && $user->getUid() != $currentUser->getUid()) {
-			// no way...
+	public function updatePasswordAction($password, $forgotHash = '', $email = '') {
+		$user = $this->getUserByForgotHashAndEmail($forgotHash, $email);
+
+		if(!$user) {
 			$this->forward('editPassword');
 		} else {		
 			$saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
@@ -521,7 +506,74 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user->setForgotHash('');
 			$user->setForgotHashValid(0);
 		}
-	}	
+	}
+
+	/**
+	 * finds a user object based on the given hash and email
+	 *
+	 * if no matching user is found a flash message is set and null returned.
+	 *
+	 * @param string $forgotHash
+	 * @param string $email
+	 * @return Tx_Ajaxlogin_Domain_Model_User| null
+	 */
+	protected function getUserByForgotHashAndEmail($forgotHash, $email) {
+		$forgotHash = trim($forgotHash);
+		if(empty($forgotHash)) {
+			return $this->addForgetHashFlashMessage('forgotHash_required');
+		}
+		$email = trim($email);
+		if(empty($email)) {
+			return $this->addForgetHashFlashMessage('email_required');
+		}
+		if(!t3lib_div::validEmail($email)) {
+			return $this->addForgetHashFlashMessage('email_invalid');
+		}
+
+		$user = $this->userRepository->findOneByEmail($email);
+		if(!$user) {
+			return $this->addForgetHashFlashMessage('user_notFound');
+		}
+
+		if($user->getForgotHash() == '') {
+			return $this->addForgetHashFlashMessage('password_already_changed');
+		}
+
+		if($user->getForgotHash() !== $forgotHash) {
+			return $this->addForgetHashFlashMessage('user_notFound');
+		}
+
+		if($user->getForgotHashValid()->format('U') <= time()) {
+			// if hash is no longer valid
+			return $this->addForgetHashFlashMessage('link_outdated');
+		}
+
+		return $user;
+	}
+
+	/**
+	 * adds a flash message if something happens in the forgetHash function
+	 *
+	 * This method exists to follow the DRY principle and to prevent duplicate messages on redirects
+	 *
+	 * @param $key
+	 * @param int $severity
+	 * @return null
+	 */
+	protected function addForgetHashFlashMessage($key, $severity = t3lib_FlashMessage::WARNING) {
+		$message = Tx_Extbase_Utility_Localization::translate($key, 'ajaxlogin');
+
+		// check if the flash messages was already assigned
+		// this is needed to prevent duplicate messages on the forward() in updatePasswordAction
+		foreach($this->flashMessageContainer->getAllMessages() as $flashMessage) {
+			if($flashMessage->getMessage() == $message && $flashMessage->getSeverity() == $severity ) {
+				return null;
+			}
+		}
+
+		$this->flashMessageContainer->add($message, '', $severity);
+		return null;
+	}
 	
 	/**
 	 * Shows the close account confirmation page

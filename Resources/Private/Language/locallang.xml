@@ -55,8 +55,13 @@
 
 			<label index="signup_notification_subject">Registration at %s</label>
 			<label index="signup_notification_sent">Your account is not verified yet. Please check the e-mail we sent you for instructions.</label>
-			
-			<label index="link_outdated">This link is expired, please reset you password again</label>
+
+			<label index="forgotHash_required">The activation link is faulty. It has no forgotHash set. Please make sure you've correctly copied the link from the email.</label>
+			<label index="email_required">The activation link is faulty. It has no email address set. Please make sure you've correctly copied the link from the email.</label>
+			<label index="email_invalid">The activation link is faulty. The email address does not seem to be valid. Please make sure you've correctly copied the link from the email.</label>
+			<label index="user_notFound">No user with this email address and token was found. This might happen if you've issued multiple requests to reset your password. The latest email should contain a working link. Also make sure you've correctly copied the link from the email.</label>
+			<label index="password_already_changed">This link is expired because your password has already been changed.</label>
+			<label index="link_outdated">This link is expired, please reset you password again.</label>
 			<label index="invalid_activation_link">The activation link you have clicked on is no longer valid.</label>
 			<label index="account_activated">Your account has been successfully activated.</label>
 			<label index="account_disabled">Your account has been successfully disabled.</label>

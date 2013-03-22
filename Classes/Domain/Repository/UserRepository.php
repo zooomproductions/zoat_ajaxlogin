@@ -29,7 +29,8 @@ class Tx_Ajaxlogin_Domain_Repository_UserRepository extends Tx_Extbase_Domain_Re
 		$constraints = array(
 			$query->equals('forgotHash', $forgotHash),
 			$query->equals('email', $email),
-			$query->greaterThan('forgotHashValid', time())
+			// check for validity is done in controller to have better error messages
+//			$query->greaterThan('forgotHashValid', time())
 		);
 		
 		$query->matching($query->logicalAnd($constraints));
