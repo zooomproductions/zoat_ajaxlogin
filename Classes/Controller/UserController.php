@@ -387,14 +387,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		}
 
 		if(!is_null($user)) {
-			$userGroups = $this->userGroupRepository->findByUidArray(t3lib_div::intExplode(',', $this->settings['defaultUserGroupsAfterVerification']));
-
-			foreach ($userGroups as $userGroup) {
-				$user->getUsergroup()->attach($userGroup);
-			}
-
-			$user->setVerificationHash(null);
-			$user->setDisable(false);
+			$this->activateAccount($user);
 				
 			$this->userRepository->update($user);
 			$this->userRepository->_persistAll();
@@ -410,6 +403,23 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->flashMessageContainer->add($message, '', t3lib_FlashMessage::ERROR);
 			//$this->response->setStatus(409);
 		}
+	}
+
+	/**
+	 * activates a user account
+	 * (does not persist it)
+	 *
+	 * @param Tx_Ajaxlogin_Domain_Model_User $user
+	 */
+	protected function activateAccount($user) {
+		$userGroups = $this->userGroupRepository->findByUidArray(t3lib_div::intExplode(',', $this->settings['defaultUserGroupsAfterVerification']));
+
+		foreach ($userGroups as $userGroup) {
+			$user->getUsergroup()->attach($userGroup);
+		}
+
+		$user->setVerificationHash(null);
+		$user->setDisable(false);
 	}
 
 	/**
@@ -505,6 +515,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$user->setPassword($saltedPW);
 			$user->setForgotHash('');
 			$user->setForgotHashValid(0);
+			// activate the account to allow users that could not receive a
+			// verification email to activate their account with the forgot password function
+			if($user->getVerificationHash()) {
+				$this->activateAccount($user);
+			}
 		}
 	}
 
