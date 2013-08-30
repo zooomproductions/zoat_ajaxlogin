@@ -204,7 +204,7 @@ var Ajaxlogin = Ajaxlogin || {};
 			resolveFormData: function(formEl) {
 				var input = {};
 				formEl.find('input[type!="checkbox"]').each(function() {
-					var key = $(this).attr('name');					
+					var key = $(this).attr('name');                 
 					input[key] = $.trim( $(this).val() );
 				});
 				formEl.find('input[type="checkbox"]:checked').each(function() {
@@ -232,7 +232,7 @@ var Ajaxlogin = Ajaxlogin || {};
 				var result = true;
 				
 				$.each(tx_ajaxlogin.validation.confirmationFieldsets, function() {
-					var field = true;					
+					var field = true;                   
 					var value = form.find(this[0]).val();
 					var check = form.find(this[1]).val();
 					
@@ -260,7 +260,7 @@ var Ajaxlogin = Ajaxlogin || {};
 			addListener: function(type, listener) {
 				if (typeof Ajaxlogin._eventListeners[type] == "undefined"){
 					Ajaxlogin._eventListeners[type] = [];
-		        }
+				}
 
 				Ajaxlogin._eventListeners[type].push(listener);
 			},
@@ -269,15 +269,15 @@ var Ajaxlogin = Ajaxlogin || {};
 				
 				if (typeof Ajaxlogin._eventListeners[type] == "undefined"){
 					Ajaxlogin._eventListeners[type] = [];
-		        }
+				}
 				
 				var listeners = Ajaxlogin._eventListeners[type];
 				for (var i=0, len=listeners.length; i < len; i++){
 					if (listeners[i] === listener){
-	                    add = false;
-	                    break;
-	                }
-	            }
+						add = false;
+						break;
+					}
+				}
 				
 				if(add) {
 					Ajaxlogin._eventListeners[type].push(listener);
@@ -285,35 +285,35 @@ var Ajaxlogin = Ajaxlogin || {};
 			},
 			fire: function(event, args) {
 				if (typeof event == "string"){
-		            event = { type: event };
-		        }
-		        if (!event.target){
-		            event.target = this;
-		        }
+					event = { type: event };
+				}
+				if (!event.target){
+					event.target = this;
+				}
 
-		        if (!event.type){  //falsy
-		            throw new Error("Event object missing 'type' property.");
-		        }
+				if (!event.type){  //falsy
+					throw new Error("Event object missing 'type' property.");
+				}
 
-		        if (Ajaxlogin._eventListeners[event.type] instanceof Array){
-		            var listeners = Ajaxlogin._eventListeners[event.type];
-		            for (var i=0, len=listeners.length; i < len; i++){
-		                if(listeners[i]) {
-		                	listeners[i].apply(event, args);
-		                }
-		            }
-		        }
+				if (Ajaxlogin._eventListeners[event.type] instanceof Array){
+					var listeners = Ajaxlogin._eventListeners[event.type];
+					for (var i=0, len=listeners.length; i < len; i++){
+						if (typeof listeners[i] === 'object') {
+							listeners[i].apply(event, args);
+						}
+					}
+				}
 			},
 			removeListener: function(type, listener) {
 				if (Ajaxlogin._eventListeners[type] instanceof Array){
-		            var listeners = Ajaxlogin._eventListeners[type];
-		            for (var i=0, len=listeners.length; i < len; i++){
-		                if (listeners[i] === listener){
-		                    listeners.splice(i, 1);
-		                    break;
-		                }
-		            }
-		        }
+					var listeners = Ajaxlogin._eventListeners[type];
+					for (var i=0, len=listeners.length; i < len; i++){
+						if (listeners[i] === listener){
+							listeners.splice(i, 1);
+							break;
+						}
+					}
+				}
 			}
 		},
 		Cookie: {
@@ -342,17 +342,17 @@ var Ajaxlogin = Ajaxlogin || {};
 		}
 	};
 
-	Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
-	Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
-	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
+		Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
+		Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
+		Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
 
-	Ajaxlogin.event.addListener('login_success', function() {
-		Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
-	});
-	Ajaxlogin.event.addListener('logout_success', function() {
-		Ajaxlogin.Cookie.erase('ajaxlogin_status');
-	});
-	
+		Ajaxlogin.event.addListener('login_success', function() {
+			Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
+		});
+		Ajaxlogin.event.addListener('logout_success', function() {
+			Ajaxlogin.Cookie.erase('ajaxlogin_status');
+		});
+
 	$.fn.Ajaxlogin = function() {
 		this.click(function(event) {
 			event.preventDefault();
