@@ -6,8 +6,8 @@ plugin.tx_ajaxlogin {
 			validation {
 				User {
 					name {
-						pattern = /^.{1,}$/
-						message = Your name must not be empty.
+						pattern = /^.{1,} .{1,}$/
+						message = Your name must not be empty and consist of atleast 2 words.
 					}
 					# Currently not used (but extbase default email-address validator)
 					email {
