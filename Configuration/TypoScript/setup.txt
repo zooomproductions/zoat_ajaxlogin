@@ -26,6 +26,14 @@ config.tx_extbase {
 										tableName = fe_groups
 								}
 						}
+						Tx_Ajaxlogin_Domain_Model_Country {
+								mapping {
+										tableName = static_countries
+										columns {
+												cn_short_en.mapOnProperty = cnShortEn
+										}
+								}
+						}
 				}
 		}
 }
@@ -77,7 +85,7 @@ plugin.tx_ajaxlogin {
 		}
 		features {
 			rewrittenPropertyMapper = 1
-		}		
+		}
 		view {
 				templateRootPath = {$plugin.tx_ajaxlogin.view.templateRootPath}
 				partialRootPath = {$plugin.tx_ajaxlogin.view.partialRootPath}
@@ -105,8 +113,8 @@ page.jsInline.98987 {
 			5.stdWrap.preCObject {
 				value < config.absRefPrefix
 				override < config.baseURL
-			}		
-		
+			}
+
 			10 = TEXT
 			10 {
 				typolink.parameter = {$plugin.tx_ajaxlogin.settings.ajaxPid}
@@ -126,92 +134,92 @@ page.jsInline.98987 {
 				typolink.returnLast = url
 				wrap = info:'|'
 			}
-			
+
 			20 < .10
 			20 {
 				typolink.additionalParams.cObject.10.value = login
 				wrap = ,login:'|'
 			}
-			
+
 			30 < .10
 			30 {
 				typolink.additionalParams.cObject.10.value = authenticate
 				wrap = ,authenticate:'|'
 			}
-			
+
 			40 < .10
 			40 {
 				typolink.additionalParams.cObject.10.value = logout
 				wrap = ,logout:'|'
 			}
-			
+
 			50 < .10
 			50 {
 				typolink.additionalParams.cObject.10.value = new
 				wrap = ,'new':'|'
 			}
-			
+
 			60 < .10
 			60 {
 				typolink.additionalParams.cObject.10.value = create
 				wrap = ,create:'|'
 			}
-			
+
 			70 < .10
 			70 {
 				typolink.additionalParams.cObject.10.value = forgotPassword
 				wrap = ,forgotPassword:'|'
 			}
-			
+
 			80 < .10
 			80 {
 				typolink.additionalParams.cObject.10.value = resetPassword
 				wrap = ,resetPassword:'|'
 			}
-			
+
 			wrap = User:{|}
 		}
-		
+
 		wrap = api:{|}
 	}
-	
+
 	20 = TEXT
 	20.value = #ajaxlogin
 	20.wrap = ,placeholder: '|'
-	
+
 	30 = TEXT
 	30.value = {$plugin.tx_ajaxlogin.persistence.storagePid}
 	30.wrap = ,storagePid:|
-	
+
 	40 = TEXT
 	40.value = #login-status
 	40.wrap = ,statusLabel:'|'
-	
+
 	50 = TEXT
 	50.value = #tx-ajaxlogin-editPassword
 	50.wrap = ,editPasswordForm:'|'
-	
+
 	60 = TEXT
 	60.value = .tx-ajaxlogin-profile
 	60.wrap = ,profileSection:'|'
-	
+
 	70 = COA
 	70 {
 		10 = TEXT
 		10.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_authenticated
 		10.wrap = status_authenticated:'|'
-		
+
 		20 = TEXT
 		20.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_unauthorized
 		20.wrap = ,status_unauthorized:'|'
-	
+
 		30 = TEXT
 		30.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_loading
 		30.wrap = ,status_loading:'|'
-	
+
 		wrap = ,ll:{|}
 	}
-	
+
 	80 = COA
 	80 {
 		10 = COA
@@ -219,14 +227,14 @@ page.jsInline.98987 {
 			10 = TEXT
 			10.value = {$plugin.tx_ajaxlogin.settings.validation.User.username.pattern}
 			10.wrap = username:|
-			
+
 			20 = TEXT
 			20.value = {$plugin.tx_ajaxlogin.settings.validation.User.password.pattern}
 			20.wrap = ,password:|
-			
+
 			wrap = User:{|}
 		}
-		
+
 		20 = COA
 		20 {
 			10 = COA
@@ -236,16 +244,16 @@ page.jsInline.98987 {
 					value = #tx-ajaxlogin-user-password
 					wrap = '|'
 				}
-				
+
 				20 = TEXT
 				20 {
 					value = #tx-ajaxlogin-password-check
 					wrap = ,'|'
 				}
-			
+
 				wrap = [|]
 			}
-			
+
 			20 = COA
 			20 {
 				10 = TEXT
@@ -253,38 +261,38 @@ page.jsInline.98987 {
 					value = #tx-ajaxlogin-user-email
 					wrap = '|'
 				}
-				
+
 				20 = TEXT
 				20 {
 					value = #tx-ajaxlogin-email-check
 					wrap = ,'|'
 				}
-			
+
 				wrap = ,[|]
 			}
-		
+
 			wrap = ,confirmationFieldsets:[|]
 		}
-	
+
 		wrap = ,validation:{|}
 	}
-	
+
 	90 = TEXT
 	90.value = 0
 	90.wrap = ,doReloadOnSuccess:|
-	
+
 	100 = TEXT
 	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.login}
 	100.typolink.forceAbsoluteUrl = 1
 	100.typolink.returnLast = url
 	100.wrap = ,loginPage:'|'
-	
+
 	110 = TEXT
 	110.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}
 	110.typolink.forceAbsoluteUrl = 1
 	110.typolink.returnLast = url
 	110.wrap = ,accountPage:'|'
-	
+
 	120 = TEXT
 	120.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
 	120.typolink.forceAbsoluteUrl = 1

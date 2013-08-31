@@ -4,34 +4,34 @@ if (!defined ('TYPO3_MODE'))
 
 $tempColumns = array (
 	'tx_ajaxlogin_forgotHash' => array (
-        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHash',
-        'displayCond' => 'HIDE_FOR_NON_ADMINS',
-        'exclude' => true,
+				'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHash',
+				'displayCond' => 'HIDE_FOR_NON_ADMINS',
+				'exclude' => true,
 		'config' => array (
 			'type' => 'input',
-            'size' => 20,
-            'max' => 32,
-            'eval' => 'md5'
+						'size' => 20,
+						'max' => 32,
+						'eval' => 'md5'
 		)
 	),
 	'tx_ajaxlogin_verificationHash' => array (
-        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_verificationHash',
-        'displayCond' => 'HIDE_FOR_NON_ADMINS',
-        'exclude' => true,
+				'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_verificationHash',
+				'displayCond' => 'HIDE_FOR_NON_ADMINS',
+				'exclude' => true,
 		'config' => array (
 			'type' => 'input',
-            'size' => 32,
-            'readOnly' => true,
+						'size' => 32,
+						'readOnly' => true,
 		)
 	),
 	'tx_ajaxlogin_forgotHashValid' => array (
-        'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHashValid',
-        'displayCond' => 'HIDE_FOR_NON_ADMINS',
-        'exclude' => true,
+				'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHashValid',
+				'displayCond' => 'HIDE_FOR_NON_ADMINS',
+				'exclude' => true,
 		'config' => array (
 			'type' => 'input',
 			'size' => '8',
-            'eval' => 'datetime'
+						'eval' => 'datetime'
 		)
 	)
 );
@@ -51,15 +51,30 @@ $pagesTempColumns = array (
 		)
 	)
 );
+include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Tca/FlexForm.php');
+$GLOBALS['TCA']['fe_users']['columns']['country']['config'] = array(
+	'type' => 'select',
+	'itemsProcFunc' => 'Tx_Ajaxlogin_Tca_FlexForm->country',
+	'foreign_table' => 'static_countries',
+	'foreign_table_where' => 'ORDER BY static_countries.cn_short_en',
+	'foreign_table_uid_field' => 'cn_short_en',
+	'size' => 1,
+	'minitems' => 0,
+	'maxitems' => 1,
+	'allowNonIdValues' => true,
+	'items' => array(
+		array('', 0)
+	),
+);
 
 t3lib_div::loadTCA("pages");
 t3lib_extMgm::addTCAcolumns("pages", $pagesTempColumns, 1);
 t3lib_extMgm::addFieldsToPalette('pages', 'miscellaneous', 'tx_ajaxlogin_sectionreload');
 
 Tx_Extbase_Utility_Extension::registerPlugin(
-    $_EXTKEY,
-    'Profile',
-    'Ajaxlogin'
+		$_EXTKEY,
+		'Profile',
+		'Ajaxlogin'
 );
 
 $extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));
