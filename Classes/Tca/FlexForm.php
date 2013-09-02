@@ -12,7 +12,10 @@ class Tx_Ajaxlogin_Tca_FlexForm {
 			$tca['config']['foreign_table'],
 			'1=1 ' . $tca['config']['foreign_table_where']
 		);
-		$tca['items'] = array();
+		// empty option
+		$tca['items'] = array(
+			array('', 0)
+		);
 		foreach($rows as $row) {
 			$tca['items'][] = array(
 				$row[$tca['config']['foreign_table_uid_field']],

@@ -331,7 +331,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		}
 
 		$this->view->assign('user', $user);
-		$this->view->assign('countries', $this->countryRepository->findAll());
+		$countries = $this->countryRepository->findAll();
+		// TODO: if FLUID supports it, add empty option in FLUID
+		$countries = $countries->toArray();
+		$countries = array_merge(array(NULL => ''), $countries);
+		$this->view->assign('countries', $countries);
 	}
 
 	/**
@@ -381,9 +385,11 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		// END of MOVE TO VALIDATOR task
 
 		// check submitted country
-		$country = $this->countryRepository->findByCnShortEn($user->getCountry());
-		if(!$country->count()) {
-			$user->setCountry('');
+		if($country) {
+			$country = $this->countryRepository->findByCnShortEn($user->getCountry());
+			if(!$country->count()) {
+				$user->setCountry('');
+			}
 		}
 
 		$this->userRepository->update($user);
