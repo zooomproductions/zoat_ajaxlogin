@@ -298,7 +298,7 @@ var Ajaxlogin = Ajaxlogin || {};
 				if (Ajaxlogin._eventListeners[event.type] instanceof Array){
 					var listeners = Ajaxlogin._eventListeners[event.type];
 					for (var i=0, len=listeners.length; i < len; i++){
-						if (typeof listeners[i] === 'object') {
+						if (typeof listeners[i] === 'object' || typeof listeners[i] === 'function') {
 							listeners[i].apply(event, args);
 						}
 					}
