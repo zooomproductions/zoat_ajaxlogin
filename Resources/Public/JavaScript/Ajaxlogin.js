@@ -1,46 +1,60 @@
 var Ajaxlogin = Ajaxlogin || {};
+var storage = $.localStorage;
 
 (function($) {
 	Ajaxlogin = {
 		_eventListeners: {},
 		User: {
 			info: function() {
-				if ( tx_ajaxlogin.api.User.info ) {
-					$.ajax({
-						url: tx_ajaxlogin.api.User.info,
-						cache: false,
-						error: function(a,b,c) {
-							Ajaxlogin.fn.showView(a);
-							Ajaxlogin.event.fire('widget_load');
-						},
-						success: function(a,b,c) {
-							Ajaxlogin.fn.showView(c);
-							Ajaxlogin.event.fire('widget_load');
+				if ( tx_ajaxlogin.api.User.info) {
+                    if (storage.isEmpty('responseHeader') ){
+                        $.ajax({
+                            url: tx_ajaxlogin.api.User.info,
+                            cache: false,
+                            error: function(a,b,c) {
+                                storage.setExpires(1).set('showView', a);
+                                storage.setExpires(1).set('responseToken', a.getResponseHeader('X-Ajaxlogin-formToken'));
+                                storage.setExpires(1).set('responseHeader', a.getResponseHeader('X-Ajaxlogin-view'));
 
-						}
-					});
+                                Ajaxlogin.fn.showView(a);
+                                Ajaxlogin.event.fire('widget_load');
+                            },
+                            success: function(a,b,c) {
+                                storage.removeAll();
+                                storage.setExpires(1).set('showView', c);
+                                storage.setExpires(1).set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
+                                storage.setExpires(1).set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
+
+                                Ajaxlogin.fn.showView(c);
+                                Ajaxlogin.event.fire('widget_load');
+                            }
+                        });
+                    } else {
+                        Ajaxlogin.fn.showView();
+                    }
 				} else {
 					// check the plugin.tx_ajaxlogin.view.ajaxPid property
 				}
 			},
 			login: function() {
 				if ( tx_ajaxlogin.api.User.login ) {
-					$.ajax({
-						url: tx_ajaxlogin.api.User.login,
-						cache: false,
-						error: function(a,b,c) {
-							Ajaxlogin.fn.showView(a);
-							Ajaxlogin.event.fire('widget_load');
-						},
-						success: function(a,b,c) {
-							Ajaxlogin.fn.showView(c);
-							Ajaxlogin.event.fire('widget_load');
-						}
-					});
+                    $.ajax({
+                        url: tx_ajaxlogin.api.User.login,
+                        cache: false,
+                        error: function(a,b,c) {
+                            Ajaxlogin.fn.showView(a);
+                            Ajaxlogin.event.fire('widget_load');
+                        },
+                        success: function(a,b,c) {
+                            Ajaxlogin.fn.showView(c);
+                            Ajaxlogin.event.fire('widget_load');
+                        }
+                    });
 				}
 			},
 			logout: function() {
 				if ( tx_ajaxlogin.api.User.logout ) {
+                    Ajaxlogin.Cookie.erase('firstLoad');
 					$.ajax({
 						url: tx_ajaxlogin.api.User.logout,
 						cache: false,
@@ -49,6 +63,7 @@ var Ajaxlogin = Ajaxlogin || {};
 							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function(a,b,c) {
+                            storage.removeAll();
 							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('logout_success', [c]);
 							Ajaxlogin.event.fire('widget_load');
@@ -58,40 +73,46 @@ var Ajaxlogin = Ajaxlogin || {};
 			},
 			'new': function() {
 				if ( tx_ajaxlogin.api.User['new'] ) {
-					$.ajax({
-						url: tx_ajaxlogin.api.User['new'],
-						cache: false,
-						error: function(a,b,c) {
-							Ajaxlogin.fn.showView(a);
-							Ajaxlogin.event.fire('widget_load');
-						},
-						success: function(a,b,c) {
-							Ajaxlogin.fn.showView(c);
-							Ajaxlogin.event.fire('widget_load');
-						}
-					});
+                    storage.removeAll();
+                    $.ajax({
+                        url: tx_ajaxlogin.api.User['new'],
+                        cache: false,
+                        error: function(a,b,c) {
+                            Ajaxlogin.fn.showView(a);
+                            Ajaxlogin.event.fire('widget_load');
+                        },
+                        success: function(a,b,c) {
+                            Ajaxlogin.fn.showView(c);
+                            Ajaxlogin.event.fire('widget_load');
+                        }
+                    });
 				}
 			},
 			forgotPassword: function() {
 				if ( tx_ajaxlogin.api.User.forgotPassword ) {
-					$.ajax({
-						url: tx_ajaxlogin.api.User.forgotPassword,
-						cache: false,
-						error: function(a,b,c) {
-							Ajaxlogin.fn.showView(a);
-							Ajaxlogin.event.fire('widget_load');
-						},
-						success: function(a,b,c) {
-							Ajaxlogin.fn.showView(c);
-							Ajaxlogin.event.fire('widget_load');
-						}
-					});
+                    storage.removeAll();
+                    $.ajax({
+                        url: tx_ajaxlogin.api.User.forgotPassword,
+                        cache: false,
+                        error: function(a,b,c) {
+                            Ajaxlogin.fn.showView(a);
+                            Ajaxlogin.event.fire('widget_load');
+                        },
+                        success: function(a,b,c) {
+                            Ajaxlogin.fn.showView(c);
+                            Ajaxlogin.event.fire('widget_load');
+                        }
+                    });
 				}
 			}
 		},
 		fn: {
 			showView: function(c) {
-				view = c.getResponseHeader('X-Ajaxlogin-view');
+                if (storage.isSet('responseHeader')){
+                    view = storage.get('responseHeader');
+                } else {
+                    view = c.getResponseHeader('X-Ajaxlogin-view');
+                }
 				switch (view) {
 					case 'login':
 						Ajaxlogin.fn.showLoginForm(c);
@@ -110,11 +131,22 @@ var Ajaxlogin = Ajaxlogin || {};
 				}
 			},
 			showLoginForm: function(response) {
-				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
-				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
-				
-				var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
-				
+                if (storage.isSet('showView')) {
+                    view = storage.get('showView').responseText;
+                } else {
+                    view = response.responseText;
+                }
+
+                $(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
+                $(tx_ajaxlogin.placeholder).html(view).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
+
+                if (storage.isSet('responseToken')){
+                    token = storage.get('responseToken');
+                } else {
+                    token = response.getResponseHeader('X-Ajaxlogin-formToken');
+                }
+
+				var formEl = $('#' + token);
 				formEl.submit(function(event) {
 					event.preventDefault();
 					var input = Ajaxlogin.fn.resolveFormData($(this));
@@ -133,47 +165,63 @@ var Ajaxlogin = Ajaxlogin || {};
 							Ajaxlogin.fn.showView(a);
 						},
 						success: function(a,b,c){
+                            storage.setExpires(1).set('showView', c);
+                            storage.setExpires(1).set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
+                            storage.setExpires(1).set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
+
 							Ajaxlogin.event.fire('login_success', [c]);
 							Ajaxlogin.fn.showView(c);
 						}
 					});
 				});
 			},
-			showSignupForm: function(response) {
-				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
-				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
-				
-				var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
-				
-				formEl.submit(function(event) {
-					event.preventDefault();
-					
-					if(Ajaxlogin.validate.signup($(this))) {
-						var input = Ajaxlogin.fn.resolveFormData($(this));
-						
-						$.ajax({
-							url: tx_ajaxlogin.api.User.create,
-							cache: false,
-							type: 'POST',
-							data: $.extend({
-								referer: window.location.href,
-								redirectUrl: tx_ajaxlogin.redirect_url
-							}, input),
-							error: function(a,b,c) {
-								Ajaxlogin.event.fire('signup_error', [a]);
-								Ajaxlogin.fn.showView(a);
-							},
-							success: function(a,b,c) {
-								Ajaxlogin.event.fire('signup_success', [c]);
-								Ajaxlogin.fn.showView(c);
-							}
-						});
-					}
-				});
-			},
+            showSignupForm: function(response) {
+                $(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
+                $(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
+
+                var formEl = $('#' + response.getResponseHeader('X-Ajaxlogin-formToken'));
+
+                formEl.submit(function(event) {
+                    event.preventDefault();
+
+                    if(Ajaxlogin.validate.signup($(this))) {
+                        var input = Ajaxlogin.fn.resolveFormData($(this));
+
+                        $.ajax({
+                                   url: tx_ajaxlogin.api.User.create,
+                                   cache: false,
+                                   type: 'POST',
+                                   data: $.extend({
+                                                      referer: window.location.href,
+                                                      redirectUrl: tx_ajaxlogin.redirect_url
+                                                  }, input),
+                                   error: function(a,b,c) {
+                                       Ajaxlogin.event.fire('signup_error', [a]);
+                                       Ajaxlogin.fn.showView(a);
+                                   },
+                                   success: function(a,b,c) {
+                                       Ajaxlogin.event.fire('signup_success', [c]);
+                                       Ajaxlogin.fn.showView(c);
+                                   }
+                               });
+                    }
+                });
+            },
 			showUserInfo: function(response) {
+
+                if(!Ajaxlogin.Cookie.read("firstLoad") == 1){
+                    storage.removeAll();
+                }
+
+                Ajaxlogin.Cookie.create('firstLoad','1',1);
+                if (storage.isSet('showView')) {
+                    view = storage.get('showView').responseText;
+                } else {
+                    view = response.responseText;
+                }
+
 				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.accountPage+'">' + tx_ajaxlogin.ll.status_authenticated+'</a>');
-				$(tx_ajaxlogin.placeholder).html(response.responseText).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
+				$(tx_ajaxlogin.placeholder).html(view).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 			},
 			showForgotPasswordForm: function(response) {
 				$(tx_ajaxlogin.statusLabel).html('<a href="'+tx_ajaxlogin.loginPage+'">' + tx_ajaxlogin.ll.status_unauthorized+'</a>');
