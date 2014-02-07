@@ -12,18 +12,18 @@ var storage = $.localStorage;
                             url: tx_ajaxlogin.api.User.info,
                             cache: false,
                             error: function(a,b,c) {
-                                storage.setExpires(1).set('showView', a);
-                                storage.setExpires(1).set('responseToken', a.getResponseHeader('X-Ajaxlogin-formToken'));
-                                storage.setExpires(1).set('responseHeader', a.getResponseHeader('X-Ajaxlogin-view'));
+                                storage.set('showView', a);
+                                storage.set('responseToken', a.getResponseHeader('X-Ajaxlogin-formToken'));
+                                storage.set('responseHeader', a.getResponseHeader('X-Ajaxlogin-view'));
 
                                 Ajaxlogin.fn.showView(a);
                                 Ajaxlogin.event.fire('widget_load');
                             },
                             success: function(a,b,c) {
                                 storage.removeAll();
-                                storage.setExpires(1).set('showView', c);
-                                storage.setExpires(1).set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
-                                storage.setExpires(1).set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
+                                storage.set('showView', c);
+                                storage.set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
+                                storage.set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
 
                                 Ajaxlogin.fn.showView(c);
                                 Ajaxlogin.event.fire('widget_load');
@@ -165,9 +165,9 @@ var storage = $.localStorage;
 							Ajaxlogin.fn.showView(a);
 						},
 						success: function(a,b,c){
-                            storage.setExpires(1).set('showView', c);
-                            storage.setExpires(1).set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
-                            storage.setExpires(1).set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
+                            storage.set('showView', c);
+                            storage.set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
+                            storage.set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
 
 							Ajaxlogin.event.fire('login_success', [c]);
 							Ajaxlogin.fn.showView(c);
