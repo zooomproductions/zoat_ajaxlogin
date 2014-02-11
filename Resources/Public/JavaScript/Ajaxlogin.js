@@ -393,22 +393,6 @@ var Ajaxlogin = Ajaxlogin || {};
 		}
 	};
 
-	Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
-	Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
-	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
-
-	Ajaxlogin.event.addListener('login_success', function () {
-		Ajaxlogin.storage.removeAll();
-		Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
-	});
-	Ajaxlogin.event.addListener('login_error', function () {
-		Ajaxlogin.storage.removeAll();
-	});
-	Ajaxlogin.event.addListener('logout_success', function () {
-		Ajaxlogin.storage.removeAll();
-		Ajaxlogin.Cookie.erase('ajaxlogin_status');
-	});
-
 	if(window.localStorage && JSON) {
 		// if: browser supports localStorage, replace the dummy Ajaxlogin.storage. with a useful one
 		Ajaxlogin.storage = {
@@ -438,24 +422,42 @@ var Ajaxlogin = Ajaxlogin || {};
 				return this.get(key) != undefined;
 			},
 			removeAll: function() {
-				this.store.clear();
+				this.store.removeItem('responseHeader');
+				this.store.removeItem('responseToken');
+				this.store.removeItem('showView');
 			}
+		};
+
+		if(Ajaxlogin.storage.isSet('responseHeader')) {
+			// clear localStorage if the "ajaxlogin_status" cookie was changed
+			// This is necessary to recognize a browser restart (session cookie is removed, but localStorage persists)
+			if(Ajaxlogin.Cookie.read('ajaxlogin_status') != '1') {
+				if(Ajaxlogin.storage.get('responseHeader') != 'login') {
+					Ajaxlogin.storage.removeAll();
+				}
+			}
+		}
+		if(!Ajaxlogin.Cookie.read('PHPSESSID')) {
+			// PHPSESSID is required for the RSA login. Never cache if that cookie is not set, because login will fail.
+			Ajaxlogin.storage.removeAll();
 		}
 	}
 
-	if(Ajaxlogin.storage.isSet('responseHeader')) {
-		// clear localStorage if the "ajaxlogin_status" cookie was changed
-		// This is necessary to recognize a browser restart (session cookie is removed, but localStorage persists)
-		if(Ajaxlogin.Cookie.read('ajaxlogin_status') == '1') {
-			if(Ajaxlogin.storage.get('responseHeader') != 'info') {
-				Ajaxlogin.storage.removeAll();
-			}
-		} else {
-			if(Ajaxlogin.storage.get('responseHeader') != 'login') {
-				Ajaxlogin.storage.removeAll();
-			}
-		}
-	}
+	Ajaxlogin.event.addListener('login_success', Ajaxlogin.fn.doReloadOrRedirect);
+	Ajaxlogin.event.addListener('logout_success', Ajaxlogin.fn.doReloadOrRedirect);
+	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
+
+	Ajaxlogin.event.addListener('login_success', function () {
+		Ajaxlogin.storage.removeAll();
+		Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
+	});
+	Ajaxlogin.event.addListener('login_error', function () {
+		Ajaxlogin.storage.removeAll();
+	});
+	Ajaxlogin.event.addListener('logout_success', function () {
+		Ajaxlogin.storage.removeAll();
+		Ajaxlogin.Cookie.erase('ajaxlogin_status');
+	});
 
 	$.fn.Ajaxlogin = function () {
 		this.click(function (event) {
