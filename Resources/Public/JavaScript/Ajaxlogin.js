@@ -443,6 +443,20 @@ var Ajaxlogin = Ajaxlogin || {};
 		}
 	}
 
+	if(Ajaxlogin.storage.isSet('responseHeader')) {
+		// clear localStorage if the "ajaxlogin_status" cookie was changed
+		// This is necessary to recognize a browser restart (session cookie is removed, but localStorage persists)
+		if(Ajaxlogin.Cookie.read('ajaxlogin_status') == '1') {
+			if(Ajaxlogin.storage.get('responseHeader') != 'info') {
+				Ajaxlogin.storage.removeAll();
+			}
+		} else {
+			if(Ajaxlogin.storage.get('responseHeader') != 'login') {
+				Ajaxlogin.storage.removeAll();
+			}
+		}
+	}
+
 	$.fn.Ajaxlogin = function () {
 		this.click(function (event) {
 			event.preventDefault();
