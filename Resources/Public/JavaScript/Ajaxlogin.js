@@ -1,29 +1,39 @@
 var Ajaxlogin = Ajaxlogin || {};
-var storage = $.localStorage;
 
 (function ($) {
 	Ajaxlogin = {
 		_eventListeners: {},
+		// localstorage dedicated to cache login states and according responses
+		storage: {
+			// null implementation for browsers that don't support localStorage
+			// this will be replaced later on if the browser supports it
+			set: function() {},
+			get: function() {},
+			isSet: function() { return false; },
+			removeAll: function() {}
+		},
 		User: {
 			info: function () {
 				if (tx_ajaxlogin.api.User.info) {
-					if (storage.isEmpty('responseHeader')) {
+					if (!Ajaxlogin.storage.isSet('responseHeader')) {
 						$.ajax({
 							url: tx_ajaxlogin.api.User.info,
 							cache: false,
 							error: function (a, b, c) {
-								storage.set('showView', a);
-								storage.set('responseToken', a.getResponseHeader('X-Ajaxlogin-formToken'));
-								storage.set('responseHeader', a.getResponseHeader('X-Ajaxlogin-view'));
+								// login form, if user is not logged in
+								Ajaxlogin.storage.set('showView', a);
+								Ajaxlogin.storage.set('responseToken', a.getResponseHeader('X-Ajaxlogin-formToken'));
+								Ajaxlogin.storage.set('responseHeader', a.getResponseHeader('X-Ajaxlogin-view'));
 
 								Ajaxlogin.fn.showView(a);
 								Ajaxlogin.event.fire('widget_load');
 							},
 							success: function (a, b, c) {
-								storage.removeAll();
-								storage.set('showView', c);
-								storage.set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
-								storage.set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
+								// information page, if user is logged in
+								Ajaxlogin.storage.removeAll();
+								Ajaxlogin.storage.set('showView', c);
+								Ajaxlogin.storage.set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
+								Ajaxlogin.storage.set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
 
 								Ajaxlogin.fn.showView(c);
 								Ajaxlogin.event.fire('widget_load');
@@ -54,7 +64,6 @@ var storage = $.localStorage;
 			},
 			logout: function () {
 				if (tx_ajaxlogin.api.User.logout) {
-					Ajaxlogin.Cookie.erase('firstLoad');
 					$.ajax({
 						url: tx_ajaxlogin.api.User.logout,
 						cache: false,
@@ -63,7 +72,6 @@ var storage = $.localStorage;
 							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function (a, b, c) {
-							storage.removeAll();
 							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('logout_success', [c]);
 							Ajaxlogin.event.fire('widget_load');
@@ -73,7 +81,7 @@ var storage = $.localStorage;
 			},
 			'new': function () {
 				if (tx_ajaxlogin.api.User['new']) {
-					storage.removeAll();
+					Ajaxlogin.storage.removeAll(); // remove "responseHeader"
 					$.ajax({
 						url: tx_ajaxlogin.api.User['new'],
 						cache: false,
@@ -90,7 +98,7 @@ var storage = $.localStorage;
 			},
 			forgotPassword: function () {
 				if (tx_ajaxlogin.api.User.forgotPassword) {
-					storage.removeAll();
+					Ajaxlogin.storage.removeAll(); // remove "responseHeader"
 					$.ajax({
 						url: tx_ajaxlogin.api.User.forgotPassword,
 						cache: false,
@@ -108,8 +116,9 @@ var storage = $.localStorage;
 		},
 		fn: {
 			showView: function (c) {
-				if (storage.isSet('responseHeader')) {
-					view = storage.get('responseHeader');
+				var view;
+				if (Ajaxlogin.storage.isSet('responseHeader')) {
+					view = Ajaxlogin.storage.get('responseHeader');
 				} else {
 					view = c.getResponseHeader('X-Ajaxlogin-view');
 				}
@@ -131,8 +140,9 @@ var storage = $.localStorage;
 				}
 			},
 			showLoginForm: function (response) {
-				if (storage.isSet('showView')) {
-					view = storage.get('showView').responseText;
+				var view, token;
+				if (Ajaxlogin.storage.isSet('showView')) {
+					view = Ajaxlogin.storage.get('showView').responseText;
 				} else {
 					view = response.responseText;
 				}
@@ -140,8 +150,8 @@ var storage = $.localStorage;
 				$(tx_ajaxlogin.statusLabel).html('<a href="' + tx_ajaxlogin.loginPage + '">' + tx_ajaxlogin.ll.status_unauthorized + '</a>');
 				$(tx_ajaxlogin.placeholder).html(view).find("a[rel^='tx_ajaxlogin']").Ajaxlogin();
 
-				if (storage.isSet('responseToken')) {
-					token = storage.get('responseToken');
+				if (Ajaxlogin.storage.isSet('responseToken')) {
+					token = Ajaxlogin.storage.get('responseToken');
 				} else {
 					token = response.getResponseHeader('X-Ajaxlogin-formToken');
 				}
@@ -161,14 +171,12 @@ var storage = $.localStorage;
 							redirectUrl: tx_ajaxlogin.redirect_url
 						}, input),
 						error: function (a, b, c) {
+							// if login is invalid
 							Ajaxlogin.event.fire('login_error', [a]);
 							Ajaxlogin.fn.showView(a);
 						},
 						success: function (a, b, c) {
-							storage.set('showView', c);
-							storage.set('responseToken', c.getResponseHeader('X-Ajaxlogin-formToken'));
-							storage.set('responseHeader', c.getResponseHeader('X-Ajaxlogin-view'));
-
+							// if login is valid
 							Ajaxlogin.event.fire('login_success', [c]);
 							Ajaxlogin.fn.showView(c);
 						}
@@ -208,14 +216,9 @@ var storage = $.localStorage;
 				});
 			},
 			showUserInfo: function (response) {
-
-				if (!Ajaxlogin.Cookie.read("firstLoad") == 1) {
-					storage.removeAll();
-				}
-
-				Ajaxlogin.Cookie.create('firstLoad', '1', 1);
-				if (storage.isSet('showView')) {
-					view = storage.get('showView').responseText;
+				var view;
+				if (Ajaxlogin.storage.isSet('showView')) {
+					view = Ajaxlogin.storage.get('showView').responseText;
 				} else {
 					view = response.responseText;
 				}
@@ -395,11 +398,50 @@ var storage = $.localStorage;
 	Ajaxlogin.event.addListener('signup_success', Ajaxlogin.fn.doReloadOrRedirect);
 
 	Ajaxlogin.event.addListener('login_success', function () {
+		Ajaxlogin.storage.removeAll();
 		Ajaxlogin.Cookie.create('ajaxlogin_status', '1');
 	});
+	Ajaxlogin.event.addListener('login_error', function () {
+		Ajaxlogin.storage.removeAll();
+	});
 	Ajaxlogin.event.addListener('logout_success', function () {
+		Ajaxlogin.storage.removeAll();
 		Ajaxlogin.Cookie.erase('ajaxlogin_status');
 	});
+
+	if(window.localStorage && JSON) {
+		// if: browser supports localStorage, replace the dummy Ajaxlogin.storage. with a useful one
+		Ajaxlogin.storage = {
+			// don't use sessionStorage - it is not shared amongst browser tabs
+			store: window.localStorage,
+			defaultTTL: 300,
+			get: function(key) {
+				var d = this.store.getItem(key);
+				if(d) {
+					d = JSON.parse(d);
+					if(Date.now() > d.ts + this.defaultTTL * 1000) {
+						// if: cache expired
+						this.store.removeItem(key);
+						return;
+					}
+					return d.value;
+				}
+			},
+			set: function(key, value) {
+				var d = {
+					value: value,
+					ts: Date.now() // milliseconds!!
+				};
+				this.store.setItem(key, JSON.stringify(d));
+			},
+			isSet: function(key) {
+				return this.get(key) != undefined;
+			},
+			removeAll: function() {
+				this.store.clear();
+			}
+		}
+	}
 
 	$.fn.Ajaxlogin = function () {
 		this.click(function (event) {
