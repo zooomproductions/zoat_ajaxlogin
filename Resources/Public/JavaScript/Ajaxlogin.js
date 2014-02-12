@@ -72,8 +72,8 @@ var Ajaxlogin = Ajaxlogin || {};
 							Ajaxlogin.event.fire('widget_load');
 						},
 						success: function (a, b, c) {
-							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('logout_success', [c]);
+							Ajaxlogin.fn.showView(c);
 							Ajaxlogin.event.fire('widget_load');
 						}
 					});
