@@ -350,7 +350,7 @@ var Ajaxlogin = Ajaxlogin || {};
 					var listeners = Ajaxlogin._eventListeners[event.type];
 					for (var i = 0, len = listeners.length; i < len; i++) {
 						if (typeof listeners[i] === 'object' || typeof listeners[i] === 'function') {
-							listeners[i].apply(event, args);
+							listeners[i].apply(event, args || []); // IE requires args to be an array (not undefined)
 						}
 					}
 				}
@@ -403,7 +403,7 @@ var Ajaxlogin = Ajaxlogin || {};
 				var d = this.store.getItem(key);
 				if(d) {
 					d = JSON.parse(d);
-					if(Date.now() > d.ts + this.defaultTTL * 1000) {
+					if((new Date).getTime() > d.ts + this.defaultTTL * 1000) {
 						// if: cache expired
 						this.store.removeItem(key);
 						return;
@@ -414,7 +414,7 @@ var Ajaxlogin = Ajaxlogin || {};
 			set: function(key, value) {
 				var d = {
 					value: value,
-					ts: Date.now() // milliseconds!!
+					ts: (new Date).getTime() // milliseconds!!
 				};
 				this.store.setItem(key, JSON.stringify(d));
 			},
