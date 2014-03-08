@@ -15,7 +15,7 @@ plugin.tx_ajaxlogin {
 						message = The given email-address was not valid.
 					}
 					username {
-						pattern = /^[0-9a-z\-_]{3,20}$/
+						pattern = /^[0-9a-z][0-9a-z\-_]{1,18}[0-9a-z]$/
 						message = Username must be at least 3 characters and can contain 0-9 a-z - _ only.
 					}
 					password {
