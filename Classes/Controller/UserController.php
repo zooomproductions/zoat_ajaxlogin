@@ -366,6 +366,22 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 		$this->view->assign('countries', $countries);
 	}
 
+
+	/**
+	 * replaces the validator of the standard user model
+	 * with the validator of the modified user model (without username validation
+	 */
+	public function initializeUpdateAction() {
+		if ($this->arguments->hasArgument('user')) {
+			/** @var Tx_Extbase_Validation_ValidatorResolver $validatorResolver */
+			$validatorResolver = $this->objectManager->get('Tx_Extbase_Validation_ValidatorResolver');
+			$userForEditingValidator = $validatorResolver->getBaseValidatorConjunction('Tx_Ajaxlogin_Domain_Model_UserForEditing');
+
+			// set validator of modified user model as standard user model
+			$this->arguments->getArgument('user')->setValidator($userForEditingValidator);
+		}
+	}
+
 	/**
 	 * Updates an existing user
 	 *

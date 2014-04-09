@@ -16,7 +16,7 @@ class Tx_Ajaxlogin_Domain_Validator_CustomRegularExpressionValidator extends Tx_
 			$this->addError($message, 1307626687);
 			return false;
 		}
-		
+
 		return true;
 	}
 }
