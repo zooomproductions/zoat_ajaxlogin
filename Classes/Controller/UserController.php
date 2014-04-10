@@ -37,34 +37,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 
 	/**
-	 * @param $user
-	 * @param $queue
-	 * @return boolean
-	 */
-	protected function notifyQueue(Tx_Ajaxlogin_Domain_Model_User $user, $queue) {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$producerService = $objectManager->get('Tx_Amqp_Service_ProducerService');
-
-		$data = $this->convertUserObjectForMessageQueue($user);
-		return $producerService->send($data, $queue);
-	}
-
-	/**
-	 * converts a user object into a sanitized presentation to push into a message queue
-	 *
-	 * @param Tx_Ajaxlogin_Domain_Model_User $user
-	 * @return array
-	 */
-	protected function convertUserObjectForMessageQueue(Tx_Ajaxlogin_Domain_Model_User $user) {
-		return array(
-			'uid' => $user->getUid(),
-			'username' => $user->getUsername(),
-			'name' => $user->getName(),
-			'email' => $user->getEmail(),
-		);
-	}
-
-	/**
 	 * Initializes the view before invoking an action method.
 	 *
 	 * Override this method to solve assign variables common for all actions
@@ -459,7 +431,6 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 
 			$this->userRepository->update($user);
 			$this->userRepository->_persistAll();
-			$this->notifyQueue($user, 'user_register');
 
 				// automatically sign in the user
 			Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
