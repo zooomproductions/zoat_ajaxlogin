@@ -79,6 +79,8 @@ plugin.tx_ajaxlogin {
 				enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
 				activateAccount = {$plugin.tx_ajaxlogin.settings.actionPid.activateAccount}
 			}
+
+			page.passwordChangeSuccess = {$plugin.tx_ajaxlogin.settings.page.passwordChangeSuccess}
 		}
 		persistence {
 				storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}

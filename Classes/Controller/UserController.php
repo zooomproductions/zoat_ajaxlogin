@@ -665,11 +665,70 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 
 	/**
+	 * Generates password-change form.
+	 *
+	 * @param $errors array     Custom validation errors.
+	 */
+	public function changePasswordAction(array $errors = null) {
+		$this->view->assignMultiple(array(
+				'user' => $this->userRepository->findCurrent(),
+				'errors' => $errors
+			)
+		);
+	}
+
+	/**
+	 * @param array $password       Associate array with the following keys.
+	 *                              cur   - Current password
+	 *                              new   - New password
+	 *                              check - Confirmed new password
+	 * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
+	 * @return string
+	 */
+	public function doChangePasswordAction(array $password) {
+		$errors = array();
+		$currentUser = $this->userRepository->findCurrent();
+
+		if (isset($password['cur']) && isset($password['new']) && isset($password['check'])) {
+			$plainTextPassword = $password['cur'];
+			$encryptedPassword = $currentUser->getPassword();
+
+			if (Tx_Ajaxlogin_Utility_Password::validate($plainTextPassword, $encryptedPassword)) {
+				$saltedPassword = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
+				$currentUser->setPassword($saltedPassword);
+
+					// redirect (if configured) or show static success text
+				$redirectPageId = intval($this->settings['page']['passwordChangeSuccess']);
+				if ($redirectPageId > 0) {
+					$this->redirectToPage($redirectPageId);
+				} else {
+					return Tx_Extbase_Utility_Localization::translate('password_updated', 'ajaxlogin');
+				}
+			} else {
+				$errors['current_password'] = Tx_Extbase_Utility_Localization::translate('password_invalid', 'ajaxlogin');
+			}
+		}
+
+		$this->forward('changePassword', null, null, array('errors' => $errors));
+	}
+
+	/**
+	 * Redirects user to the page identified by the given page-id.
+	 *
+	 * @param int $pageId   ID of the page to redirect to.
+	 */
+	private function redirectToPage($pageId) {
+		$uri = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($pageId)
+				->build();
+		$this->redirectToURI($uri);
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function getFormToken() {
 		return 'tx-ajaxlogin-form' . md5 ( microtime() );
 	}
 }
-
-?>

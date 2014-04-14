@@ -24,5 +24,23 @@ class Tx_Ajaxlogin_Utility_Password {
 			
 		return $string;
 	}
+
+	/**
+	 * Checks if the given plain-text and salted passwords match.
+	 *
+	 * @param  string $plainTextPassword    Plain test password.
+	 * @param  string $encryptedPassword    Salted password.
+	 * @return bool                         Returns TRUE if plain-text and salted passwords match, else FALSE.
+	 */
+	public static function validate($plainTextPassword, $encryptedPassword) {
+		$status = false;
+
+		/** @var tx_saltedpasswords_salts $saltingInstance */
+		$saltingInstance = tx_saltedpasswords_salts_factory::getSaltingInstance();
+		if (is_object($saltingInstance)) {
+			$status = $saltingInstance->checkPassword($plainTextPassword, $encryptedPassword);
+		}
+
+		return $status;
+	}
 }
-?>

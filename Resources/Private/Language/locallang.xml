@@ -23,6 +23,7 @@
 			<label index="password.new">New password</label>
 			<label index="password.check">New password (check)</label>
 			<label index="password.repeat">Repeat</label>
+			<label index="password.current">Current password</label>
 
 			<label index="update_user">Update account</label>
 			<label index="signup_user">Sign up!</label>

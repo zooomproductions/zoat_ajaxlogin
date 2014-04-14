@@ -39,6 +39,8 @@ plugin.tx_ajaxlogin {
 				enableAccount = 0
 				activateAccount = 0
 			}
+
+			page.passwordChangeSuccess = 0
 		}
 		view {
 				 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)
