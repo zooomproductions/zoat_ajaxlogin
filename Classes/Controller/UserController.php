@@ -37,6 +37,35 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 	}
 
 	/**
+	 * @param $user
+	 * @param $exchange
+	 * @return boolean
+	 */
+	protected function notifyExchange(Tx_Ajaxlogin_Domain_Model_User $user, $exchange) {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		/** @var Tx_Amqp_Service_ProducerService $producerService */
+		$producerService = $objectManager->get('Tx_Amqp_Service_ProducerService');
+
+		$data = $this->convertUserObjectForMessageQueue($user);
+		return $producerService->sendToExchange($data, $exchange);
+	}
+
+	/**
+	 * converts a user object into a sanitized presentation to push into a message queue
+	 *
+	 * @param Tx_Ajaxlogin_Domain_Model_User $user
+	 * @return array
+	 */
+	protected function convertUserObjectForMessageQueue(Tx_Ajaxlogin_Domain_Model_User $user) {
+		return array(
+			'uid' => $user->getUid(),
+			'username' => $user->getUsername(),
+			'name' => $user->getName(),
+			'email' => $user->getEmail(),
+		);
+	}
+
+	/**
 	 * Initializes the view before invoking an action method.
 	 *
 	 * Override this method to solve assign variables common for all actions
@@ -431,6 +460,8 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 
 			$this->userRepository->update($user);
 			$this->userRepository->_persistAll();
+
+			$this->notifyExchange($user, 'org.typo3.www.user.register');
 
 				// automatically sign in the user
 			Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
