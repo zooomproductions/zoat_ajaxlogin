@@ -461,7 +461,7 @@ class Tx_Ajaxlogin_Controller_UserController extends Tx_Extbase_MVC_Controller_A
 			$this->userRepository->update($user);
 			$this->userRepository->_persistAll();
 
-			$this->notifyExchange($user, 'org.typo3.www.user.register');
+			$this->notifyExchange($user, 'org.typo3.user.register');
 
 				// automatically sign in the user
 			Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
