@@ -16,7 +16,7 @@ plugin.tx_ajaxlogin {
 					}
 					username {
 						pattern = /^[0-9a-z][0-9a-z\-_]{1,18}[0-9a-z]$/
-						message = Username must be at least 3 characters and can contain 0-9 a-z - _ only.
+						message = Username must be at least 3 and maximum 20 characters and can contain 0-9 a-z - _ only.
 					}
 					password {
 						pattern = /^.{8,}$/
