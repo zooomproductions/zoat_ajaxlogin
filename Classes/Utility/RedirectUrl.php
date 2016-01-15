@@ -56,7 +56,7 @@ class Tx_Ajaxlogin_Utility_RedirectUrl {
 			}
 		}
 
-		return self::sanitizeUrl($res);
+		return t3lib_div::sanitizeLocalUrl($res);
 	}
 
 }
