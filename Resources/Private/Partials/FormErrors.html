@@ -1,8 +1,8 @@
 <f:form.errors>
-	<div class="tx-ajaxlogin-errors">
-		<ul class="tx-ajaxlogin-error-property-{error.propertyName}">
+	<div class="tx-zoatajaxlogin-errors">
+		<ul class="tx-zoatajaxlogin-error-property-{error.propertyName}">
 			<f:for each="{error.errors}" as="propertyError">
-				<li class="tx-ajaxlogin-error-property-{propertyError.propertyName}">
+				<li class="tx-zoatajaxlogin-error-property-{propertyError.propertyName}">
 					{propertyError.message} ({propertyError.code})
 					<ul>
 					<f:for each="{propertyError.errors}" as="errorDetail">

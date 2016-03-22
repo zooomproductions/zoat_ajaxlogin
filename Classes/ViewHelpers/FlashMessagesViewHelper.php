@@ -1,5 +1,7 @@
 <?php
 
+namespace Zooom\ZoatAjaxlogin\ViewHelpers;
+
 /*                                                                        *
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
@@ -19,6 +21,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
@@ -60,47 +64,48 @@
  * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ *
  * @api
  */
-class Tx_Ajaxlogin_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_ViewHelpers_FlashMessagesViewHelper {
+class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
+{
+    /*
+     * Renders the flash messages as nested divs
+     *
+     * @param array $flashMessages array<\TYPO3\CMS\Core\Messaging\FlashMessage>
+     * @return string
+     */
+    protected function renderDiv(array $flashMessages)
+    {
+        if (!$GLOBALS['TSFE']->type) {
+            $this->tag->setTagName('div');
+            if ($this->arguments->hasArgument('class')) {
+                $this->tag->addAttribute('class', $this->arguments['class']);
+            } else {
+                $this->tag->addAttribute('class', 'typo3-messages');
+            }
+            $tagContent = '';
+            $severity = array(
+                    AbstractMessage::NOTICE => array('class' => '', 'title' => ''),
+                    AbstractMessage::INFO => array('class' => '', 'title' => ''),
+                    AbstractMessage::OK => array('class' => 'congratulations', 'title' => 'Congratulations!'),
+                    AbstractMessage::WARNING => array('class' => 'warning', 'title' => 'Warning!'),
+                    AbstractMessage::ERROR => array('class' => 'error', 'title' => 'Error notification'),
+                );
+            foreach ($flashMessages as $singleFlashMessage) {
+                $s = $singleFlashMessage->getSeverity();
+                $tagContent .= '<div class="b-message ' . strtolower($severity[$s]['class']) . '">';
 
-	/*
-	 * Renders the flash messages as nested divs
-	 *
-	 * @param array $flashMessages array<t3lib_FlashMessage>
-	 * @return string
-	 */
-	protected function renderDiv(array $flashMessages) {
-		if (!$GLOBALS['TSFE']->type) {
-			$this->tag->setTagName('div');
-			if ($this->arguments->hasArgument('class')) {
-				$this->tag->addAttribute('class', $this->arguments['class']);
-			} else {
-				$this->tag->addAttribute('class', 'typo3-messages');
-			}
-			$tagContent = '';
-			$severity = Array(
-					t3lib_message_AbstractMessage::NOTICE	=> Array('class'=>'','title'=>''),
-					t3lib_message_AbstractMessage::INFO 	=> Array('class'=>'','title'=>''),
-					t3lib_message_AbstractMessage::OK 		=> Array('class'=>'congratulations','title'=>'Congratulations!'),
-					t3lib_message_AbstractMessage::WARNING 	=> Array('class'=>'warning','title'=>'Warning!'),
-					t3lib_message_AbstractMessage::ERROR	=> Array('class'=>'error','title'=>'Error notification'),
-				);
-			foreach ($flashMessages as $singleFlashMessage) {
-				$s = $singleFlashMessage->getSeverity();
-				$tagContent .= '<div class="b-message '.strtolower($severity[$s]['class']).'">';
-				
-				if($s == t3lib_message_AbstractMessage::OK || $s == t3lib_message_AbstractMessage::WARNING || $s == t3lib_message_AbstractMessage::ERROR){
-					$tagContent .= '<p class="severity">'.$severity[$s]['title'].'</p>';
-				}
-				$tagContent .= '<p>'.$singleFlashMessage->getMessage().'</p></div>';
-			}
-			$this->tag->setContent($tagContent);
-			return $this->tag->render();
-		} else {
-			return parent::renderDiv($flashMessages);
-		}
-	}
+                if ($s == AbstractMessage::OK || $s == AbstractMessage::WARNING || $s == AbstractMessage::ERROR) {
+                    $tagContent .= '<p class="severity">' . $severity[$s]['title'] . '</p>';
+                }
+                $tagContent .= '<p>' . $singleFlashMessage->getMessage() . '</p></div>';
+            }
+            $this->tag->setContent($tagContent);
+
+            return $this->tag->render();
+        } else {
+            return parent::renderDiv($flashMessages);
+        }
+    }
 }
-
-?>

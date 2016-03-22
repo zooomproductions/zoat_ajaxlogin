@@ -1,7 +1,7 @@
 <?php
 
-namespace Zooom\ZoatAjaxLogin\Domain\Model;
+namespace Zooom\ZoatAjaxlogin\Domain\Model;
 
-class UserGroup extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
+class FrontendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
 {
 }

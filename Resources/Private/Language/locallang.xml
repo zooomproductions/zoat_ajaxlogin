@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Texts for plugin 'ajaxlogin'</description>
+		<description>Texts for plugin 'zoat_ajaxlogin'</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -18,7 +18,7 @@
 			<label index="user.telephone">Telephone</label>
 			<label index="user.fax">Fax</label>
 			<label index="user.www">Homepage</label>
-			
+
 			<label index="password">Password</label>
 			<label index="password.new">New password</label>
 			<label index="password.check">New password (check)</label>
@@ -32,10 +32,10 @@
 			<label index="forgot_password">Forgot password?</label>
 			<label index="recover_password">Reset password</label>
 			<label index="permalogin">Stay logged in</label>
-			
+
 			<label index="button_login">Login</label>
 			<label index="button_signup">Sign up!</label>
-			
+
 			<label index="authentication_failed">Login or password incorrect.</label>
 			<label index="signup_successful">Sign-up successful! Please check your inbox for the activation link.</label>
 			<label index="login_successful">Welcome back! You are now logged in.</label>
@@ -43,14 +43,14 @@
 
 			<label index="username_or_email">Username or e-mail address</label>
 			<label index="user_notfound">No user with this username or e-mail address (%s) was found</label>
-			
+
 			<label index="password_invalid">The given password is not valid</label>
 			<label index="password_updated">Your password has been updated, the next time you sign in use your new password</label>
-			
+
 			<label index="status_loading">Loading</label>
 			<label index="status_authenticated">My account</label>
 			<label index="status_unauthorized">Login</label>
-			
+
 			<label index="resetpassword_notification_subject">Reset your password for %s</label>
 			<label index="resetpassword_notification_sent">An email has been sent to the known email address belonging to your account with further instructions to change your password</label>
 

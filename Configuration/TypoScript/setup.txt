@@ -1,107 +1,101 @@
 config.tx_extbase {
-		persistence {
-				classes {
-						Tx_Extbase_Domain_Model_FrontendUser {
-								subclasses {
-										Tx_Ajaxlogin_Domain_Model_User = Tx_Ajaxlogin_Domain_Model_User
-								}
-						}
-						Tx_Extbase_Domain_Model_FrontendUserGroup {
-								subclasses {
-										Tx_Ajaxlogin_Domain_Model_UserGroup = Tx_Ajaxlogin_Domain_Model_UserGroup
-								}
-						}
-						Tx_Ajaxlogin_Domain_Model_User {
-								mapping {
-										tableName = fe_users
-										columns {
-											tx_ajaxlogin_forgotHash.mapOnProperty = forgotHash
-											tx_ajaxlogin_verificationHash.mapOnProperty = verificationHash
-											tx_ajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
-										}
-								}
-						}
-						Tx_Ajaxlogin_Domain_Model_UserGroup {
-								mapping {
-										tableName = fe_groups
-								}
-						}
-						Tx_Ajaxlogin_Domain_Model_Country {
-								mapping {
-										tableName = static_countries
-										columns {
-												cn_short_en.mapOnProperty = cnShortEn
-										}
-								}
-						}
+	persistence {
+		classes {
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+				subclasses {
+					Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser = Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser
 				}
-		}
-}
-
-plugin.tx_ajaxlogin {
-		settings {
-			widgetTypeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
-			defaultUserGroups = {$plugin.tx_ajaxlogin.settings.defaultUserGroups}
-			defaultUserGroupsAfterVerification = {$plugin.tx_ajaxlogin.settings.defaultUserGroupsAfterVerification}
-			validation {
-				User {
-					name {
-						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.name.pattern}
-						message  = {$plugin.tx_ajaxlogin.settings.validation.User.name.message}
-					}
-					# Currently not used (but extbase default email-address validator)
-					email {
-						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.email.pattern}
-						message  = {$plugin.tx_ajaxlogin.settings.validation.User.email.message}
-					}
-					username {
-						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.username.pattern}
-						message  = {$plugin.tx_ajaxlogin.settings.validation.User.username.message}
-					}
-					password {
-						pattern = {$plugin.tx_ajaxlogin.settings.validation.User.password.pattern}
-						message = {$plugin.tx_ajaxlogin.settings.validation.User.password.message}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
+				subclasses {
+					Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup = Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup
+				}
+			}
+			Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser {
+				mapping {
+					tableName = fe_users
+					columns {
+						tx_zoatajaxlogin_forgotHash.mapOnProperty = forgotHash
+						tx_zoatajaxlogin_verificationHash.mapOnProperty = verificationHash
+						tx_zoatajaxlogin_forgotHashValid.mapOnProperty = forgotHashValid
 					}
 				}
-				passwordMinLength = 8
 			}
-			notificationMail {
-				sender = {$plugin.tx_ajaxlogin.settings.notificationMail.sender}
-				emailAddress = {$plugin.tx_ajaxlogin.settings.notificationMail.emailAddress}
+			Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+				}
 			}
-			actionPid {
-				login = {$plugin.tx_ajaxlogin.settings.actionPid.login}
-				show = {$plugin.tx_ajaxlogin.settings.actionPid.show}
-				signUp = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
-				edit = {$plugin.tx_ajaxlogin.settings.actionPid.edit}
-				editPassword = {$plugin.tx_ajaxlogin.settings.actionPid.editPassword}
-				closeAccount = {$plugin.tx_ajaxlogin.settings.actionPid.closeAccount}
-				enableAccount = {$plugin.tx_ajaxlogin.settings.actionPid.enableAccount}
-				activateAccount = {$plugin.tx_ajaxlogin.settings.actionPid.activateAccount}
-			}
-
-			page.passwordChangeSuccess = {$plugin.tx_ajaxlogin.settings.page.passwordChangeSuccess}
 		}
-		persistence {
-				storagePid = {$plugin.tx_ajaxlogin.persistence.storagePid}
-		}
-		features {
-			rewrittenPropertyMapper = 1
-		}
-		view {
-				templateRootPath = {$plugin.tx_ajaxlogin.view.templateRootPath}
-				partialRootPath = {$plugin.tx_ajaxlogin.view.partialRootPath}
-				layoutRootPath = {$plugin.tx_ajaxlogin.view.layoutRootPath}
-		}
+	}
 }
 
-tx_ajaxlogin_widget = PAGE
-tx_ajaxlogin_widget {
-	typeNum = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
+plugin.tx_zoatajaxlogin {
+	settings {
+		widgetTypeNum = {$plugin.tx_zoatajaxlogin.settings.widgetTypeNum}
+		defaultUserGroups = {$plugin.tx_zoatajaxlogin.settings.defaultUserGroups}
+		defaultUserGroupsAfterVerification = {$plugin.tx_zoatajaxlogin.settings.defaultUserGroupsAfterVerification}
+		validation {
+			User {
+				name {
+					pattern = {$plugin.tx_zoatajaxlogin.settings.validation.User.name.pattern}
+					message  = {$plugin.tx_zoatajaxlogin.settings.validation.User.name.message}
+				}
+				# Currently not used (but extbase default email-address validator)
+				email {
+					pattern = {$plugin.tx_zoatajaxlogin.settings.validation.User.email.pattern}
+					message  = {$plugin.tx_zoatajaxlogin.settings.validation.User.email.message}
+				}
+				username {
+					pattern = {$plugin.tx_zoatajaxlogin.settings.validation.User.username.pattern}
+					message  = {$plugin.tx_zoatajaxlogin.settings.validation.User.username.message}
+				}
+				password {
+					pattern = {$plugin.tx_zoatajaxlogin.settings.validation.User.password.pattern}
+					message = {$plugin.tx_zoatajaxlogin.settings.validation.User.password.message}
+				}
+			}
+			passwordMinLength = 8
+		}
+		notificationMail {
+			sender = {$plugin.tx_zoatajaxlogin.settings.notificationMail.sender}
+			emailAddress = {$plugin.tx_zoatajaxlogin.settings.notificationMail.emailAddress}
+		}
+		actionPid {
+			login = {$plugin.tx_zoatajaxlogin.settings.actionPid.login}
+			show = {$plugin.tx_zoatajaxlogin.settings.actionPid.show}
+			signUp = {$plugin.tx_zoatajaxlogin.settings.actionPid.signUp}
+			edit = {$plugin.tx_zoatajaxlogin.settings.actionPid.edit}
+			editPassword = {$plugin.tx_zoatajaxlogin.settings.actionPid.editPassword}
+			closeAccount = {$plugin.tx_zoatajaxlogin.settings.actionPid.closeAccount}
+			enableAccount = {$plugin.tx_zoatajaxlogin.settings.actionPid.enableAccount}
+			activateAccount = {$plugin.tx_zoatajaxlogin.settings.actionPid.activateAccount}
+		}
+
+		page.passwordChangeSuccess = {$plugin.tx_zoatajaxlogin.settings.page.passwordChangeSuccess}
+	}
+	persistence {
+			storagePid = {$plugin.tx_zoatajaxlogin.persistence.storagePid}
+	}
+	features {
+		rewrittenPropertyMapper = 1
+	}
+	view {
+		templateRootPaths.0 = {$plugin.tx_zoatajaxlogin.view.templateRootPaths.default}
+		partialRootPaths.0 = {$plugin.tx_zoatajaxlogin.view.partialRootPaths.default}
+		layoutRootPaths.0 = {$plugin.tx_zoatajaxlogin.view.layoutRootPaths.default}
+	}
+}
+
+module.tx_zoatajaxlogin < plugin.tx_zoatajaxlogin
+
+tx_zoatajaxlogin_widget = PAGE
+tx_zoatajaxlogin_widget {
+	typeNum = {$plugin.tx_zoatajaxlogin.settings.widgetTypeNum}
 	config.disableAllHeaderCode = 1
 	config.stat = 0
 
-	10 < tt_content.list.20.ajaxlogin_widget
+	10 < tt_content.list.20.zoatajaxlogin_widget
 	10 = USER_INT
 }
 
@@ -119,18 +113,18 @@ page.jsInline.98987 {
 
 			10 = TEXT
 			10 {
-				typolink.parameter = {$plugin.tx_ajaxlogin.settings.ajaxPid}
+				typolink.parameter = {$plugin.tx_zoatajaxlogin.settings.ajaxPid}
 				#typolink.forceAbsoluteUrl = 1
 				typolink.additionalParams.cObject = COA
 				typolink.additionalParams.cObject {
 					10 = TEXT
 					10.value = info
-					10.wrap = &tx_ajaxlogin_widget[action]=|
+					10.wrap = &tx_zoatajaxlogin_widget[action]=|
 					20 = TEXT
 					20.value = User
-					20.wrap = &tx_ajaxlogin_widget[controller]=|
+					20.wrap = &tx_zoatajaxlogin_widget[controller]=|
 					30 = TEXT
-					30.value = {$plugin.tx_ajaxlogin.settings.widgetTypeNum}
+					30.value = {$plugin.tx_zoatajaxlogin.settings.widgetTypeNum}
 					30.wrap = &type=|
 				}
 				typolink.returnLast = url
@@ -190,7 +184,7 @@ page.jsInline.98987 {
 	20.wrap = ,placeholder: '|'
 
 	30 = TEXT
-	30.value = {$plugin.tx_ajaxlogin.persistence.storagePid}
+	30.value = {$plugin.tx_zoatajaxlogin.persistence.storagePid}
 	30.wrap = ,storagePid:|
 
 	40 = TEXT
@@ -198,7 +192,7 @@ page.jsInline.98987 {
 	40.wrap = ,statusLabel:'|'
 
 	50 = TEXT
-	50.value = #tx-ajaxlogin-editPassword
+	50.value = #tx-zoatajaxlogin-editPassword
 	50.wrap = ,editPasswordForm:'|'
 
 	60 = TEXT
@@ -208,15 +202,15 @@ page.jsInline.98987 {
 	70 = COA
 	70 {
 		10 = TEXT
-		10.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_authenticated
+		10.data = LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang.xml:status_authenticated
 		10.wrap = status_authenticated:'|'
 
 		20 = TEXT
-		20.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_unauthorized
+		20.data = LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang.xml:status_unauthorized
 		20.wrap = ,status_unauthorized:'|'
 
 		30 = TEXT
-		30.data = LLL:EXT:ajaxlogin/Resources/Private/Language/locallang.xml:status_loading
+		30.data = LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang.xml:status_loading
 		30.wrap = ,status_loading:'|'
 
 		wrap = ,ll:{|}
@@ -227,11 +221,11 @@ page.jsInline.98987 {
 		10 = COA
 		10 {
 			10 = TEXT
-			10.value = {$plugin.tx_ajaxlogin.settings.validation.User.username.pattern}
+			10.value = {$plugin.tx_zoatajaxlogin.settings.validation.User.username.pattern}
 			10.wrap = username:|
 
 			20 = TEXT
-			20.value = {$plugin.tx_ajaxlogin.settings.validation.User.password.pattern}
+			20.value = {$plugin.tx_zoatajaxlogin.settings.validation.User.password.pattern}
 			20.wrap = ,password:|
 
 			wrap = User:{|}
@@ -243,13 +237,13 @@ page.jsInline.98987 {
 			10 {
 				10 = TEXT
 				10 {
-					value = #tx-ajaxlogin-user-password
+					value = #tx-zoatajaxlogin-user-password
 					wrap = '|'
 				}
 
 				20 = TEXT
 				20 {
-					value = #tx-ajaxlogin-password-check
+					value = #tx-zoatajaxlogin-password-check
 					wrap = ,'|'
 				}
 
@@ -260,13 +254,13 @@ page.jsInline.98987 {
 			20 {
 				10 = TEXT
 				10 {
-					value = #tx-ajaxlogin-user-email
+					value = #tx-zoatajaxlogin-user-email
 					wrap = '|'
 				}
 
 				20 = TEXT
 				20 {
-					value = #tx-ajaxlogin-email-check
+					value = #tx-zoatajaxlogin-email-check
 					wrap = ,'|'
 				}
 
@@ -284,45 +278,45 @@ page.jsInline.98987 {
 	90.wrap = ,doReloadOnSuccess:|
 
 	100 = TEXT
-	100.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.login}
+	100.typolink.parameter = {$plugin.tx_zoatajaxlogin.settings.actionPid.login}
 	100.typolink.forceAbsoluteUrl = 1
 	100.typolink.returnLast = url
 	100.wrap = ,loginPage:'|'
 
 	110 = TEXT
-	110.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.show}
+	110.typolink.parameter = {$plugin.tx_zoatajaxlogin.settings.actionPid.show}
 	110.typolink.forceAbsoluteUrl = 1
 	110.typolink.returnLast = url
 	110.wrap = ,accountPage:'|'
 
 	120 = TEXT
-	120.typolink.parameter = {$plugin.tx_ajaxlogin.settings.actionPid.signUp}
+	120.typolink.parameter = {$plugin.tx_zoatajaxlogin.settings.actionPid.signUp}
 	120.typolink.forceAbsoluteUrl = 1
 	120.typolink.returnLast = url
 	120.wrap = ,signUpPage:'|'
 
-	wrap = var tx_ajaxlogin = {|};
+	wrap = var tx_zoatajaxlogin = {|};
 }
 
 page.jsInline.98988 = TEXT
 page.jsInline.98988.value (
 	if ("https:" == document.location.protocol) {
-		jQuery.each(tx_ajaxlogin.api.User , function(index,item) { tx_ajaxlogin.api.User[index] = item.replace(/http:/, 'https:'); });
-		jQuery.each(tx_ajaxlogin , function(index,item) { if (typeof tx_ajaxlogin[index] != 'string') return; tx_ajaxlogin[index] = item.replace(/http:/, 'https:'); });
+		jQuery.each(tx_zoatajaxlogin.api.User , function(index,item) { tx_zoatajaxlogin.api.User[index] = item.replace(/http:/, 'https:'); });
+		jQuery.each(tx_zoatajaxlogin , function(index,item) { if (typeof tx_zoatajaxlogin[index] != 'string') return; tx_zoatajaxlogin[index] = item.replace(/http:/, 'https:'); });
 	}
 )
 
-page.includeJSFooter.tx-ajaxlogin = EXT:ajaxlogin/Resources/Public/JavaScript/Ajaxlogin.js
+page.includeJSFooter.tx-zoatajaxlogin = EXT:zoat_ajaxlogin/Resources/Public/JavaScript/Ajaxlogin.js
 
 page.footerData.98987 = COA
 page.footerData.98987 {
 	10 = TEXT
-	10.value = var tx_ajaxlogin = tx_ajaxlogin || {};
+	10.value = var tx_zoatajaxlogin = tx_zoatajaxlogin || {};
 
 	20 = TEXT
-	20.data =	levelfield : -1, tx_ajaxlogin_sectionreload, slide
+	20.data =	levelfield : -1, tx_zoatajaxlogin_sectionreload, slide
 	20.stdWrap.prioriCalc = intval
-	20.wrap = tx_ajaxlogin.doReloadOnSuccess=|;
+	20.wrap = tx_zoatajaxlogin.doReloadOnSuccess=|;
 
 	wrap = <script type="text/javascript">|</script>
 }

@@ -3,21 +3,22 @@
 namespace Zooom\ZoatAjaxlogin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser;
-
+use Zooom\ZoatAjaxlogin\Utility;
 
 class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
-     * @var \Zooom\Zoat\Ajaxlogin\Domain\Repository\FrontendUserRepository
+     * @var \Zooom\ZoatAjaxlogin\Domain\Repository\FrontendUserRepository
      * @inject
      */
     protected $userRepository;
 
     /**
-     * @var \Zooom\Zoat\Ajaxlogin\Domain\Repository\FrontendUserGroupRepository
+     * @var \Zooom\ZoatAjaxlogin\Domain\Repository\FrontendUserGroupRepository
      * @inject
      */
     protected $userGroupRepository;
@@ -116,12 +117,12 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $user = $this->userRepository->findCurrent();
 
         if (!is_null($user)) {
-            $message = LocalizationUtility::translate('login_successful', 'ajaxlogin');
+            $message = LocalizationUtility::translate('login_successful', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::OK);
 
             $referer = GeneralUtility::_GP('referer');
             $redirectUrl = GeneralUtility::_GP('redirectUrl');
-            $redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
+            $redirect_url = Utility\RedirectUrlUtility::findRedirectUrl($referer, $redirectUrl);
             if (!empty($redirect_url)) {
                 $this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
             }
@@ -129,7 +130,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             // needed in order to trigger the JS AJAX error callback
             $this->response->setStatus(401);
-            $message = LocalizationUtility::translate('authentication_failed', 'ajaxlogin');
+            $message = LocalizationUtility::translate('authentication_failed', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::ERROR);
             $this->forward('login');
         }
@@ -162,10 +163,10 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * Creates a new user.
      *
-     * @param \Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser $user A fresh User object which has not yet been added to the repository
-     * @param string                         $password_check
+     * @param \Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser $user          A fresh User object which has not yet been added to the repository
+     * @param string                                         $passwordCheck
      */
-    public function createAction(FrontendUser $user, $password_check)
+    public function createAction(FrontendUser $user, $passwordCheck)
     {
         if ($user && $user->getUid()) {
             // somehow the cHash got hacked
@@ -199,7 +200,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ));
         }
 
-        if (strcmp($user->getPassword(), $password_check) != 0) {
+        if (strcmp($user->getPassword(), $passwordCheck) != 0) {
             $passwordError->addErrors(array(
                 GeneralUtility::makeInstance('Tx_Extbase_Error_Error', 'Password does not match', 1320703779),
             ));
@@ -240,7 +241,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $password = $user->getPassword();
 
-        $password = Tx_Ajaxlogin_Utility_Password::salt($password);
+        $password = Utility\PasswordUtility::salt($password);
 
         foreach ($userGroups as $userGroup) {
             $user->getUsergroup()->attach($userGroup);
@@ -255,12 +256,12 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->userRepository->add($user);
         $this->userRepository->_persistAll();
 
-        $message = LocalizationUtility::translate('signup_successful', 'ajaxlogin');
+        $message = LocalizationUtility::translate('signup_successful', 'zoat_ajaxlogin');
         $this->flashMessageContainer->add($message, '', FlashMessage::OK);
 
         $this->view->assign('user', $user);
 
-        $emailSubject = LocalizationUtility::translate('signup_notification_subject', 'ajaxlogin', array(
+        $emailSubject = LocalizationUtility::translate('signup_notification_subject', 'zoat_ajaxlogin', array(
             GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
         ));
 
@@ -275,7 +276,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $referer = GeneralUtility::_GP('referer');
         $redirectUrl = GeneralUtility::_GP('redirectUrl');
-        $redirect_url = Tx_Ajaxlogin_Utility_RedirectUrl::findRedirectUrl($referer, $redirectUrl);
+        $redirect_url = Utility\RedirectUrlUtility::findRedirectUrl($referer, $redirectUrl);
         if (!empty($redirect_url)) {
             $this->response->setHeader('X-Ajaxlogin-redirectUrl', $redirect_url);
         }
@@ -288,7 +289,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function logoutAction()
     {
-        $message = LocalizationUtility::translate('logout_successful', 'ajaxlogin');
+        $message = LocalizationUtility::translate('logout_successful', 'zoat_ajaxlogin');
         $this->flashMessageContainer->add($message, '', FlashMessage::NOTICE);
 
         $GLOBALS['TSFE']->fe_user->logoff();
@@ -322,11 +323,6 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         $this->view->assign('user', $user);
-        $countries = $this->countryRepository->findAll();
-        // TODO: if FLUID supports it, add empty option in FLUID
-        $countries = $countries->toArray();
-        $countries = array_merge(array(null => ''), $countries);
-        $this->view->assign('countries', $countries);
     }
 
     /**
@@ -336,9 +332,9 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function initializeUpdateAction()
     {
         if ($this->arguments->hasArgument('user')) {
-            /** @var Tx_Extbase_Validation_ValidatorResolver $validatorResolver */
-            $validatorResolver = $this->objectManager->get('Tx_Extbase_Validation_ValidatorResolver');
-            $userForEditingValidator = $validatorResolver->getBaseValidatorConjunction('Tx_Ajaxlogin_Domain_Model_UserForEditing');
+            /** @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver */
+            $validatorResolver = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\ValidatorResolver');
+            $userForEditingValidator = $validatorResolver->getBaseValidatorConjunction('Zooom\ZoatAjaxlogin\Domain\Model\FrontendUserForEditing');
 
             // set validator of modified user model as standard user model
             $this->arguments->getArgument('user')->setValidator($userForEditingValidator);
@@ -423,14 +419,14 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             $this->notifyExchange($user, 'org.typo3.user.register');
 
-                // automatically sign in the user
-            Tx_Ajaxlogin_Utility_FrontendUser::signin($user);
+            // automatically sign in the user
+            Utility\FrontendUserUtility::signin($user);
 
-            $message = LocalizationUtility::translate('account_activated', 'ajaxlogin');
+            $message = LocalizationUtility::translate('account_activated', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::OK);
             //$this->redirectToURI('/');
         } else {
-            $message = LocalizationUtility::translate('invalid_activation_link', 'ajaxlogin');
+            $message = LocalizationUtility::translate('invalid_activation_link', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::ERROR);
             //$this->response->setStatus(409);
         }
@@ -486,7 +482,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $user->setForgotHashValid((time() + (24 * 3600)));
             $this->view->assign('user', $user);
 
-            $emailSubject = LocalizationUtility::translate('resetpassword_notification_subject', 'ajaxlogin', array(
+            $emailSubject = LocalizationUtility::translate('resetpassword_notification_subject', 'zoat_ajaxlogin', array(
                 GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
             ));
 
@@ -499,13 +495,13 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $mail->setBody($emailBodyContent);
             $mail->send();
 
-            $message = LocalizationUtility::translate('resetpassword_notification_sent', 'ajaxlogin');
+            $message = LocalizationUtility::translate('resetpassword_notification_sent', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::OK);
 
             $this->forward('info');
         } else {
             //$this->response->setStatus(409);
-            $message = LocalizationUtility::translate('user_notfound', 'ajaxlogin', array($usernameOrEmail));
+            $message = LocalizationUtility::translate('user_notfound', 'zoat_ajaxlogin', array($usernameOrEmail));
             $this->flashMessageContainer->add($message, '', FlashMessage::ERROR);
             $this->forward('forgotPassword');
         }
@@ -528,7 +524,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     /**
      * @param array $password
-     * @validate $password Tx_Ajaxlogin_Domain_Validator_PasswordsValidator
+     * @validate $password \Zooom\ZoatAjaxlogin\Validation\Validator\PasswordsValidator
      *
      * @param string $forgotHash
      * @param string $email
@@ -540,7 +536,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!$user) {
             $this->forward('editPassword');
         } else {
-            $saltedPW = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
+            $saltedPW = Utility\PasswordUtility::salt($password['new']);
             $user->setPassword($saltedPW);
             $user->setForgotHash('');
             $user->setForgotHashValid(0);
@@ -607,7 +603,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected function addForgetHashFlashMessage($key, $severity = FlashMessage::WARNING)
     {
-        $message = LocalizationUtility::translate($key, 'ajaxlogin');
+        $message = LocalizationUtility::translate($key, 'zoat_ajaxlogin');
 
         // check if the flash messages was already assigned
         // this is needed to prevent duplicate messages on the forward() in updatePasswordAction
@@ -621,7 +617,6 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         return;
     }
-
 
     /**
      * Generates password-change form.
@@ -655,8 +650,8 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $plainTextPassword = $password['cur'];
             $encryptedPassword = $currentUser->getPassword();
 
-            if (Tx_Ajaxlogin_Utility_Password::validate($plainTextPassword, $encryptedPassword)) {
-                $saltedPassword = Tx_Ajaxlogin_Utility_Password::salt($password['new']);
+            if (Utility\PasswordUtility::validate($plainTextPassword, $encryptedPassword)) {
+                $saltedPassword = Utility\PasswordUtility::salt($password['new']);
                 $currentUser->setPassword($saltedPassword);
 
                     // redirect (if configured) or show static success text
@@ -664,10 +659,10 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 if ($redirectPageId > 0) {
                     $this->redirectToPage($redirectPageId);
                 } else {
-                    return LocalizationUtility::translate('password_updated', 'ajaxlogin');
+                    return LocalizationUtility::translate('password_updated', 'zoat_ajaxlogin');
                 }
             } else {
-                $errors['current_password'] = LocalizationUtility::translate('password_invalid', 'ajaxlogin');
+                $errors['current_password'] = LocalizationUtility::translate('password_invalid', 'zoat_ajaxlogin');
             }
         }
 
@@ -693,6 +688,6 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected function getFormToken()
     {
-        return 'tx-ajaxlogin-form' . md5(microtime());
+        return 'tx-zoatajaxlogin-form' . md5(microtime());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zooom\ZoatAjaxLogin\Domain\Repository;
+namespace Zooom\ZoatAjaxlogin\Domain\Repository;
 
 class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zooom\ZoatAjaxLogin\Validation\Validator;
+namespace Zooom\ZoatAjaxlogin\Validation\Validator;
 
 /***************************************************************
  *  Copyright notice
@@ -26,6 +26,8 @@ namespace Zooom\ZoatAjaxLogin\Validation\Validator;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+
 /**
  * @author Nikola Stojiljkovic <nikola.stojiljkovic@essentialdots.com>
  */
@@ -41,19 +43,19 @@ class PasswordsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
     /**
      * Configuration manager.
      *
-     * @var Tx_Extbase_Configuration_ConfigurationManager
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
      */
     protected $configurationManager;
 
     /**
      * Inject configuration manager.
      *
-     * @param Tx_Extbase_Configuration_ConfigurationManager $configurationManager
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager
      */
-    public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManager $configurationManager)
+    public function injectConfigurationManager(ConfigurationManager $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+        $this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
     }
 
     /**

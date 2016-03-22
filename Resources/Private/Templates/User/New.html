@@ -1,44 +1,44 @@
 <f:layout name="Widget" />
 
 <f:section name="content">
-	<f:form id="{formToken}" action="create" objectName="user" object="{user}">		
+	<f:form id="{formToken}" action="create" objectName="user" object="{user}">
 		<div class="b-form-row">
-			<label for="tx-ajaxlogin-user-name">
+			<label for="tx-zoatajaxlogin-user-name">
 				<f:translate key="user.name" />
 			</label>
 			<div class="b-form-inputs">
-				<f:form.textfield id="tx-ajaxlogin-user-name" property="name" value="{user.name}" />
+				<f:form.textfield id="tx-zoatajaxlogin-user-name" property="name" value="{user.name}" />
 			</div>
 		</div>
-		
+
 		<div class="b-form-row">
-			<label for="tx-ajaxlogin-user-email">
+			<label for="tx-zoatajaxlogin-user-email">
 				<f:translate key="user.email" />
 			</label>
 			<div class="b-form-inputs">
-				<f:form.textfield id="tx-ajaxlogin-user-email" property="email" value="{user.email}" />
+				<f:form.textfield id="tx-zoatajaxlogin-user-email" property="email" value="{user.email}" />
 			</div>
 		</div>
-	
+
 		<div class="b-form-row">
-			<label for="tx-ajaxlogin-user-username">
+			<label for="tx-zoatajaxlogin-user-username">
 				<f:translate key="user.username" />
 			</label>
 			<div class="b-form-inputs">
-				<f:form.textfield id="tx-ajaxlogin-user-username" property="username" value="{user.username}" />
+				<f:form.textfield id="tx-zoatajaxlogin-user-username" property="username" value="{user.username}" />
 			</div>
 		</div>
-	
+
 		<div class="b-form-row">
-			<label for="tx-ajaxlogin-user-password">
+			<label for="tx-zoatajaxlogin-user-password">
 				<f:translate key="password.new" />
 			</label>
 			<div class="b-form-inputs">
-				<f:form.password id="tx-ajaxlogin-user-password" property="password" value="" />
+				<f:form.password id="tx-zoatajaxlogin-user-password" property="password" value="" />
 			</div>
 		</div>
-		
-		<div class="b-form-row">			
+
+		<div class="b-form-row">
 			<div class="login-action-links">
 				<a href="#" rel="tx_ajaxlogin[login]">
 					<f:translate key="login_user" />
@@ -46,7 +46,7 @@
 			</div>
 			<button type="submit" name="submit" value="{f:translate(key:'button_signup')}" class="bu darkgrey bu-mini">
 				<f:translate key="button_signup" />
-			</button>	
+			</button>
 		</div>
 	</f:form>
 </f:section>

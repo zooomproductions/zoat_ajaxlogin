@@ -1,84 +1,64 @@
 <?php
-if (!defined ('TYPO3_MODE'))
-	die ('Access denied.');
 
-$tempColumns = array (
-	'tx_ajaxlogin_forgotHash' => array (
-		'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHash',
-		'displayCond' => 'HIDE_FOR_NON_ADMINS',
-		'exclude' => true,
-		'config' => array (
-			'type' => 'input',
-			'size' => 20,
-			'max' => 32,
-			'eval' => 'md5'
-		)
-	),
-	'tx_ajaxlogin_verificationHash' => array (
-		'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_verificationHash',
-		'displayCond' => 'HIDE_FOR_NON_ADMINS',
-		'exclude' => true,
-		'config' => array (
-			'type' => 'input',
-			'size' => 32,
-			'readOnly' => true,
-		)
-	),
-	'tx_ajaxlogin_forgotHashValid' => array (
-		'label' => 'LLL:EXT:ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_ajaxlogin_forgotHashValid',
-		'displayCond' => 'HIDE_FOR_NON_ADMINS',
-		'exclude' => true,
-		'config' => array (
-			'type' => 'input',
-			'size' => '8',
-			'eval' => 'datetime'
-		)
-	)
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
+
+$tempColumns = array(
+    'tx_zoatajaxlogin_forgotHash' => array(
+        'label' => 'LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_zoatajaxlogin_forgotHash',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
+        'config' => array(
+            'type' => 'input',
+            'size' => 20,
+            'max' => 32,
+            'eval' => 'md5',
+        ),
+    ),
+    'tx_zoatajaxlogin_verificationHash' => array(
+        'label' => 'LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_zoatajaxlogin_verificationHash',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
+        'config' => array(
+            'type' => 'input',
+            'size' => 32,
+            'readOnly' => true,
+        ),
+    ),
+    'tx_zoatajaxlogin_forgotHashValid' => array(
+        'label' => 'LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_zoatajaxlogin_forgotHashValid',
+        'displayCond' => 'HIDE_FOR_NON_ADMINS',
+        'exclude' => true,
+        'config' => array(
+            'type' => 'input',
+            'size' => '8',
+            'eval' => 'datetime',
+        ),
+    ),
 );
 
-t3lib_div::loadTCA("fe_users");
-t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_users', '--div--;Ajaxlogin,tx_ajaxlogin_verificationHash,tx_ajaxlogin_forgotHash,tx_ajaxlogin_forgotHashValid');
-
-$pagesTempColumns = array (
-	'tx_ajaxlogin_sectionreload' => array (
-		'label' => 'After signing in or out',
-		'config' => array (
-			'type' => 'check',
-			'items' => array(
-				array('Reload the pages in this section', 1)
-			)
-		)
-	)
-);
-include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Tca/FlexForm.php');
-$GLOBALS['TCA']['fe_users']['columns']['country']['config'] = array(
-	'type' => 'select',
-	'itemsProcFunc' => 'Tx_Ajaxlogin_Tca_FlexForm->country',
-	'foreign_table' => 'static_countries',
-	'foreign_table_where' => 'ORDER BY static_countries.cn_short_en',
-	'foreign_table_uid_field' => 'cn_short_en',
-	'size' => 1,
-	'minitems' => 0,
-	'maxitems' => 1,
-	'allowNonIdValues' => true,
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'fe_users',
+    '--div--;Ajaxlogin,tx_zoatajaxlogin_verificationHash,tx_zoatajaxlogin_forgotHash,tx_zoatajaxlogin_forgotHashValid'
 );
 
-t3lib_div::loadTCA("pages");
-t3lib_extMgm::addTCAcolumns("pages", $pagesTempColumns, 1);
-t3lib_extMgm::addFieldsToPalette('pages', 'miscellaneous', 'tx_ajaxlogin_sectionreload');
-
-Tx_Extbase_Utility_Extension::registerPlugin(
-	$_EXTKEY,
-	'Profile',
-	'Ajaxlogin'
+$pagesTempColumns = array(
+    'tx_zoatajaxlogin_sectionreload' => array(
+        'label' => 'After signing in or out',
+        'config' => array(
+            'type' => 'check',
+            'items' => array(
+                array('Reload the pages in this section', 1),
+            ),
+        ),
+    ),
 );
 
-$extensionName = strtolower(t3lib_div::underscoredToUpperCamelCase($_EXTKEY));
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $pagesTempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', 'miscellaneous', 'tx_zoatajaxlogin_sectionreload');
 
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$extensionName . '_profile'] = 'pages,recursive,layout,select_key';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$extensionName . '_profile'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($extensionName . '_profile', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Profile.xml');
-
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'AJAX login');
-?>
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Zooom AJAX login');

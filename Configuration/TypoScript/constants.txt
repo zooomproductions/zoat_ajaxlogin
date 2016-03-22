@@ -1,57 +1,57 @@
-plugin.tx_ajaxlogin {
-		settings {
-			widgetTypeNum = 98987
-			defaultUserGroups = 21
-			defaultUserGroupsAfterVerification = 1
-			validation {
-				User {
-					name {
-						pattern = /^.{1,} .{1,}$/
-						message = Your name must not be empty and consist of atleast 2 words.
-					}
-					# Currently not used (but extbase default email-address validator)
-					email {
-						pattern = /^.{1,}$/
-						message = The given email-address was not valid.
-					}
-					username {
-						pattern = /^[0-9a-z][0-9a-z\-_]{1,18}[0-9a-z]$/
-						message = Username must be at least 3 and maximum 20 characters and can contain 0-9 a-z - _ only.
-					}
-					password {
-						pattern = /^.{8,}$/
-						message = Password must be at least 8 characters.
-					}
+plugin.tx_zoatajaxlogin {
+	settings {
+		widgetTypeNum = 1458646209
+		defaultUserGroups = 21
+		defaultUserGroupsAfterVerification = 1
+		validation {
+			User {
+				name {
+					pattern = /^.{1,} .{1,}$/
+					message = Your name must not be empty and consist of atleast 2 words.
+				}
+				# Currently not used (but extbase default email-address validator)
+				email {
+					pattern = /^.{1,}$/
+					message = The given email-address was not valid.
+				}
+				username {
+					pattern = /^[0-9a-z][0-9a-z\-_]{1,18}[0-9a-z]$/
+					message = Username must be at least 3 and maximum 20 characters and can contain 0-9 a-z - _ only.
+				}
+				password {
+					pattern = /^.{8,}$/
+					message = Password must be at least 8 characters.
 				}
 			}
-			notificationMail {
-				sender = TYPO3.org
-				emailAddress = info@typo3.org
-			}
-			ajaxPid = 0
-			actionPid {
-				login = 0
-				show = 0
-				signUp = 0
-				edit = 0
-				editPassword = 0
-				closeAccount = 0
-				enableAccount = 0
-				activateAccount = 0
-			}
+		}
+		notificationMail {
+			sender = TYPO3.org
+			emailAddress = info@typo3.org
+		}
+		ajaxPid = 0
+		actionPid {
+			login = 0
+			show = 0
+			signUp = 0
+			edit = 0
+			editPassword = 0
+			closeAccount = 0
+			enableAccount = 0
+			activateAccount = 0
+		}
 
-			page.passwordChangeSuccess = 0
-		}
-		view {
-				 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)
-				templateRootPath = EXT:ajaxlogin/Resources/Private/Templates/
-				 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template partials (FE)
-				partialRootPath = EXT:ajaxlogin/Resources/Private/Partials/
-				 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template layouts (FE)
-				layoutRootPath = EXT:ajaxlogin/Resources/Private/Layouts/
-		}
-		persistence {
-				 # cat=plugin.tx_ajaxlogin//a; type=int+; label=Default storage PID
-				storagePid = 11
-		}
+		page.passwordChangeSuccess = 0
+	}
+	view {
+		 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template root (FE)
+		templateRootPaths.default = EXT:zoat_ajaxlogin/Resources/Private/Templates/
+		 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template partials (FE)
+		partialRootPaths.default = EXT:zoat_ajaxlogin/Resources/Private/Partials/
+		 # cat=plugin.tx_ajaxlogin/file; type=string; label=Path to template layouts (FE)
+		layoutRootPaths.default = EXT:zoat_ajaxlogin/Resources/Private/Layouts/
+	}
+	persistence {
+		 # cat=plugin.tx_ajaxlogin//a; type=int+; label=Default storage PID
+		storagePid = 11
+	}
 }

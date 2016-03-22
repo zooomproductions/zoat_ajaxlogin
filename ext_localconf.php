@@ -3,19 +3,8 @@
 if (!defined ('TYPO3_MODE'))
 	die ('Access denied.');
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
-	'Profile',
-	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,activateAccount,changePassword,doChangePassword'
-	),
-	array(
-		'User' => 'show,edit,update,editPassword,updatePassword,closeAccount,disable,activateAccount,changePassword,doChangePassword'
-	)
-);
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Zooom.' . $_EXTKEY,
 	'Widget',
 	array(
 		'User' => 'info,login,authenticate,logout,new,create,forgotPassword,resetPassword'
@@ -25,6 +14,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-$TYPO3_CONF_VARS['FE']['addRootLineFields'] .= ',tx_ajaxlogin_sectionreload';
+$TYPO3_CONF_VARS['FE']['addRootLineFields'] .= ',tx_zoatajaxlogin_sectionreload';
 
-$TYPO3_CONF_VARS['EXTCONF']['ajaxlogin']['redirectUrl_postProcess'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['zoat_ajaxlogin']['redirectUrl_postProcess'] = array();

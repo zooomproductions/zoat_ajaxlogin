@@ -1,13 +1,13 @@
 <?php
 
-namespace Zooom\ZoatAjaxLogin\Domain\Repository;
+namespace Zooom\ZoatAjaxlogin\Domain\Repository;
 
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 {
     /**
      * Find an Object using the UID of the current fe_user.
      *
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User the current fe_user or null if none
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User the current fe_user or null if none
      */
     public function findCurrent()
     {
@@ -26,7 +26,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     /**
      * Find an Object using the UID of the current fe_user.
      *
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User
      */
     public function findOneByForgotHashAndEmail($forgotHash, $email)
     {
@@ -45,7 +45,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     /**
      * Find an Object using the UID of the current fe_user.
      *
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User
      */
     public function findOneByVerificationHashAndEmail($verificationHash, $email)
     {
@@ -64,7 +64,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     }
 
     /**
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User
      */
     public function findOneByEmail($email)
     {
@@ -82,7 +82,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     }
 
     /**
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User
      */
     public function findOneByUsername($username)
     {
@@ -91,8 +91,8 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
         $query->getQuerySettings()->setRespectStoragePage(false);
 
         $constraints = array(
-                $query->equals('deleted', 0),
-                $query->equals('username', $username),
+            $query->equals('deleted', 0),
+            $query->equals('username', $username),
         );
 
         $query->matching($query->logicalAnd($constraints));
@@ -103,7 +103,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     /**
      * Find an Object using the UID of the current fe_user.
      *
-     * @return \Zooom\ZoatAjaxLogin\Domain\Model\User
+     * @return \Zooom\ZoatAjaxlogin\Domain\Model\User
      */
     public function findOneByEnableHash($enableHash)
     {

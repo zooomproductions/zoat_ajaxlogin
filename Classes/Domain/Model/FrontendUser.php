@@ -1,12 +1,12 @@
 <?php
 
-namespace Zooom\ZoatAjaxLogin\Domain\Model;
+namespace Zooom\ZoatAjaxlogin\Domain\Model;
 
 class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 {
     /**
      * @var string
-     * @validate \Zooom\ZoatAjaxLogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = name)
+     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = name)
      */
     protected $name;
 
@@ -23,13 +23,13 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 
     /**
      * @var string
-     * @validate \Zooom\ZoatAjaxLogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = username)
+     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = username)
      */
     protected $username;
 
     /**
      * @var string
-     * @validate \Zooom\ZoatAjaxLogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = password)
+     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = password)
      */
     protected $password;
 
