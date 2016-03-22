@@ -87,14 +87,14 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessages
             $tagContent = '';
             $severity = array(
                     AbstractMessage::NOTICE => array('class' => '', 'title' => ''),
-                    AbstractMessage::INFO => array('class' => '', 'title' => ''),
-                    AbstractMessage::OK => array('class' => 'congratulations', 'title' => 'Congratulations!'),
-                    AbstractMessage::WARNING => array('class' => 'warning', 'title' => 'Warning!'),
-                    AbstractMessage::ERROR => array('class' => 'error', 'title' => 'Error notification'),
+                    AbstractMessage::INFO => array('class' => 'bg-info text-info', 'title' => ''),
+                    AbstractMessage::OK => array('class' => 'bg-success text-success', 'title' => ''),
+                    AbstractMessage::WARNING => array('class' => 'bg-warning text-warning', 'title' => 'Warning!'),
+                    AbstractMessage::ERROR => array('class' => 'bg-danger text-danger', 'title' => 'Error notification'),
                 );
             foreach ($flashMessages as $singleFlashMessage) {
                 $s = $singleFlashMessage->getSeverity();
-                $tagContent .= '<div class="b-message ' . strtolower($severity[$s]['class']) . '">';
+                $tagContent .= '<div class="' . strtolower($severity[$s]['class']) . '">';
 
                 if ($s == AbstractMessage::OK || $s == AbstractMessage::WARNING || $s == AbstractMessage::ERROR) {
                     $tagContent .= '<p class="severity">' . $severity[$s]['title'] . '</p>';
