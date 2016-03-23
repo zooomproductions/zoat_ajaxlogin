@@ -3,15 +3,15 @@ config.tx_extbase {
 		classes {
 			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 				subclasses {
-					Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser = Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser
+					Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser = Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser
 				}
 			}
 			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
 				subclasses {
-					Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup = Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup
+					Zooom\ZoatAjaxlogin\Domain\Model\FrontendUserGroup = Zooom\ZoatAjaxlogin\Domain\Model\FrontendUserGroup
 				}
 			}
-			Zooom\ZoatAjaxLogin\Domain\Model\FrontendUser {
+			Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser {
 				mapping {
 					tableName = fe_users
 					columns {
@@ -21,7 +21,7 @@ config.tx_extbase {
 					}
 				}
 			}
-			Zooom\ZoatAjaxLogin\Domain\Model\FrontendUserGroup {
+			Zooom\ZoatAjaxlogin\Domain\Model\FrontendUserGroup {
 				mapping {
 					tableName = fe_groups
 				}
