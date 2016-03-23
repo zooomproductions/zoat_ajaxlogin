@@ -44,11 +44,9 @@ var Ajaxlogin = Ajaxlogin || {};
                             }
                         });
                     } else {
-                        console.log('show default view');
                         Ajaxlogin.fn.showView();
                     }
                 } else {
-                    console.log('nothing!');
                     // Check the plugin.tx_zoatajaxlogin.view.ajaxPid property
                 }
             },
@@ -164,30 +162,51 @@ var Ajaxlogin = Ajaxlogin || {};
 
                 var formEl = $( '#' + token );
                 formEl.submit( function( event ) {
+
+                    // Stop the form from submitting.
                     event.preventDefault();
-                    var input = Ajaxlogin.fn.resolveFormData( $( this ) );
-                    $.ajax({
-                        url: tx_zoatajaxlogin.api.User.authenticate,
-                        cache: false,
-                        type: 'POST',
-                        data: $.extend({
-                            logintype: 'login',
-                            pid: tx_zoatajaxlogin.storagePid,
-                            referer: window.location.href,
-                            redirectUrl: tx_zoatajaxlogin.redirect_url
-                        }, input ),
-                        error: function( a, b, c ) {
 
-                            // If login is invalid
-                            Ajaxlogin.event.fire( 'login_error', [ a ] );
-                            Ajaxlogin.fn.showView( a );
-                        },
-                        success: function( a, b, c ) {
+                    var formReady = $.Deferred();
 
-                            // If login is valid
-                            Ajaxlogin.event.fire( 'login_success', [ c ] );
-                            Ajaxlogin.fn.showView( c );
-                        }
+                    // If the object exists, use rsaauth extension to encrypt the password.
+                    if ( typeof TYPO3FrontendLoginFormRsaEncryptionAjax !== 'undefined' &&
+                         typeof TYPO3FrontendLoginFormRsaEncryptionPublicKeyUrl !== 'undefined' ) {
+                        // Set the form ready object to the one returned from the encrypt function
+                        formReady = TYPO3FrontendLoginFormRsaEncryptionAjax.encrypt( this, TYPO3FrontendLoginFormRsaEncryptionPublicKeyUrl );
+                    } else {
+                        formReady.resolve();
+                    }
+
+                    // When the async stuff is done, then submit the form.
+                    formReady.done(function() {
+
+                        // Get all the form data to submit.
+                        var input = Ajaxlogin.fn.resolveFormData( formEl );
+                        console.log( input );
+                        // Submit the form with ajax
+                        $.ajax({
+                            url: tx_zoatajaxlogin.api.User.authenticate,
+                            cache: false,
+                            type: 'POST',
+                            data: $.extend({
+                                logintype: 'login',
+                                pid: tx_zoatajaxlogin.storagePid,
+                                referer: window.location.href,
+                                redirectUrl: tx_zoatajaxlogin.redirect_url
+                            }, input ),
+                            error: function( a, b, c ) {
+
+                                // If login is invalid
+                                Ajaxlogin.event.fire( 'login_error', [ a ] );
+                                Ajaxlogin.fn.showView( a );
+                            },
+                            success: function( a, b, c ) {
+
+                                // If login is valid
+                                Ajaxlogin.event.fire( 'login_success', [ c ] );
+                                Ajaxlogin.fn.showView( c );
+                            }
+                        });
                     });
                 });
             },
