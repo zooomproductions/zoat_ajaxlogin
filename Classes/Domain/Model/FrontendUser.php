@@ -23,13 +23,13 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 
     /**
      * @var string
-     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = username)
+     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = User, property = username)
      */
     protected $username;
 
     /**
      * @var string
-     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = FrontendUser, property = password)
+     * @validate \Zooom\ZoatAjaxlogin\Validation\Validator\CustomRegularExpressionValidator(object = User, property = password)
      */
     protected $password;
 
@@ -50,7 +50,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 
     public function __construct($username = '', $password = '')
     {
-        $this->forgotHashValid = new DateTime();
+        $this->forgotHashValid = new \DateTime();
 
         parent::__construct($username, $password);
     }

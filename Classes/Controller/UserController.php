@@ -66,7 +66,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * This also triggers the felogin hook so the rsaauth javascript is included in the page.
      *
      */
-    public function PlaceholderAction()
+    public function placeholderAction()
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
             $_params = array();

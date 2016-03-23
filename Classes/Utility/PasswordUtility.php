@@ -13,17 +13,10 @@ class PasswordUtility
      */
     public static function salt($string)
     {
-        if (t3lib_extMgm::isLoaded('saltedpasswords')) {
-            if (tx_saltedpasswords_div::isUsageEnabled('FE')) {
-                $saltingInstance = tx_saltedpasswords_salts_factory::getSaltingInstance();
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
+            if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('FE')) {
+                $saltingInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
                 $string = $saltingInstance->getHashedPassword($string);
-            }
-        } elseif (t3lib_extMgm::isLoaded('t3sec_saltedpw')) {
-            require_once t3lib_extMgm::extPath('t3sec_saltedpw') . 'res/staticlib/class.tx_t3secsaltedpw_div.php';
-            if (tx_t3secsaltedpw_div::isUsageEnabled()) {
-                require_once t3lib_extMgm::extPath('t3sec_saltedpw') . 'res/lib/class.tx_t3secsaltedpw_phpass.php';
-                $objPHPass = t3lib_div::makeInstance('tx_t3secsaltedpw_phpass');
-                $string = $objPHPass->getHashedPassword($string);
             }
         }
 
@@ -42,8 +35,7 @@ class PasswordUtility
     {
         $status = false;
 
-        /** @var tx_saltedpasswords_salts $saltingInstance */
-        $saltingInstance = tx_saltedpasswords_salts_factory::getSaltingInstance();
+        $saltingInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
         if (is_object($saltingInstance)) {
             $status = $saltingInstance->checkPassword($plainTextPassword, $encryptedPassword);
         }

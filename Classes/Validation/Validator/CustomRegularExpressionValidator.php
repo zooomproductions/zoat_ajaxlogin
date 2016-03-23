@@ -3,10 +3,12 @@
 namespace Zooom\ZoatAjaxlogin\Validation\Validator;
 
 use Zooom\ZoatAjaxlogin\Utility\TypoScriptUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 
 class CustomRegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
+
     /**
       * @var array
       */
@@ -17,8 +19,13 @@ class CustomRegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Val
 
     public function isValid($value)
     {
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+
         $setup = TypoScriptUtility::getSetup();
-        $setup = TypoScriptService::convertTypoScriptArrayToPlainArray($setup);
+        $setup = $typoScriptService->convertTypoScriptArrayToPlainArray($setup);
+
+        var_dump($this->options);
+        var_dump($setup);
 
         $object = trim($this->options['object']);
         $property = trim($this->options['property']);

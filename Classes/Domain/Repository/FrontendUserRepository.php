@@ -50,7 +50,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByVerificationHashAndEmail($verificationHash, $email)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectEnableFields(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(false);
 
         $constraints = array(
             $query->equals('deleted', 0),
@@ -69,7 +69,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByEmail($email)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectEnableFields(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(false);
 
         $constraints = array(
                 $query->equals('deleted', 0),
@@ -87,7 +87,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByUsername($username)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectEnableFields(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(false);
         $query->getQuerySettings()->setRespectStoragePage(false);
 
         $constraints = array(
