@@ -4,6 +4,16 @@ if (!defined ('TYPO3_MODE'))
 	die ('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'Zooom.' . $_EXTKEY,
+    'Placeholder',
+    array(
+        'User' => 'placeholder'
+    ),
+    array(
+    )
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'Zooom.' . $_EXTKEY,
 	'Widget',
 	array(

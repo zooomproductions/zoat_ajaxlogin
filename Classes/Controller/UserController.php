@@ -61,6 +61,24 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
+     * Render a login button.
+     *
+     * This also triggers the felogin hook so the rsaauth javascript is included in the page.
+     *
+     */
+    public function PlaceholderAction()
+    {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
+            $_params = array();
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
+                list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
+                $onSubmitAr[] = $onSub;
+                $extraHiddenAr[] = $hid;
+            }
+        }
+    }
+
+    /**
      * Displays the logged-in user's info
      * or forwards to the login form if a user is not logged in.
      */

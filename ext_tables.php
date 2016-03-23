@@ -4,6 +4,12 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'Zooom.' . $_EXTKEY,
+    'Placeholder',
+    'Ajax Login Form'
+);
+
 $tempColumns = array(
     'tx_zoatajaxlogin_forgotHash' => array(
         'label' => 'LLL:EXT:zoat_ajaxlogin/Resources/Private/Language/locallang_db.xml:fe_users.tx_zoatajaxlogin_forgotHash',
