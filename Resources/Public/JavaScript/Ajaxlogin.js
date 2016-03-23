@@ -309,6 +309,8 @@ var Ajaxlogin = Ajaxlogin || {};
 
                 var result = true;
 
+                var errorClassName = tx_zoatajaxlogin.validation.errorClassName;
+
                 $.each( tx_zoatajaxlogin.validation.confirmationFieldsets, function() {
                     var field = true;
                     var value = form.find( this[ 0 ] ).val();
@@ -323,11 +325,11 @@ var Ajaxlogin = Ajaxlogin || {};
                     }
 
                     if ( field === false ) {
-                        form.find( this[ 0 ] ).addClass( 'tx-zoatajaxlogin-form-error' );
-                        form.find( this[ 1 ] ).addClass( 'tx-zoatajaxlogin-form-error' );
+                        form.find( this[ 0 ] ).addClass( errorClassName );
+                        form.find( this[ 1 ] ).addClass( errorClassName );
                     } else {
-                        form.find( this[ 0 ] ).removeClass( 'tx-zoatajaxlogin-form-error' );
-                        form.find( this[ 1 ] ).removeClass( 'tx-zoatajaxlogin-form-error' );
+                        form.find( this[ 0 ] ).removeClass( errorClassName );
+                        form.find( this[ 1 ] ).removeClass( errorClassName );
                     }
                 });
 

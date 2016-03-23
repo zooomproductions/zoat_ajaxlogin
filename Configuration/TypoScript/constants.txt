@@ -23,6 +23,7 @@ plugin.tx_zoatajaxlogin {
 					message = Password must be at least 8 characters.
 				}
 			}
+			errorClassName = tx-zoatajaxlogin-form-error
 		}
 		notificationMail {
 			sender = TYPO3.org

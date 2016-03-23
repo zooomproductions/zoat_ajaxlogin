@@ -56,6 +56,7 @@ plugin.tx_zoatajaxlogin {
 				}
 			}
 			passwordMinLength = 8
+			errorClassName = {$plugin.tx_zoatajaxlogin.settings.validation.errorClassName}
 		}
 		notificationMail {
 			sender = {$plugin.tx_zoatajaxlogin.settings.notificationMail.sender}
@@ -269,6 +270,10 @@ page.jsInline.98987 {
 
 			wrap = ,confirmationFieldsets:[|]
 		}
+
+		30 = TEXT
+		30.value = {$plugin.tx_zoatajaxlogin.settings.validation.errorClassName}
+		30.wrap = ,errorClassName:'|'
 
 		wrap = ,validation:{|}
 	}
