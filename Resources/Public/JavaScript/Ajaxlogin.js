@@ -151,7 +151,7 @@ var Ajaxlogin = Ajaxlogin || {};
                     view = response.responseText;
                 }
 
-                $( tx_zoatajaxlogin.statusLabel ).html( '<a href="' + tx_zoatajaxlogin.loginPage + '">' + tx_zoatajaxlogin.ll.status_unauthorized + '</a>' );
+                $( tx_zoatajaxlogin.statusLabel ).html( tx_zoatajaxlogin.ll.status_unauthorized );
                 $( tx_zoatajaxlogin.placeholder ).html( view ).find( 'a[rel^=\'tx_zoatajaxlogin\']' ).Ajaxlogin();
 
                 if ( Ajaxlogin.storage.isSet( 'responseToken' ) ) {
@@ -182,7 +182,6 @@ var Ajaxlogin = Ajaxlogin || {};
 
                         // Get all the form data to submit.
                         var input = Ajaxlogin.fn.resolveFormData( formEl );
-                        console.log( input );
                         // Submit the form with ajax
                         $.ajax({
                             url: tx_zoatajaxlogin.api.User.authenticate,
@@ -211,7 +210,7 @@ var Ajaxlogin = Ajaxlogin || {};
                 });
             },
             showSignupForm: function( response ) {
-                $( tx_zoatajaxlogin.statusLabel ).html( '<a href="' + tx_zoatajaxlogin.loginPage + '">' + tx_zoatajaxlogin.ll.status_unauthorized + '</a>' );
+                $( tx_zoatajaxlogin.statusLabel ).html( tx_zoatajaxlogin.ll.status_unauthorized );
                 $( tx_zoatajaxlogin.placeholder ).html( response.responseText ).find( 'a[rel^=\'tx_zoatajaxlogin\']' ).Ajaxlogin();
 
                 var formEl = $( '#' + response.getResponseHeader( 'X-Ajaxlogin-formToken' ) );
@@ -250,11 +249,11 @@ var Ajaxlogin = Ajaxlogin || {};
                     view = response.responseText;
                 }
 
-                $( tx_zoatajaxlogin.statusLabel ).html( '<a href="' + tx_zoatajaxlogin.accountPage + '">' + tx_zoatajaxlogin.ll.status_authenticated + '</a>' );
+                $( tx_zoatajaxlogin.statusLabel ).html( tx_zoatajaxlogin.ll.status_authenticated );
                 $( tx_zoatajaxlogin.placeholder ).html( view ).find( 'a[rel^=\'tx_zoatajaxlogin\']' ).Ajaxlogin();
             },
             showForgotPasswordForm: function( response ) {
-                $( tx_zoatajaxlogin.statusLabel ).html( '<a href="' + tx_zoatajaxlogin.loginPage + '">' + tx_zoatajaxlogin.ll.status_unauthorized + '</a>' );
+                $( tx_zoatajaxlogin.statusLabel ).html( tx_zoatajaxlogin.ll.status_unauthorized );
                 $( tx_zoatajaxlogin.placeholder ).html( response.responseText ).find( 'a[rel^=\'tx_zoatajaxlogin\']' ).Ajaxlogin();
 
                 var formEl = $( '#' + response.getResponseHeader( 'X-Ajaxlogin-formToken' ) );
@@ -312,6 +311,7 @@ var Ajaxlogin = Ajaxlogin || {};
                 var errorClassName = tx_zoatajaxlogin.validation.errorClassName;
 
                 $.each( tx_zoatajaxlogin.validation.confirmationFieldsets, function() {
+
                     var field = true;
                     var value = form.find( this[ 0 ] ).val();
                     var check = form.find( this[ 1 ] ).val();

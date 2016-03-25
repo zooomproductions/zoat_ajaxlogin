@@ -12,10 +12,10 @@ class CustomRegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Val
     /**
       * @var array
       */
-     protected $supportedOptions = array(
+    protected $supportedOptions = array(
         'object' => array('', 'Name of the typoscript object to lookup in settings.validation', 'string'),
         'property' => array('', 'Name of the object property', 'string'),
-     );
+    );
 
     public function isValid($value)
     {
@@ -23,9 +23,6 @@ class CustomRegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Val
 
         $setup = TypoScriptUtility::getSetup();
         $setup = $typoScriptService->convertTypoScriptArrayToPlainArray($setup);
-
-        var_dump($this->options);
-        var_dump($setup);
 
         $object = trim($this->options['object']);
         $property = trim($this->options['property']);

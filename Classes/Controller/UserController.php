@@ -3,7 +3,6 @@
 namespace Zooom\ZoatAjaxlogin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Zooom\ZoatAjaxlogin\Domain\Model\FrontendUser;
@@ -64,7 +63,6 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * Render a login button.
      *
      * This also triggers the felogin hook so the rsaauth javascript is included in the page.
-     *
      */
     public function placeholderAction()
     {
@@ -138,6 +136,12 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message = LocalizationUtility::translate('login_successful', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::OK);
 
+            // Hook for login user
+            $params = array(
+                'user' => $user,
+            );
+            $this->runHook('loginUser', $params);
+
             $referer = GeneralUtility::_GP('referer');
             $redirectUrl = GeneralUtility::_GP('redirectUrl');
             $redirect_url = Utility\RedirectUrlUtility::findRedirectUrl($referer, $redirectUrl);
@@ -198,30 +202,34 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             // this much of validation shouldn't have found its way into the controller
 
         // START of MOVE TO VALIDATOR task
-        $objectError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
-        $emailError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'email');
-        $usernameError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'username');
-        $passwordError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'password');
+        $objectError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'user');
+        $emailError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'email');
+        $usernameError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'username');
+        $passwordError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'password');
 
         $checkEmail = $this->userRepository->findOneByEmail($user->getEmail());
         $checkUsername = $this->userRepository->findOneByUsername($user->getUsername());
 
         if (!is_null($checkEmail)) {
             $emailError->addErrors(array(
-                GeneralUtility::makeInstance('Tx_Extbase_Error_Error', 'Duplicate email address', 1320783534),
+                GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Error', 'Duplicate email address', 1320783534),
             ));
+            $this->addFlashMessage('Duplicate email address', '', FlashMessage::ERROR);
         }
 
         if (!is_null($checkUsername)) {
             $usernameError->addErrors(array(
-                GeneralUtility::makeInstance('Tx_Extbase_Error_Error', 'Duplicate username', 1320703758),
+                GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Error', 'Duplicate username', 1320703758),
             ));
+            $this->addFlashMessage('Duplicate username', '', FlashMessage::ERROR);
         }
 
         if (strcmp($user->getPassword(), $passwordCheck) != 0) {
             $passwordError->addErrors(array(
-                GeneralUtility::makeInstance('Tx_Extbase_Error_Error', 'Password does not match', 1320703779),
+                GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Error', 'Password does not match', 1320703779),
             ));
+            $this->addFlashMessage('Password does not match', '', FlashMessage::ERROR);
+
         }
 
         if (count($emailError->getErrors())) {
@@ -249,7 +257,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             $this->request->setErrors($requestErrors);
 
-                // needed in order to trigger the JS AJAX error callback
+            // needed in order to trigger the JS AJAX error callback
             $this->response->setStatus(409);
             $this->forward('new');
         }
@@ -279,6 +287,13 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $this->view->assign('user', $user);
 
+        // Hook for user creation
+        $params = array(
+            'user' => $user,
+        );
+        $this->runHook('createUser', $params);
+
+        /*
         $emailSubject = LocalizationUtility::translate('signup_notification_subject', 'zoat_ajaxlogin', array(
             GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
         ));
@@ -291,6 +306,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $mail->setSubject($emailSubject);
         $mail->setBody($emailBodyContent);
         $mail->send();
+        */
 
         $referer = GeneralUtility::_GP('referer');
         $redirectUrl = GeneralUtility::_GP('redirectUrl');
@@ -311,6 +327,9 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->flashMessageContainer->add($message, '', FlashMessage::NOTICE);
 
         $GLOBALS['TSFE']->fe_user->logoff();
+
+        // Hook for logging out user
+        $this->runHook('logoutUser');
 
         $this->forward('login', null, null, array('redirectedFrom' => 'logout'));
     }
@@ -377,14 +396,14 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             // TODO: clean this up and move it to the proper validators!!!
             // this much of validation shouldn't have found its way into the controller
         // START of MOVE TO VALIDATOR task
-        $objectError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'user');
-        $emailError = GeneralUtility::makeInstance('Tx_Extbase_Validation_PropertyError', 'email');
+        $objectError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'user');
+        $emailError = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\PropertyError', 'email');
 
         $checkEmail = $this->userRepository->findOneByEmail($user->getEmail());
 
         if (!is_null($checkEmail) && $checkEmail->getUid() != $user->getUid()) {
             $emailError->addErrors(array(
-                GeneralUtility::makeInstance('Tx_Extbase_Error_Error', 'Duplicate email address', 1320783534),
+                GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Error', 'Duplicate email address', 1320783534),
             ));
         }
 
@@ -403,14 +422,6 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->forward('edit');
         }
         // END of MOVE TO VALIDATOR task
-
-        // check submitted country
-        if ($country) {
-            $country = $this->countryRepository->findByCnShortEn($user->getCountry());
-            if (!$country->count()) {
-                $user->setCountry('');
-            }
-        }
 
         $this->userRepository->update($user);
         $this->flashMessageContainer->add('User updated');
@@ -500,11 +511,13 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $user->setForgotHashValid((time() + (24 * 3600)));
             $this->view->assign('user', $user);
 
+            /*
             $emailSubject = LocalizationUtility::translate('resetpassword_notification_subject', 'zoat_ajaxlogin', array(
                 GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
             ));
 
             $emailBodyContent = $this->view->render();
+
 
             $mail = GeneralUtility::makeInstance('t3lib_mail_Message');
             $mail->setFrom(array($this->settings['notificationMail']['emailAddress'] => $this->settings['notificationMail']['sender']));
@@ -512,6 +525,9 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $mail->setSubject($emailSubject);
             $mail->setBody($emailBodyContent);
             $mail->send();
+            */
+
+            $this->runHook('resetPassword');
 
             $message = LocalizationUtility::translate('resetpassword_notification_sent', 'zoat_ajaxlogin');
             $this->flashMessageContainer->add($message, '', FlashMessage::OK);
@@ -574,7 +590,7 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param string $forgotHash
      * @param string $email
      *
-     * @return Tx_Ajaxlogin_Domain_Model_User| null
+     * @return \Zooom\Zoat\Ajaxlogin\Domain\Repository\FrontendUser|null
      */
     protected function getUserByForgotHashAndEmail($forgotHash, $email)
     {
@@ -707,5 +723,17 @@ class UserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected function getFormToken()
     {
         return 'tx-zoatajaxlogin-form' . md5(microtime());
+    }
+
+    protected function runHook($name, $params = array())
+    {
+        // Loop through defined hooks.
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zoat_ajaxlogin'][$name]) &&
+            is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zoat_ajaxlogin'][$name])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zoat_ajaxlogin'][$name] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $params, $this);
+            }
+        }
     }
 }

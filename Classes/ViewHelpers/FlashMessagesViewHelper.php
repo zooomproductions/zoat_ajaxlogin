@@ -23,6 +23,7 @@ namespace Zooom\ZoatAjaxlogin\ViewHelpers;
  *                                                                        */
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
@@ -86,16 +87,16 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessages
             }
             $tagContent = '';
             $severity = array(
-                    AbstractMessage::NOTICE => array('class' => '', 'title' => ''),
-                    AbstractMessage::INFO => array('class' => 'bg-info text-info', 'title' => ''),
-                    AbstractMessage::OK => array('class' => 'bg-success text-success', 'title' => ''),
-                    AbstractMessage::WARNING => array('class' => 'bg-warning text-warning', 'title' => 'Warning!'),
-                    AbstractMessage::ERROR => array('class' => 'bg-danger text-danger', 'title' => 'Error notification'),
-                );
+                AbstractMessage::NOTICE => array('class' => '', 'title' => ''),
+                AbstractMessage::INFO => array('class' => 'bg-info text-info', 'title' => ''),
+                AbstractMessage::OK => array('class' => 'bg-success text-success', 'title' => ''),
+                AbstractMessage::WARNING => array('class' => 'bg-warning text-warning', 'title' => 'Warning!'),
+                AbstractMessage::ERROR => array('class' => 'bg-danger text-danger', 'title' => 'Error notification'),
+            );
             foreach ($flashMessages as $singleFlashMessage) {
                 $s = $singleFlashMessage->getSeverity();
                 $tagContent .= '<div class="' . strtolower($severity[$s]['class']) . '">';
-
+                DebugUtility::debug($s, 'severity');
                 if ($s == AbstractMessage::OK || $s == AbstractMessage::WARNING || $s == AbstractMessage::ERROR) {
                     $tagContent .= '<p class="severity">' . $severity[$s]['title'] . '</p>';
                 }
